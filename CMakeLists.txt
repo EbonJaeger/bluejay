@@ -25,9 +25,6 @@ find_package(Qt6 ${QT6_MIN_VERSION} CONFIG REQUIRED COMPONENTS
 )
 find_package(KF6 ${KF6_MIN_VERSION} REQUIRED COMPONENTS BluezQt)
 
-target_sources(KF6BluezQt_QCH
-  PRIVATE
-    LICENSE
-)
+find_package(KF6 ${KF6_MIN_VERSION} REQUIRED COMPONENTS BluezQt)
 
 add_subdirectory(src)
