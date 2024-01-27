@@ -1,0 +1,21 @@
+name: Build
+on: [push, pull_request]
+jobs:
+  fedora:
+    runs-on: ubuntu-latest
+    container: "registry.fedoraproject.org/fedora:rawhide"
+    steps:
+    - name: Install prerequisites
+      run: |
+        dnf --assumeyes install gcc-c++ cmake git-core \
+          'cmake(Qt6Core)' \
+          'cmake(Qt6Gui)' \
+          'cmake(Qt6UiTools)' \
+          'cmake(Qt6Widgets)' \
+          'cmake(KF6BluezQt)' \
+          extra-cmake-modules
+    - uses: actions/checkout@v4
+    - name: Build bluejay
+      run: |
+        cmake -S . -B build
+        cmake --build build --verbose
