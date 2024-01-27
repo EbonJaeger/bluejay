@@ -1,0 +1,33 @@
+cmake_minimum_required(VERSION 3.20)
+
+project(bluejay VERSION 0.1.0 LANGUAGES CXX)
+
+include(GNUInstallDirs)
+
+set(CMAKE_AUTOUIC ON)
+set(CMAKE_AUTOMOC ON)
+set(CMAKE_AUTORCC ON)
+
+set(CMAKE_CXX_STANDARD 20)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+
+set(QT6_MIN_VERSION "6.5")
+set(KF6_MIN_VERSION "5.240.0")
+
+find_package(ECM ${KF6_MIN_VERSION} REQUIRED NO_MODULE)
+set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${ECM_MODULE_PATH})
+
+find_package(Qt6 ${QT6_MIN_VERSION} CONFIG REQUIRED COMPONENTS
+    Core
+	Gui
+	UiTools
+    Widgets
+)
+find_package(KF6 ${KF6_MIN_VERSION} REQUIRED COMPONENTS BluezQt)
+
+target_sources(KF6BluezQt_QCH
+  PRIVATE
+    LICENSE
+)
+
+add_subdirectory(src)
