@@ -19,11 +19,10 @@ set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${ECM_MODULE_PATH})
 
 find_package(Qt6 ${QT6_MIN_VERSION} CONFIG REQUIRED COMPONENTS
     Core
-	Gui
-	UiTools
+    Gui
+    UiTools
     Widgets
 )
-find_package(KF6 ${KF6_MIN_VERSION} REQUIRED COMPONENTS BluezQt)
 
 find_package(KF6 ${KF6_MIN_VERSION} REQUIRED COMPONENTS BluezQt)
 
