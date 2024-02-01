@@ -56,7 +56,17 @@
           </property>
           <layout class="QVBoxLayout" name="verticalLayout">
            <item>
-            <layout class="QVBoxLayout" name="devicesBox"/>
+            <widget class="QListWidget" name="devicesBox">
+             <property name="frameShape">
+              <enum>QFrame::NoFrame</enum>
+             </property>
+             <property name="frameShadow">
+              <enum>QFrame::Plain</enum>
+             </property>
+             <property name="spacing">
+              <number>6</number>
+             </property>
+            </widget>
            </item>
           </layout>
          </widget>

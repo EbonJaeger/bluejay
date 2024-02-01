@@ -34,7 +34,7 @@ MainWindow::MainWindow(QWidget * parent)
     initJob->start();
 }
 
-MainWindow::~MainWindow() noexcept
+MainWindow::~MainWindow()
 {
     delete manager;
     delete ui;
@@ -68,19 +68,26 @@ void MainWindow::deviceAdded(BluezQt::DevicePtr device)
     qDebug() << "Device added:" << device->name();
 
     auto deviceRow = new DeviceRow(device);
-    ui->devicesBox->addWidget(deviceRow);
+    auto item = new QListWidgetItem();
+
+    item->setSizeHint(deviceRow->sizeHint());
+
+    ui->devicesBox->addItem(item);
+    ui->devicesBox->setItemWidget(item, deviceRow);
 }
 
 void MainWindow::deviceRemoved(BluezQt::DevicePtr device)
 {
     qDebug() << "Device removed:" << device->name();
 
-    auto rows = ui->devicesBox->findChildren<DeviceRow *>(Qt::FindDirectChildrenOnly);
-    for (const auto row : rows)
+    for (int i = 0; i < ui->devicesBox->count(); i++)
     {
-        if (row->address() == device->address())
+        auto item = ui->devicesBox->item(i);
+        auto deviceRow = qobject_cast<DeviceRow *>(ui->devicesBox->itemWidget(item));
+
+        if (deviceRow->address() == device->address())
         {
-            delete row;
+            delete ui->devicesBox->takeItem(i);
         }
     }
 }
