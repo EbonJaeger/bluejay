@@ -1,0 +1,79 @@
+/* This file is part of bluejay.
+ *
+ * Copyright © Evan Maddock.
+ *
+ * Licensed under the Mozilla Public License Version 2.0
+ * Fedora-License-Identifier: MPLv2.0
+ * SPDX-2.0-License-Identifier: MPL-2.0
+ * SPDX-3.0-License-Identifier: MPL-2.0
+ *
+ * bluejay is free software.
+ * For more information on the license, see LICENSE.
+ * For more information on free software, see <https://www.gnu.org/philosophy/free-sw.en.html>.
+ *
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at <https://mozilla.org/MPL/2.0/>.
+ */
+
+#include <BluezQt/InitManagerJob>
+#include <KAboutData>
+#include <KLocalizedContext>
+#include <KLocalizedString>
+#include <QApplication>
+#include <QIcon>
+#include <QQmlApplicationEngine>
+#include <QQmlContext>
+#include <QQuickStyle>
+
+#include "bluejay-version.h"
+
+using namespace Qt::Literals::StringLiterals;
+
+void qml_register_types_com_github_ebonjaeger_bluejay();
+
+int main(int argc, char *argv[])
+{
+    QIcon::setFallbackThemeName(QStringLiteral("breeze"));
+
+    QApplication app(argc, argv);
+
+    if (qEnvironmentVariableIsEmpty("QT_QUICK_CONTROLS_STYLE")) {
+        QQuickStyle::setStyle(QStringLiteral("org.kde.desktop"));
+    }
+
+    KLocalizedString::setApplicationDomain(QByteArrayLiteral("bluejay"));
+
+    QGuiApplication::setOrganizationName(QStringLiteral("EbonJaeger"));
+
+    KAboutData about(QStringLiteral("bluejay"),
+                     i18n("Bluejay"),
+                     QStringLiteral(BLUEJAY_VERSION_STRING),
+                     i18n("Bluetooth device manager"),
+                     KAboutLicense::Unknown,
+                     i18n("© Evan Maddock"));
+    about.addAuthor(QStringLiteral("Evan Maddock"),
+                    i18n("Maintainer"),
+                    QStringLiteral("maddock.evan@vivaldi.net"),
+                    QStringLiteral("https://github.com/EbonJaeger"));
+
+    KAboutData::setApplicationData(about);
+    QGuiApplication::setWindowIcon(QIcon::fromTheme(QStringLiteral("bluetooth-active")));
+
+    qml_register_types_com_github_ebonjaeger_bluejay();
+
+    QQmlApplicationEngine engine;
+
+    QObject::connect(&engine, &QQmlApplicationEngine::objectCreationFailed,
+                     &app, []() { QCoreApplication::exit(1); },
+                     Qt::QueuedConnection);
+
+    engine.rootContext()->setContextObject(new KLocalizedContext(&engine));
+    engine.loadFromModule("com.github.ebonjaeger.bluejay", "Main");
+
+    if (engine.rootObjects().isEmpty()) {
+        return -1;
+    }
+
+    return app.exec();
+}
