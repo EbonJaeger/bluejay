@@ -28,10 +28,12 @@ Kirigami.ApplicationWindow {
     height: 480
     title: i18nc("Bluejay is the name of the application", "Bluejay")
 
-    ColumnLayout {
-        Controls.ScrollView {
-            height: 480
+    Kirigami.ScrollablePage {
+        height: 480
+            width: root.width
 
+        ListView {
+            width: root.width
             DeviceScanner {}
         }
     }

@@ -30,10 +30,8 @@ import com.github.ebonjaeger.bluejay
 import "script.js" as Script
 
 Item {
-    id: root
-
-    implicitHeight: Kirigami.Units.gridUnit * 28
-    implicitWidth: Kirigami.Units.gridUnit * 28
+    id: banana
+    width: root.width
 
     function setBluetoothEnabled(enabled) {
         BluezQt.Manager.bluetoothBlocked = !enabled;
@@ -69,89 +67,94 @@ Item {
         return labels.join(" · ");
     }
 
-    Kirigami.InlineMessage {
-        id: errorMessage
-        type: Kirigami.MessageType.Error
-        showCloseButton: true
-    }
+    ColumnLayout {
+            Kirigami.InlineMessage {
+                id: errorMessage
+                type: Kirigami.MessageType.Error
+                showCloseButton: true
+                width: root.width
+            }
 
-    Kirigami.InlineMessage {
-        id: testMessage
-        type: Kirigami.MessageType.Information
-        visible: BluezQt.Manager.operational
-        text: "BluezQt Manager operational"
-    }
+            Kirigami.InlineMessage {
+                width: root.width
+                id: testMessage
+                type: Kirigami.MessageType.Information
+                visible: BluezQt.Manager.operational
+                text: "BluezQt Manager operational"
+            }
+        ListView {
+            id: deviceList
+            clip: false
+            width: root.width
 
-    ListView {
-        id: deviceList
-        clip: true
+            Kirigami.PlaceholderMessage {
+                id: noBluetoothMessage
+                visible: BluezQt.Manager.rfkill.state === BluezQt.Rfkill.Unknown
+                icon.name: "edit-none-symbolic"
+                text: i18n("No Bluetooth adapters found")
+                explanation: i18n("Please connect a Bluetooth adapter")
+                width: parent.width - (Kirigami.Units.largeSpacing * 4)
+                anchors.centerIn: parent
+            }
 
-        Kirigami.PlaceholderMessage {
-            id: noBluetoothMessage
-            visible: BluezQt.Manager.rfkill.state === BluezQt.Rfkill.Unknown
-            icon.name: "edit-none-symbolic"
-            text: i18n("No Bluetooth adapters found")
-            explanation: i18n("Please connect a Bluetooth adapter")
-            width: parent.width - (Kirigami.Units.largeSpacing * 4)
-            anchors.centerIn: parent
-        }
+            Kirigami.PlaceholderMessage {
+                id: bluetoothDisabledMessage
+                visible: BluezQt.Manager.operational && !BluezQt.Manager.bluetoothOperational && !noBluetoothMessage.visible
+                icon.name: "network-bluetooth-inactive-symbolic"
+                text: i18n("Bluetooth is disabled")
+                width: parent.width - (Kirigami.Units.largeSpacing * 4)
+                anchors.centerIn: parent
 
-        Kirigami.PlaceholderMessage {
-            id: bluetoothDisabledMessage
-            visible: BluezQt.Manager.operational && !BluezQt.Manager.bluetoothOperational && !noBluetoothMessage.visible
-            icon.name: "network-bluetooth-inactive-symbolic"
-            text: i18n("Bluetooth is disabled")
-            width: parent.width - (Kirigami.Units.largeSpacing * 4)
-            anchors.centerIn: parent
-
-            helpfulAction: Kirigami.Action {
-                icon.name: "network-bluetooth-symbolic"
-                text: i18n("Enable")
-                onTriggered: {
-                    setBluetoothEnabled(true)
+                helpfulAction: Kirigami.Action {
+                    icon.name: "network-bluetooth-symbolic"
+                    text: i18n("Enable")
+                    onTriggered: {
+                        setBluetoothEnabled(true)
+                    }
                 }
             }
-        }
 
-        Kirigami.PlaceholderMessage {
-            visible: !noBluetoothMessage.visible && !bluetoothDisabledMessage.visible && deviceList.count === 0
-            icon.name: "network-bluetooth-activated-symbolic"
-            text: i18n("No paired devices")
-            width: parent.width - (Kirigami.Units.largeSpacing * 4)
-            anchors.centerIn: parent
-        }
+            Kirigami.PlaceholderMessage {
+                visible: !noBluetoothMessage.visible && !bluetoothDisabledMessage.visible && deviceList.count === 0
+                icon.name: "network-bluetooth-activated-symbolic"
+                text: i18n("No paired devices")
+                width: parent.width - (Kirigami.Units.largeSpacing * 4)
+                anchors.centerIn: parent
+            }
 
-        Controls.BusyIndicator {
-            id: busyIndicator
-            running: false
-            anchors.centerIn: parent
-        }
+            Controls.BusyIndicator {
+                id: busyIndicator
+                running: false
+                anchors.centerIn: parent
+            }
 
-        DevicesProxyModel {
-            id: devicesModel
-            sourceModel: BluezQt.DevicesModel { }
-        }
+            DevicesProxyModel {
+                id: devicesModel
+                sourceModel: BluezQt.DevicesModel { }
+            }
 
-        model: BluezQt.Manager.bluetoothOperational ? devicesModel : null
+            model: BluezQt.Manager.bluetoothOperational ? devicesModel : null
 
-        section.property: "Connected"
-        section.delegate: Kirigami.ListSectionHeader {
-            width: ListView.view.width
-            text: section === "true" ? i18n("Connected") : i18n("Available")
-        }
+            section.property: "Connected"
+            section.delegate: Kirigami.ListSectionHeader {
+                width: ListView.view.width
+                text: section === "true" ? i18n("Connected") : i18n("Available")
+            }
 
-        delegate: Controls.ItemDelegate {
-            width: ListView.view.width
+            delegate: Controls.ItemDelegate {
+                width: ListView.view.width
 
-            contentItem: RowLayout {
-                spacing: Kirigami.Units.smallSpacing
+                contentItem: RowLayout {
+                    spacing: Kirigami.Units.smallSpacing
+                    width: ListView.view.width
 
-                KD.IconTitleSubtitle {
-                    title: model.Name
-                    subtitle: infoText(model.Device.type, model.Device.battery, model.Device.uuids)
-                    icon.name: model.Icon
-                    icon.width: Kirigami.Units.iconSizes.medium
-                    Layout.fillWidth: true
+                    KD.IconTitleSubtitle {
+                        title: model.Name
+                        subtitle: infoText(model.Device.type, model.Device.battery, model.Device.uuids)
+                        icon.name: model.Icon
+                        icon.width: Kirigami.Units.iconSizes.medium
+                    width: ListView.view.width
+                    }
                 }
             }
         }
