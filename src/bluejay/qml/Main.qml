@@ -19,7 +19,8 @@
 import QtQuick 2.15
 import QtQuick.Controls 2.15 as Controls
 import QtQuick.Layouts 1.15
-import org.kde.kirigami 2.20 as Kirigami
+
+import org.kde.kirigami as Kirigami
 
 Kirigami.ApplicationWindow {
     id: root
@@ -28,13 +29,5 @@ Kirigami.ApplicationWindow {
     height: 480
     title: i18nc("Bluejay is the name of the application", "Bluejay")
 
-    Kirigami.ScrollablePage {
-        height: 480
-            width: root.width
-
-        ListView {
-            width: root.width
-            DeviceScanner {}
-        }
-    }
+    DeviceScanner {}
 }
