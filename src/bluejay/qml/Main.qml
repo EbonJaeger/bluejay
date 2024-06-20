@@ -25,7 +25,7 @@ import org.kde.kirigami as Kirigami
 Kirigami.ApplicationWindow {
     id: root
     visible: true
-    width: 640
+    width: 300
     height: 480
     title: i18nc("Bluejay is the name of the application", "Bluejay")
 

@@ -31,6 +31,7 @@ import "script.js" as Script
 
 Item {
     id: scanner
+    width: root.width
 
     function setBluetoothEnabled(enabled) {
         BluezQt.Manager.bluetoothBlocked = !enabled;
@@ -67,19 +68,13 @@ Item {
     }
 
     ColumnLayout {
+        width: root.width
         Kirigami.InlineMessage {
             id: errorMessage
             type: Kirigami.MessageType.Error
             showCloseButton: true
-            implicitWidth: root.width // TODO: It would be nice to not have this full-width, but right now that's the only way everything gets shown
-        }
-
-        Kirigami.InlineMessage {
-            id: testMessage
-            type: Kirigami.MessageType.Information
-            visible: BluezQt.Manager.operational
-            text: "BluezQt Manager operational"
-            implicitWidth: root.width // TODO: It would be nice to not have this full-width, but right now that's the only way everything gets shown
+            Layout.alignment: Qt.AlignHCenter
+            implicitWidth: parent.width * 0.85
         }
 
         Kirigami.ScrollablePage {
