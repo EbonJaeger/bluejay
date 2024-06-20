@@ -84,6 +84,11 @@ Item {
                 checked: !BluezQt.Manager.bluetoothBlocked
                 onToggled: toggleBluetooth()
             }
+
+            Controls.BusyIndicator {
+                id: busyIndicator
+                running: false
+            }
         }
 
         Kirigami.InlineMessage {
@@ -131,12 +136,6 @@ Item {
                     icon.name: "network-bluetooth-activated-symbolic"
                     text: i18n("No paired devices")
                     implicitWidth: parent.width - (Kirigami.Units.largeSpacing * 4)
-                    anchors.centerIn: parent
-                }
-
-                Controls.BusyIndicator {
-                    id: busyIndicator
-                    running: false
                     anchors.centerIn: parent
                 }
 
