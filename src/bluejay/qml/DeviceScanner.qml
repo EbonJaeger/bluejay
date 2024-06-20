@@ -33,7 +33,7 @@ Item {
     id: scanner
     width: root.width
 
-    function toggleBluetooth() {
+    function toggleBluetooth(): void {
         var oldState = BluezQt.Manager.bluetoothBlocked;
 
         BluezQt.Manager.bluetoothBlocked = !oldState;
@@ -44,7 +44,7 @@ Item {
         }
     }
 
-    function makeCall(call) {
+    function makeCall(call: BluezQt.PendingCall): void {
         busyIndicator.running = true;
 
         call.finished.connect(call => {
@@ -154,7 +154,11 @@ Item {
                 }
 
                 delegate: Controls.ItemDelegate {
-                    Layout.fillWidth: true
+                    id: delegate
+
+                    required property var model
+
+                    implicitWidth: parent.width
 
                     contentItem: RowLayout {
                         spacing: Kirigami.Units.smallSpacing
@@ -164,6 +168,23 @@ Item {
                             subtitle: infoText(model.Device.type, model.Device.battery, model.Device.uuids)
                             icon.name: model.Icon
                             icon.width: Kirigami.Units.iconSizes.medium
+                        }
+
+                        Controls.ToolButton {
+                            text: delegate.model.Connected ? i18n("Disconnect") : i18n("Connect")
+                            icon.name: delegate.model.Connected ? "network-disconnect-symbolic" : "network-connect-symbolic"
+                            display: Controls.AbstractButton.IconOnly
+
+                            Controls.ToolTip.text: text
+                            Controls.ToolTip.visible: hovered
+
+                            onClicked: {
+                                if (delegate.model.Connected) {
+                                    makeCall(delegate.model.Device.disconnectFromDevice())
+                                } else {
+                                    makeCall(delegate.model.Device.connectToDevice())
+                                }
+                            }
                         }
                     }
                 }
