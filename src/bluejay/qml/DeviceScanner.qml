@@ -33,12 +33,14 @@ Item {
     id: scanner
     width: root.width
 
-    function setBluetoothEnabled(enabled) {
-        BluezQt.Manager.bluetoothBlocked = !enabled;
+    function toggleBluetooth() {
+        var oldState = BluezQt.Manager.bluetoothBlocked;
+
+        BluezQt.Manager.bluetoothBlocked = !oldState;
 
         for (var i = 0; i < BluezQt.Manager.adapters.length; ++i) {
             var adapter = BluezQt.Manager.adapters[i];
-            adapter.powered = enabled;
+            adapter.powered = oldState;
         }
     }
 
@@ -69,6 +71,21 @@ Item {
 
     ColumnLayout {
         width: root.width
+
+        RowLayout {
+            Layout.topMargin: 8
+            Layout.bottomMargin: 8
+            Layout.leftMargin: 4
+            Layout.rightMargin: 4
+
+            Controls.Switch {
+                text: i18n("Bluetooth enabled")
+                enabled: BluezQt.Manager.rfkill.state !== BluezQt.Rfkill.Unknown
+                checked: !BluezQt.Manager.bluetoothBlocked
+                onToggled: toggleBluetooth()
+            }
+        }
+
         Kirigami.InlineMessage {
             id: errorMessage
             type: Kirigami.MessageType.Error
@@ -105,9 +122,7 @@ Item {
                     helpfulAction: Kirigami.Action {
                         icon.name: "network-bluetooth-symbolic"
                         text: i18n("Enable")
-                        onTriggered: {
-                            setBluetoothEnabled(true)
-                        }
+                        onTriggered: toggleBluetooth()
                     }
                 }
 
