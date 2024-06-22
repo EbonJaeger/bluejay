@@ -159,6 +159,13 @@ Item {
 
                     implicitWidth: parent.width
 
+                    onClicked: dialog.show()
+
+                    DeviceDialog {
+                        id: dialog
+                        device: model.Device
+                    }
+
                     contentItem: RowLayout {
                         spacing: Kirigami.Units.smallSpacing
 
