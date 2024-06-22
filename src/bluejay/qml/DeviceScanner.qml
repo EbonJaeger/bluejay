@@ -31,19 +31,6 @@ import "script.js" as Script
 ColumnLayout {
     id: scanner
 
-    function makeCall(call: BluezQt.PendingCall): void {
-        busyIndicator.running = true;
-
-        call.finished.connect(call => {
-            busyIndicator.running = false;
-
-            if (call.error) {
-                errorMessage.text = call.errorText;
-                errorMessage.visible = true;
-            }
-        })
-    }
-
     function infoText(device: BluezQt.Device): string {
         const { battery } = device;
         const labels = [];
@@ -132,23 +119,6 @@ ColumnLayout {
                         subtitle: infoText(delegate.model.Device)
                         icon.name: model.Icon
                         icon.width: Kirigami.Units.iconSizes.medium
-                    }
-
-                    Controls.ToolButton {
-                        text: delegate.model.Connected ? i18n("Disconnect") : i18n("Connect")
-                        icon.name: delegate.model.Connected ? "network-disconnect-symbolic" : "network-connect-symbolic"
-                        display: Controls.AbstractButton.IconOnly
-
-                        Controls.ToolTip.text: text
-                        Controls.ToolTip.visible: hovered
-
-                        onClicked: {
-                            if (delegate.model.Connected) {
-                                makeCall(delegate.model.Device.disconnectFromDevice())
-                            } else {
-                                makeCall(delegate.model.Device.connectToDevice())
-                            }
-                        }
                     }
                 }
             }
