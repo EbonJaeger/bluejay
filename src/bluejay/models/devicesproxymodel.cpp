@@ -62,28 +62,50 @@ QVariant DevicesProxyModel::data(const QModelIndex &index, int role) const
 
 bool DevicesProxyModel::lessThan(const QModelIndex &left, const QModelIndex &right) const
 {
+    auto leftPaired = left.data(BluezQt::DevicesModel::PairedRole).toBool();
+    auto rightPaired = left.data(BluezQt::DevicesModel::PairedRole).toBool();
+    auto leftTrusted = left.data(BluezQt::DevicesModel::TrustedRole).toBool();
+    auto rightTrusted = left.data(BluezQt::DevicesModel::TrustedRole).toBool();
+
+    // Paired and trusted (thus setup) devices first
+    auto leftSetup = leftPaired || leftTrusted;
+    auto rightSetup = rightPaired || rightTrusted;
+
+    if (leftSetup != rightSetup) {
+        if (leftSetup) {
+            return false;
+        } else {
+            return true;
+        }
+    }
+
+    // Then connected devices
     auto leftConnected = left.data(BluezQt::DevicesModel::ConnectedRole).toBool();
     auto rightConnected = right.data(BluezQt::DevicesModel::ConnectedRole).toBool();
 
-    if (leftConnected < rightConnected) {
-        return true;
-    } else if (leftConnected > rightConnected) {
-        return false;
+    if (leftConnected != rightConnected) {
+        if (leftConnected) {
+            return false;
+        } else {
+            return true;
+        }
     }
 
+    // All else fails, sort alphabetically
     const auto &leftName = left.data(BluezQt::DevicesModel::NameRole).toString();
     const auto &rightName = right.data(BluezQt::DevicesModel::NameRole).toString();
 
     return QString::localeAwareCompare(leftName, rightName) > 0;
 }
 
-bool DevicesProxyModel::filterAcceptsRow(int source_row, const QModelIndex &source_parent) const
-{
-    const auto index = sourceModel()->index(source_row, 0, source_parent);
-
-    // Only show paired and connected devices
-    return index.data(BluezQt::DevicesModel::PairedRole).toBool() || index.data(BluezQt::DevicesModel::ConnectedRole).toBool();
-}
+//bool DevicesProxyModel::filterAcceptsRow(int source_row, const QModelIndex &source_parent) const
+//{
+//    const auto index = sourceModel()->index(source_row, 0, source_parent);
+//
+//    // Only show paired and connected devices
+//    return index.data(BluezQt::DevicesModel::PairedRole).toBool() ||
+//           index.data(BluezQt::DevicesModel::ConnectedRole).toBool();
+//}
 
 /**
  * @brief DevicesProxyModel::adapterHciString
