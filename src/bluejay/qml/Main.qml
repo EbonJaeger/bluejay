@@ -25,9 +25,12 @@ import org.kde.kirigami as Kirigami
 Kirigami.ApplicationWindow {
     id: root
     visible: true
-    width: 300
-    height: 480
+    width: 800
+    height: 600
     title: i18nc("Bluejay is the name of the application", "Bluejay")
 
-    DeviceScanner {}
+    MainPage {
+        width: root.width
+        height: root.height
+    }
 }

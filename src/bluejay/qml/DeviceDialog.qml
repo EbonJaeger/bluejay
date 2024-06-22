@@ -21,9 +21,8 @@ import QtQuick.Dialogs
 import QtQuick.Controls 2.15 as Controls
 import QtQuick.Layouts 1.15
 
-import org.kde.kirigami as Kirigami
-
 import org.kde.bluezqt as BluezQt
+import org.kde.kirigami as Kirigami
 
 import "script.js" as Script
 
@@ -90,7 +89,7 @@ Window {
             }
 
             Controls.Label {
-                text: Script.deviceTypeToString(device.type)
+                text: Script.deviceTypeToString(device)
                 Kirigami.FormData.label: i18n("Type:")
             }
 

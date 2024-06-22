@@ -20,29 +20,16 @@ import QtQuick 2.15
 import QtQuick.Controls 2.15 as Controls
 import QtQuick.Layouts 1.15
 
+import org.kde.bluezqt as BluezQt
 import org.kde.kirigami as Kirigami
 import org.kde.kirigami.delegates as KD
-
-import org.kde.bluezqt as BluezQt
 
 import com.github.ebonjaeger.bluejay
 
 import "script.js" as Script
 
-Item {
+ColumnLayout {
     id: scanner
-    width: root.width
-
-    function toggleBluetooth(): void {
-        var oldState = BluezQt.Manager.bluetoothBlocked;
-
-        BluezQt.Manager.bluetoothBlocked = !oldState;
-
-        for (var i = 0; i < BluezQt.Manager.adapters.length; ++i) {
-            var adapter = BluezQt.Manager.adapters[i];
-            adapter.powered = oldState;
-        }
-    }
 
     function makeCall(call: BluezQt.PendingCall): void {
         busyIndicator.running = true;
@@ -57,10 +44,11 @@ Item {
         })
     }
 
-    function infoText(type, battery, uuids): string {
+    function infoText(device: BluezQt.Device): string {
+        const { battery } = device;
         const labels = [];
 
-        labels.push(Script.deviceTypeToString(type));
+        labels.push(Script.deviceTypeToString(device));
 
         if (battery) {
             labels.push(i18n("%1% Battery", battery.percentage));
@@ -69,127 +57,96 @@ Item {
         return labels.join(" · ");
     }
 
-    ColumnLayout {
-        width: root.width
+    Kirigami.ScrollablePage {
+        Layout.fillWidth: true
+        Layout.fillHeight: true
 
-        RowLayout {
-            Layout.topMargin: 8
-            Layout.bottomMargin: 8
-            Layout.leftMargin: 4
-            Layout.rightMargin: 4
+        ListView {
+            id: deviceList
 
-            Controls.Switch {
-                text: i18n("Bluetooth enabled")
-                enabled: BluezQt.Manager.rfkill.state !== BluezQt.Rfkill.Unknown
-                checked: !BluezQt.Manager.bluetoothBlocked
-                onToggled: toggleBluetooth()
+            Kirigami.PlaceholderMessage {
+                id: noBluetoothMessage
+                visible: BluezQt.Manager.rfkill.state === BluezQt.Rfkill.Unknown
+                icon.name: "edit-none-symbolic"
+                text: i18n("No Bluetooth adapters found")
+                explanation: i18n("Please connect a Bluetooth adapter")
+                implicitWidth: parent.width - (Kirigami.Units.largeSpacing * 4)
+                anchors.centerIn: parent
             }
 
-            Controls.BusyIndicator {
-                id: busyIndicator
-                running: false
+            Kirigami.PlaceholderMessage {
+                id: bluetoothDisabledMessage
+                visible: BluezQt.Manager.operational && !BluezQt.Manager.bluetoothOperational && !noBluetoothMessage.visible
+                icon.name: "network-bluetooth-inactive-symbolic"
+                text: i18n("Bluetooth is disabled")
+                implicitWidth: parent.width - (Kirigami.Units.largeSpacing * 4)
+                anchors.centerIn: parent
+
+                helpfulAction: Kirigami.Action {
+                    icon.name: "network-bluetooth-symbolic"
+                    text: i18n("Enable")
+                    onTriggered: mainView.toggleBluetooth()
+                }
             }
-        }
 
-        Kirigami.InlineMessage {
-            id: errorMessage
-            type: Kirigami.MessageType.Error
-            showCloseButton: true
-            Layout.alignment: Qt.AlignHCenter
-            implicitWidth: parent.width * 0.85
-        }
+            Kirigami.PlaceholderMessage {
+                visible: !noBluetoothMessage.visible && !bluetoothDisabledMessage.visible && deviceList.count === 0
+                icon.name: "network-bluetooth-activated-symbolic"
+                text: i18n("No paired devices")
+                implicitWidth: parent.width - (Kirigami.Units.largeSpacing * 4)
+                anchors.centerIn: parent
+            }
 
-        Kirigami.ScrollablePage {
-            Layout.fillWidth: true
-            implicitHeight: root.height
+            DevicesProxyModel {
+                id: devicesModel
+                sourceModel: BluezQt.DevicesModel { }
+            }
 
-            ListView {
-                id: deviceList
+            model: BluezQt.Manager.bluetoothOperational ? devicesModel : null
 
-                Kirigami.PlaceholderMessage {
-                    id: noBluetoothMessage
-                    visible: BluezQt.Manager.rfkill.state === BluezQt.Rfkill.Unknown
-                    icon.name: "edit-none-symbolic"
-                    text: i18n("No Bluetooth adapters found")
-                    explanation: i18n("Please connect a Bluetooth adapter")
-                    implicitWidth: parent.width - (Kirigami.Units.largeSpacing * 4)
-                    anchors.centerIn: parent
+            section.property: "Connected"
+            section.delegate: Kirigami.ListSectionHeader {
+                Layout.fillWidth: true
+                text: section === "true" ? i18n("Connected") : i18n("Available")
+            }
+
+            delegate: Controls.ItemDelegate {
+                id: delegate
+
+                required property var model
+
+                implicitWidth: parent.width
+
+                onClicked: dialog.show()
+
+                DeviceDialog {
+                    id: dialog
+                    device: model.Device
                 }
 
-                Kirigami.PlaceholderMessage {
-                    id: bluetoothDisabledMessage
-                    visible: BluezQt.Manager.operational && !BluezQt.Manager.bluetoothOperational && !noBluetoothMessage.visible
-                    icon.name: "network-bluetooth-inactive-symbolic"
-                    text: i18n("Bluetooth is disabled")
-                    implicitWidth: parent.width - (Kirigami.Units.largeSpacing * 4)
-                    anchors.centerIn: parent
+                contentItem: RowLayout {
+                    spacing: Kirigami.Units.smallSpacing
 
-                    helpfulAction: Kirigami.Action {
-                        icon.name: "network-bluetooth-symbolic"
-                        text: i18n("Enable")
-                        onTriggered: toggleBluetooth()
-                    }
-                }
-
-                Kirigami.PlaceholderMessage {
-                    visible: !noBluetoothMessage.visible && !bluetoothDisabledMessage.visible && deviceList.count === 0
-                    icon.name: "network-bluetooth-activated-symbolic"
-                    text: i18n("No paired devices")
-                    implicitWidth: parent.width - (Kirigami.Units.largeSpacing * 4)
-                    anchors.centerIn: parent
-                }
-
-                DevicesProxyModel {
-                    id: devicesModel
-                    sourceModel: BluezQt.DevicesModel { }
-                }
-
-                model: BluezQt.Manager.bluetoothOperational ? devicesModel : null
-
-                section.property: "Connected"
-                section.delegate: Kirigami.ListSectionHeader {
-                    Layout.fillWidth: true
-                    text: section === "true" ? i18n("Connected") : i18n("Available")
-                }
-
-                delegate: Controls.ItemDelegate {
-                    id: delegate
-
-                    required property var model
-
-                    implicitWidth: parent.width
-
-                    onClicked: dialog.show()
-
-                    DeviceDialog {
-                        id: dialog
-                        device: model.Device
+                    KD.IconTitleSubtitle {
+                        title: model.Name
+                        subtitle: infoText(delegate.model.Device)
+                        icon.name: model.Icon
+                        icon.width: Kirigami.Units.iconSizes.medium
                     }
 
-                    contentItem: RowLayout {
-                        spacing: Kirigami.Units.smallSpacing
+                    Controls.ToolButton {
+                        text: delegate.model.Connected ? i18n("Disconnect") : i18n("Connect")
+                        icon.name: delegate.model.Connected ? "network-disconnect-symbolic" : "network-connect-symbolic"
+                        display: Controls.AbstractButton.IconOnly
 
-                        KD.IconTitleSubtitle {
-                            title: model.Name
-                            subtitle: infoText(model.Device.type, model.Device.battery, model.Device.uuids)
-                            icon.name: model.Icon
-                            icon.width: Kirigami.Units.iconSizes.medium
-                        }
+                        Controls.ToolTip.text: text
+                        Controls.ToolTip.visible: hovered
 
-                        Controls.ToolButton {
-                            text: delegate.model.Connected ? i18n("Disconnect") : i18n("Connect")
-                            icon.name: delegate.model.Connected ? "network-disconnect-symbolic" : "network-connect-symbolic"
-                            display: Controls.AbstractButton.IconOnly
-
-                            Controls.ToolTip.text: text
-                            Controls.ToolTip.visible: hovered
-
-                            onClicked: {
-                                if (delegate.model.Connected) {
-                                    makeCall(delegate.model.Device.disconnectFromDevice())
-                                } else {
-                                    makeCall(delegate.model.Device.connectToDevice())
-                                }
+                        onClicked: {
+                            if (delegate.model.Connected) {
+                                makeCall(delegate.model.Device.disconnectFromDevice())
+                            } else {
+                                makeCall(delegate.model.Device.connectToDevice())
                             }
                         }
                     }
