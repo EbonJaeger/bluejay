@@ -16,31 +16,21 @@
  * file, You can obtain one at <https://mozilla.org/MPL/2.0/>.
  */
 
+import "./delegates"
+
 import QtQuick 2.15
 import QtQuick.Controls 2.15 as Controls
-import QtQuick.Layouts 1.15
+import QtQuick.Layouts 1.2
 
 import org.kde.bluezqt as BluezQt
 import org.kde.kirigami as Kirigami
-import org.kde.kirigami.delegates as KD
 
 import com.github.ebonjaeger.bluejay
 
-import "script.js" as Script
-
 ColumnLayout {
-    function infoText(device: BluezQt.Device): string {
-        const { battery } = device;
-        const labels = [];
+    readonly property BluezQt.Manager manager: BluezQt.Manager
 
-        labels.push(Script.deviceTypeToString(device));
-
-        if (battery) {
-            labels.push(i18n("%1% Battery", battery.percentage));
-        }
-
-        return labels.join(" · ");
-    }
+    signal deviceClicked(device: BluezQt.Device)
 
     Kirigami.ScrollablePage {
         Layout.fillWidth: true
@@ -51,7 +41,7 @@ ColumnLayout {
 
             Kirigami.PlaceholderMessage {
                 id: noBluetoothMessage
-                visible: BluezQt.Manager.rfkill.state === BluezQt.Rfkill.Unknown
+                visible: manager.rfkill.state === BluezQt.Rfkill.Unknown
                 icon.name: "edit-none-symbolic"
                 text: i18n("No Bluetooth adapters found")
                 explanation: i18n("Please connect a Bluetooth adapter")
@@ -61,7 +51,7 @@ ColumnLayout {
 
             Kirigami.PlaceholderMessage {
                 id: bluetoothDisabledMessage
-                visible: BluezQt.Manager.operational && !BluezQt.Manager.bluetoothOperational && !noBluetoothMessage.visible
+                visible: manager.operational && !manager.bluetoothOperational && !noBluetoothMessage.visible
                 icon.name: "network-bluetooth-inactive-symbolic"
                 text: i18n("Bluetooth is disabled")
                 implicitWidth: parent.width - (Kirigami.Units.largeSpacing * 4)
@@ -87,7 +77,7 @@ ColumnLayout {
                 sourceModel: BluezQt.DevicesModel { }
             }
 
-            model: BluezQt.Manager.bluetoothOperational ? devicesModel : null
+            model: manager.bluetoothOperational ? devicesModel : null
 
             section.property: "Connected"
             section.delegate: Kirigami.ListSectionHeader {
@@ -95,37 +85,8 @@ ColumnLayout {
                 text: section === "true" ? i18n("Connected") : i18n("Available")
             }
 
-            delegate: Controls.ItemDelegate {
-                id: delegate
-
-                required property var model
-
-                implicitWidth: parent.width
-
-                onClicked: {
-                    if (detailsPane.currentItem != devicePage) {
-                        detailsPlaceholder.visible = false;
-                        detailsPane.push(devicePage);
-                        devicePage.visible = true;
-                    }
-                }
-
-                DevicePage {
-                    id: devicePage
-                    device: model.Device
-                    visible: false
-                }
-
-                contentItem: RowLayout {
-                    spacing: Kirigami.Units.smallSpacing
-
-                    KD.IconTitleSubtitle {
-                        title: model.Name
-                        subtitle: infoText(delegate.model.Device)
-                        icon.name: model.Icon
-                        icon.width: Kirigami.Units.iconSizes.medium
-                    }
-                }
+            delegate: Device {
+                onClicked: deviceClicked(model.Device)
             }
         }
     }

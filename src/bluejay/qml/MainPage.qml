@@ -16,6 +16,8 @@
  * file, You can obtain one at <https://mozilla.org/MPL/2.0/>.
  */
 
+import "./delegates"
+
 import QtQuick 2.15
 import QtQuick.Controls 2.15
 import QtQuick.Layouts 1.2
@@ -66,6 +68,17 @@ Page {
         }
 
         target: manager.rfkill
+    }
+
+    Connections {
+        function onDeviceClicked(device: BluezQt.Device) {
+            // TODO: Is there a better way than this, or is this correct?
+            var devicePage = Qt.createComponent("qrc:/qt/qml/com/github/ebonjaeger/bluejay/qml/DevicePage.qml");
+
+            detailsPane.replace(null, devicePage, { "device": device });
+        }
+
+        target: scanner
     }
 
     Component.onCompleted: {
