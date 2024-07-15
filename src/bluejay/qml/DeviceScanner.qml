@@ -29,8 +29,6 @@ import com.github.ebonjaeger.bluejay
 import "script.js" as Script
 
 ColumnLayout {
-    id: scanner
-
     function infoText(device: BluezQt.Device): string {
         const { battery } = device;
         const labels = [];
@@ -104,11 +102,18 @@ ColumnLayout {
 
                 implicitWidth: parent.width
 
-                onClicked: dialog.show()
+                onClicked: {
+                    if (detailsPane.currentItem != devicePage) {
+                        detailsPlaceholder.visible = false;
+                        detailsPane.push(devicePage);
+                        devicePage.visible = true;
+                    }
+                }
 
-                DeviceDialog {
-                    id: dialog
+                DevicePage {
+                    id: devicePage
                     device: model.Device
+                    visible: false
                 }
 
                 contentItem: RowLayout {

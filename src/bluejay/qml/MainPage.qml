@@ -17,62 +17,81 @@
  */
 
 import QtQuick 2.15
-import QtQuick.Controls 2.15 as Controls
-import QtQuick.Layouts 1.15
+import QtQuick.Controls 2.15
+import QtQuick.Layouts 1.2
 
 import org.kde.bluezqt as BluezQt
-import org.kde.kirigami as Kirigami
 
-Controls.Page {
+Page {
     id: mainView
 
+    readonly property BluezQt.Manager manager: BluezQt.Manager
+
     function toggleBluetooth(): void {
-        var oldState = BluezQt.Manager.bluetoothBlocked;
+        var oldState = manager.bluetoothBlocked;
 
-        BluezQt.Manager.bluetoothBlocked = !oldState;
+        manager.bluetoothBlocked = !oldState;
 
-        for (var i = 0; i < BluezQt.Manager.adapters.length; ++i) {
-            var adapter = BluezQt.Manager.adapters[i];
+        for (var i = 0; i < manager.adapters.length; ++i) {
+            var adapter = manager.adapters[i];
             adapter.powered = oldState;
         }
     }
 
-    header: Controls.ToolBar {
+    header: HeaderBar {
         id: headerBar
+    }
 
-        ColumnLayout {
-            width: headerBar.width
-
-            RowLayout {
-                Controls.Switch {
-                    text: i18n("Bluetooth enabled")
-                    enabled: BluezQt.Manager.rfkill.state !== BluezQt.Rfkill.Unknown
-                    checked: !BluezQt.Manager.bluetoothBlocked
-                    onToggled: toggleBluetooth()
-                }
-
-                Controls.BusyIndicator {
-                    id: busyIndicator
-                    running: false
-                }
-            }
-
-            Kirigami.InlineMessage {
-                id: errorMessage
-                type: Kirigami.MessageType.Error
-                showCloseButton: true
-                Layout.alignment: Qt.AlignHCenter
-                implicitWidth: parent.width * 0.85
-            }
+    Connections {
+        function onBluetoothToggled() {
+            toggleBluetooth();
         }
+
+        target: headerBar
+    }
+
+    Connections {
+        function onBluetoothBlockedChanged(blocked: bool) {
+            headerBar.setBluetoothBlocked(blocked);
+        }
+
+        target: manager
+    }
+
+    Connections {
+        function onStateChanged(state: BluezQt.State) {
+            var available = state !== BluezQt.Rfkill.Unknown;
+
+            headerBar.setBluetoothAvailable(available);
+        }
+
+        target: manager.rfkill
+    }
+
+    Component.onCompleted: {
+        var available = manager.rfkill.state !== BluezQt.Rfkill.Unknown;
+        var blocked = manager.bluetoothBlocked;
+
+        headerBar.setBluetoothAvailable(available);
+        headerBar.setBluetoothBlocked(blocked);
     }
 
     RowLayout {
-        height: mainView.height
+        anchors.fill: parent
 
         DeviceScanner {
-            width: mainView.width * 0.66
-            height: mainView.height
+            id: scanner
+            Layout.fillWidth: true
+            Layout.fillHeight: true
+            Layout.horizontalStretchFactor: 2
+        }
+
+        StackView {
+            id: detailsPane
+
+            Layout.fillWidth: true
+            Layout.fillHeight: true
+            Layout.horizontalStretchFactor: 1
         }
     }
 }

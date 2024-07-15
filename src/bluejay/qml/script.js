@@ -62,6 +62,6 @@ function deviceTypeToString(device) {
                 profiles.push(i18n("Other"));
             }
 
-            labels.push(profiles.join(", "));
+            return profiles.join(", ");
     }
 }
