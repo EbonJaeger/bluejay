@@ -23,6 +23,7 @@ import QtQuick.Controls 2.15
 import QtQuick.Layouts 1.2
 
 import org.kde.bluezqt as BluezQt
+import org.kde.kirigami as Kirigami
 
 Page {
     id: mainView
@@ -89,22 +90,38 @@ Page {
         headerBar.setBluetoothBlocked(blocked);
     }
 
-    RowLayout {
-        anchors.fill: parent
+    ColumnLayout {
+       anchors.fill: parent
+       spacing: 0
 
-        DeviceScanner {
-            id: scanner
-            Layout.fillWidth: true
-            Layout.fillHeight: true
-            Layout.horizontalStretchFactor: 2
+       Kirigami.InlineMessage {
+            id: errorMessage
+            type: Kirigami.MessageType.Error
+            showCloseButton: true
+            Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter
+            Layout.margins: 0
+            implicitWidth: parent.width * 0.85
         }
 
-        StackView {
-            id: detailsPane
-
+        RowLayout {
             Layout.fillWidth: true
             Layout.fillHeight: true
-            Layout.horizontalStretchFactor: 1
+            spacing: 0
+
+            DeviceScanner {
+                id: scanner
+                Layout.fillWidth: true
+                Layout.fillHeight: true
+                Layout.horizontalStretchFactor: 2
+            }
+
+            StackView {
+                id: detailsPane
+
+                Layout.fillWidth: true
+                Layout.fillHeight: true
+                Layout.horizontalStretchFactor: 1
+            }
         }
     }
 }

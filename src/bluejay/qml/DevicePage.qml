@@ -131,7 +131,7 @@ Controls.Page {
                 text: device.connected ? i18n("Disconnect") : i18n("Connect")
                 enabled: !busyIndicator.running
                 onClicked: {
-                    if (delegate.model.Connected) {
+                    if (device.Connected) {
                         makeCall(device.disconnectFromDevice());
                     } else {
                         makeCall(device.connectToDevice());

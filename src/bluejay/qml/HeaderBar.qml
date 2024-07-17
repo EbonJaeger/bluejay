@@ -46,7 +46,5 @@ ToolBar {
                 running: false
             }
         }
-
-        // TODO: Message area
     }
 }
