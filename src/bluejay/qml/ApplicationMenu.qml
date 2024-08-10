@@ -16,23 +16,20 @@
  * file, You can obtain one at <https://mozilla.org/MPL/2.0/>.
  */
 
-import QtQuick 2.15
-import QtQuick.Controls 2.15 as Controls
-import QtQuick.Layouts 1.15
+import QtQuick
+import QtQuick.Controls
 
-import org.kde.kirigami as Kirigami
+Menu {
+    id: applicationMenu
+    title: i18n("Application Menu")
 
-Kirigami.ApplicationWindow {
-    id: root
-    visible: true
-    width: 800
-    height: 600
-    title: i18nc("Bluejay is the name of the application", "Bluejay")
+    Action {
+        text: i18n("About Bluejay")
+        icon.name: "help-about-symbolic"
 
-    pageStack {
-        initialPage: MainPage {
-            width: root.width
-            height: root.height
+        onTriggered: {
+            applicationMenu.close()
+            pageStack.pushDialogLayer(Qt.createComponent("org.kde.kirigamiaddons.formcard", "AboutPage"));
         }
     }
 }

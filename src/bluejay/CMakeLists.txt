@@ -9,11 +9,13 @@ qt_add_qml_module(bluejay
     SOURCES models/devicesproxymodel.h models/devicesproxymodel.cpp
     QML_FILES
         qml/Main.qml
+        qml/ApplicationMenu.qml
         qml/DevicePage.qml
         qml/DeviceScanner.qml
         qml/HeaderBar.qml
         qml/MainPage.qml
         qml/script.js
+        qml/components/HeaderButton.qml
         qml/delegates/Device.qml
 )
 

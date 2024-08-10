@@ -16,6 +16,8 @@
  * file, You can obtain one at <https://mozilla.org/MPL/2.0/>.
  */
 
+import "./components"
+
 import QtQuick 2.15
 import QtQuick.Controls 2.15
 import QtQuick.Layouts 1.2
@@ -24,26 +26,58 @@ ToolBar {
     signal bluetoothToggled()
 
     function setBluetoothAvailable(available: bool) {
-        bluetoothSwitch.enabled = available;
+        bluetoothButton.enabled = available;
     }
 
     function setBluetoothBlocked(blocked: bool) {
-        bluetoothSwitch.checked = !blocked;
+        bluetoothButton.text = blocked ? i18n("Enable Bluetooth") : i18n("Disable Bluetooth");
+        bluetoothButton.icon.name = blocked ? "bluetooth-disabled-symbolic" : "bluetooth-active-symbolic";
     }
 
-    ColumnLayout {
-        width: parent.width
+    RowLayout {
+        anchors.fill: parent
 
-        RowLayout {
-            Switch {
-                id: bluetoothSwitch
-                text: i18n("Bluetooth enabled")
-                onToggled: bluetoothToggled()
+        HeaderButton {
+            id: bluetoothButton
+
+            display: AbstractButton.TextBesideIcon
+
+            text: i18n("Disable Bluetooth")
+            icon.name: "bluetooth-active-symbolic"
+
+            onClicked: bluetoothToggled()
+        }
+
+        BusyIndicator {
+            id: busyIndicator
+            running: false
+        }
+
+        // Blank item to separate the left and right sides of the bar
+        Item {
+            Layout.fillWidth: true
+        }
+
+        HeaderButton {
+            id: menuButton
+
+            function openMenu() {
+                if (!menu.visible) {
+                    menu.open();
+                } else {
+                    menu.dismiss();
+                }
             }
 
-            BusyIndicator {
-                id: busyIndicator
-                running: false
+            text: i18n("Application Menu")
+            icon.name: "open-menu-symbolic"
+
+            onClicked: openMenu()
+
+            menu: ApplicationMenu {
+                y: menuButton.height
+                modal: true
+                dim: false
             }
         }
     }
