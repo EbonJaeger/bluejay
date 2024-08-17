@@ -29,9 +29,13 @@ ToolBar {
         bluetoothButton.enabled = available;
     }
 
-    function setBluetoothBlocked(blocked: bool) {
+    function setBluetoothBlocked(blocked: bool): void {
         bluetoothButton.text = blocked ? i18n("Enable Bluetooth") : i18n("Disable Bluetooth");
-        bluetoothButton.icon.name = blocked ? "bluetooth-disabled-symbolic" : "bluetooth-active-symbolic";
+        bluetoothButton.icon.name = blocked ? "network-bluetooth-inactive-symbolic" : "network-bluetooth-symbolic";
+    }
+
+    function setDiscovering(discovering: bool): void {
+        discoveringButton.text = discovering ? i18n("Stop discovering") : i18n("Start discovering");
     }
 
     RowLayout {
