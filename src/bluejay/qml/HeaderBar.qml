@@ -24,9 +24,11 @@ import QtQuick.Layouts 1.2
 
 ToolBar {
     signal bluetoothToggled()
+    signal discoveringToggled()
 
-    function setBluetoothAvailable(available: bool) {
+    function setBluetoothAvailable(available: bool): void {
         bluetoothButton.enabled = available;
+        discoveringButton.enabled = available;
     }
 
     function setBluetoothBlocked(blocked: bool): void {
@@ -47,9 +49,20 @@ ToolBar {
             display: AbstractButton.TextBesideIcon
 
             text: i18n("Disable Bluetooth")
-            icon.name: "bluetooth-active-symbolic"
+            icon.name: "network-bluetooth-symbolic"
 
             onClicked: bluetoothToggled()
+        }
+
+        HeaderButton {
+            id: discoveringButton
+
+            display: AbstractButton.TextBesideIcon
+
+            text: i18n("Start discovery")
+            icon.name: "system-search-symbolic"
+
+            onClicked: discoveringToggled()
         }
 
         BusyIndicator {

@@ -6,7 +6,11 @@ add_library(bluejay STATIC
 qt_add_qml_module(bluejay
     URI com.github.ebonjaeger.bluejay
     NO_PLUGIN
-    SOURCES models/devicesproxymodel.h models/devicesproxymodel.cpp
+    SOURCES
+        Bluetooth.h
+        Bluetooth.cpp
+        models/devicesproxymodel.h
+        models/devicesproxymodel.cpp
     QML_FILES
         qml/Main.qml
         qml/ApplicationMenu.qml

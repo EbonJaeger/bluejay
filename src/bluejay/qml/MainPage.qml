@@ -25,10 +25,23 @@ import QtQuick.Layouts 1.2
 import org.kde.bluezqt as BluezQt
 import org.kde.kirigami as Kirigami
 
+import com.github.ebonjaeger.bluejay as Bluejay
+
 Page {
     id: mainView
 
     readonly property BluezQt.Manager manager: BluezQt.Manager
+
+    function checkDiscovering(): bool {
+        for (var i = 0; i < manager.adapters.length; ++i) {
+            var adapter = manager.adapters[i];
+            if (adapter.discovering) {
+                return true;
+            }
+        }
+
+        return false;
+    }
 
     function toggleBluetooth(): void {
         var oldState = manager.bluetoothBlocked;
@@ -41,6 +54,23 @@ Page {
         }
     }
 
+    function toggleDiscovering(): void {
+        var discovering = checkDiscovering();
+
+        // Set the new state to all adapters
+        for (var i = 0; i < manager.adapters.length; ++i) {
+            var adapter = manager.adapters[i];
+            var call = discovering ? adapter.stopDiscovery() : adapter.startDiscovery();
+
+            call.finished.connect(call => {
+                if (call.error) {
+                    errorMessage.text = call.errorText;
+                    errorMessage.visible = true;
+                }
+            });
+        }
+    }
+
     header: HeaderBar {
         id: headerBar
     }
@@ -50,12 +80,22 @@ Page {
             toggleBluetooth();
         }
 
+        function onDiscoveringToggled() {
+            toggleDiscovering();
+        }
+
         target: headerBar
     }
 
     Connections {
         function onBluetoothBlockedChanged(blocked: bool) {
             headerBar.setBluetoothBlocked(blocked);
+        }
+
+        function onAdapterAdded(adapter: BluezQt.Adapter) {
+            adapter.discoveringChanged.connect(discovering => {
+                headerBar.setDiscovering(discovering);
+            });
         }
 
         target: manager
@@ -82,12 +122,35 @@ Page {
         target: scanner
     }
 
+    Connections {
+        function onErrorOccurred(errorText: str): void {
+            errorMessage.text = errorText;
+            errorMessage.visible = true;
+        }
+
+        target: Bluejay.Bluetooth
+    }
+
     Component.onCompleted: {
         var available = manager.rfkill.state !== BluezQt.Rfkill.Unknown;
         var blocked = manager.bluetoothBlocked;
+        var discovering = false;
+
+        for (var i = 0; i < manager.adapters.length; ++i) {
+            var adapter = manager.adapters[i];
+
+            if (adapter.discovering) {
+                discovering = true;
+            }
+
+            adapter.discoveringChanged.connect(dis => {
+                headerBar.setDiscovering(dis);
+            });
+        }
 
         headerBar.setBluetoothAvailable(available);
         headerBar.setBluetoothBlocked(blocked);
+        headerBar.setDiscovering(discovering);
     }
 
     ColumnLayout {
