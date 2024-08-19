@@ -37,6 +37,8 @@ class Bluetooth : public QObject
     QML_SINGLETON
     QML_ELEMENT
 
+    Q_PROPERTY(bool discovering READ discovering WRITE setDiscovering NOTIFY discoveringChanged)
+
 public:
     virtual ~Bluetooth();
     static Bluetooth &instance();
@@ -46,10 +48,36 @@ public:
         return &instance();
     }
 
+    /**
+     * Check whether any connected Bluetooth adapters
+     * are in discovery mode.
+     *
+     * @returns True if an adapter is discovering
+     */
+    Q_INVOKABLE bool discovering() const;
+
+    /**
+     * @brief Set the discovering state.
+     *
+     * Iterates over all connected adapters, and sets their
+     * discovering state accordingly.
+     *
+     * @param discovering Whether to enable discovery
+     */
+    Q_INVOKABLE void setDiscovering(bool discovering);
+
 public Q_SLOTS:
-    void onAdapterAdded(BluezQt::AdapterPtr adapter);
+    void adapterAdded(BluezQt::AdapterPtr adapter);
 
 Q_SIGNALS:
+    /**
+     * @brief Discovering state changed
+     *
+     * If a connected Bluetooth adapter's discovering state changes,
+     * this signal will be emitted.
+     */
+    void discoveringChanged();
+
     /**
      * @brief Emit that an error occurred
      *
@@ -61,9 +89,20 @@ Q_SIGNALS:
 
 private:
     BluezQt::Manager * m_manager;
+    bool m_discovering;
 
 private:
     explicit Bluetooth(QObject * parent = nullptr);
+
+    /**
+     * @brief Set discovering state.
+     *
+     * Set the discovering state of a Bluetooth adapter.
+     *
+     * @param adapter The adapter to set the state for
+     * @param discovering Whether to start or stop discovering
+     */
+    void setDiscovering(BluezQt::AdapterPtr adapter, bool discovering) const;
 
     /**
      * @brief Set the discovery filter.

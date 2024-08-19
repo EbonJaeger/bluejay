@@ -21,12 +21,13 @@
 Bluetooth::Bluetooth(QObject * parent)
 : QObject(parent)
 , m_manager(new BluezQt::Manager())
+, m_discovering(false)
 {
     auto job = m_manager->init();
 
     connect(job, &BluezQt::InitManagerJob::result, this, [this](BluezQt::InitManagerJob *job) {
         if (job->error()) {
-            qWarning() << "There was an error initing the BluezQt Manager: " << job->errorText();
+            qWarning() << "Error initializing the BluezQt Manager: " << job->errorText();
             emit errorOccurred(job->errorText());
             return;
         }
@@ -34,16 +35,28 @@ Bluetooth::Bluetooth(QObject * parent)
         // Set the discovery filter for all current Bluetooth adapters
         for (auto adapter : m_manager->adapters()) {
             setDiscoveryFilter(adapter);
+
+            // Set the initial discovery state
+            if (m_discovering != adapter.get()->isDiscovering()) {
+                setDiscovering(adapter, m_discovering);
+            }
         }
 
         // Handle when an adapter is connected
-        connect(m_manager, &BluezQt::Manager::adapterAdded, this, &Bluetooth::onAdapterAdded);
+        connect(m_manager, &BluezQt::Manager::adapterAdded, this, &Bluetooth::adapterAdded);
     });
     job->start();
 }
 
 Bluetooth::~Bluetooth()
-{}
+{
+    // Turn off discovering on adapters on exit
+    if (m_discovering) {
+        for (auto &adapter : m_manager->adapters()) {
+            setDiscovering(adapter, false);
+        }
+    }
+}
 
 Bluetooth &Bluetooth::instance()
 {
@@ -51,9 +64,46 @@ Bluetooth &Bluetooth::instance()
     return _instance;
 }
 
-void Bluetooth::onAdapterAdded(BluezQt::AdapterPtr adapter)
+void Bluetooth::adapterAdded(BluezQt::AdapterPtr adapter)
 {
     setDiscoveryFilter(adapter);
+}
+
+bool Bluetooth::discovering() const
+{
+    return m_discovering;
+}
+
+void Bluetooth::setDiscovering(bool discovering)
+{
+    if (m_discovering == discovering) {
+        return;
+    }
+
+    m_discovering = discovering;
+    emit discoveringChanged();
+
+    for (auto &adapter : m_manager->adapters()) {
+        setDiscovering(adapter, m_discovering);
+    }
+}
+
+void Bluetooth::setDiscovering(BluezQt::AdapterPtr adapter, bool discovering) const
+{
+    // If the adapter is already in the desired state, do nothing
+    if (adapter.get()->isDiscovering() == discovering) {
+        return;
+    }
+
+    auto call = discovering ? adapter.get()->startDiscovery() : adapter.get()->stopDiscovery();
+
+    connect(call, &BluezQt::PendingCall::finished, this, [this, adapter](BluezQt::PendingCall *call){
+        if (call->error()) {
+            qWarning() << "Error setting discovering on adapter '" << adapter.get()->name() << "': " << call->errorText();
+            emit errorOccurred(call->errorText());
+            return;
+        }
+    });
 }
 
 void Bluetooth::setDiscoveryFilter(BluezQt::AdapterPtr adapter) const
@@ -66,7 +116,7 @@ void Bluetooth::setDiscoveryFilter(BluezQt::AdapterPtr adapter) const
 
     connect(call, &BluezQt::PendingCall::finished, this, [this, adapter](BluezQt::PendingCall *call){
         if (call->error()) {
-            qWarning() << "Unable to set filter on adapter '" << adapter.get()->name() << "': " << call->errorText();
+            qWarning() << "Error setting filter on adapter '" << adapter.get()->name() << "': " << call->errorText();
             emit errorOccurred(call->errorText());
         }
     });
