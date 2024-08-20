@@ -33,13 +33,17 @@ Bluetooth::Bluetooth(QObject * parent)
         }
 
         // Set the discovery filter for all current Bluetooth adapters
-        for (auto adapter : m_manager->adapters()) {
-            setDiscoveryFilter(adapter);
+        for (auto a : m_manager->adapters()) {
+            auto adapter = a.get();
+
+            setDiscoveryFilter(adapter->toSharedPtr());
 
             // Set the initial discovery state
-            if (m_discovering != adapter.get()->isDiscovering()) {
-                setDiscovering(adapter, m_discovering);
+            if (m_discovering != adapter->isDiscovering()) {
+                setDiscovering(adapter->toSharedPtr(), m_discovering);
             }
+
+            connect(adapter, &BluezQt::Adapter::discoveringChanged, this, &Bluetooth::slotDiscoveringChanged);
         }
 
         // Handle when an adapter is connected
@@ -67,6 +71,13 @@ Bluetooth &Bluetooth::instance()
 void Bluetooth::adapterAdded(BluezQt::AdapterPtr adapter)
 {
     setDiscoveryFilter(adapter);
+
+    connect(adapter.get(), &BluezQt::Adapter::discoveringChanged, this, &Bluetooth::slotDiscoveringChanged);
+}
+
+void Bluetooth::slotDiscoveringChanged(bool discovering)
+{
+    setDiscovering(discovering);
 }
 
 bool Bluetooth::discovering() const

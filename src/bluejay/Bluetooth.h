@@ -68,6 +68,7 @@ public:
 
 public Q_SLOTS:
     void adapterAdded(BluezQt::AdapterPtr adapter);
+    void slotDiscoveringChanged(bool discovering);
 
 Q_SIGNALS:
     /**
