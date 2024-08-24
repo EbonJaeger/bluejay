@@ -32,27 +32,16 @@ Page {
 
     readonly property BluezQt.Manager manager: BluezQt.Manager
 
-    function toggleBluetooth(): void {
-        var oldState = manager.bluetoothBlocked;
-
-        manager.bluetoothBlocked = !oldState;
-
-        for (var i = 0; i < manager.adapters.length; ++i) {
-            var adapter = manager.adapters[i];
-            adapter.powered = oldState;
-        }
-    }
-
     header: HeaderBar {
         id: headerBar
     }
 
     Connections {
-        function onBluetoothToggled() {
-            toggleBluetooth();
+        function onBluetoothToggled(): void {
+            Bluejay.Bluetooth.toggle();
         }
 
-        function onDiscoveringToggled() {
+        function onDiscoveringToggled(): void {
             Bluejay.Bluetooth.setDiscovering(!Bluejay.Bluetooth.discovering);
         }
 
@@ -93,7 +82,7 @@ Page {
             headerBar.setDiscovering(Bluejay.Bluetooth.discovering);
         }
 
-        function onErrorOccurred(errorText: str): void {
+        function onErrorOccurred(errorText: string): void {
             errorMessage.text = errorText;
             errorMessage.visible = true;
         }

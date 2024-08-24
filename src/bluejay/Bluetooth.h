@@ -48,6 +48,12 @@ public:
         return &instance();
     }
 
+    Q_INVOKABLE void disable() const;
+
+    Q_INVOKABLE void enable() const;
+
+    Q_INVOKABLE void toggle() const;
+
     /**
      * Check whether any connected Bluetooth adapters
      * are in discovery mode.

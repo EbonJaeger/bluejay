@@ -80,6 +80,47 @@ void Bluetooth::slotDiscoveringChanged(bool discovering)
     setDiscovering(discovering);
 }
 
+void Bluetooth::disable() const
+{
+    m_manager->setBluetoothBlocked(true);
+
+    for (auto &adapter : m_manager->adapters()) {
+        auto call = adapter.get()->setPowered(false);
+
+        connect(call, &BluezQt::PendingCall::finished, this, [this, adapter](BluezQt::PendingCall *call){
+            if (call->error()) {
+                qWarning() << "Error turning off adapter" << adapter.get()->name() << ":" << call->error() << ":" << call->errorText();
+                emit errorOccurred(call->errorText());
+            }
+        });
+    }
+}
+
+void Bluetooth::enable() const
+{
+    m_manager->setBluetoothBlocked(false);
+
+    for (auto &adapter : m_manager->adapters()) {
+        auto call = adapter.get()->setPowered(true);
+
+        connect(call, &BluezQt::PendingCall::finished, this, [this, adapter](BluezQt::PendingCall *call){
+            if (call->error()) {
+                qWarning() << "Error turning on adapter" << adapter.get()->name() << ":" << call->error() << ":" << call->errorText();
+                emit errorOccurred(call->errorText());
+            }
+        });
+    }
+}
+
+void Bluetooth::toggle() const
+{
+    if (m_manager->isBluetoothBlocked()) {
+        enable();
+    } else {
+        disable();
+    }
+}
+
 bool Bluetooth::discovering() const
 {
     return m_discovering;
