@@ -142,6 +142,10 @@ void Bluetooth::setDiscovering(bool discovering)
 
 void Bluetooth::setDiscovering(BluezQt::AdapterPtr adapter, bool discovering) const
 {
+    if (!m_manager->isBluetoothOperational() || m_manager->isBluetoothBlocked()) {
+        return;
+    }
+
     // If the adapter is already in the desired state, do nothing
     if (adapter.get()->isDiscovering() == discovering) {
         return;
@@ -160,6 +164,10 @@ void Bluetooth::setDiscovering(BluezQt::AdapterPtr adapter, bool discovering) co
 
 void Bluetooth::setDiscoveryFilter(BluezQt::AdapterPtr adapter) const
 {
+    if (!m_manager->isBluetoothOperational() || m_manager->isBluetoothBlocked()) {
+        return;
+    }
+
     QVariantMap filter;
 
     filter.insert("Discoverable", true);
