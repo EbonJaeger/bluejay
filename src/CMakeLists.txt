@@ -17,11 +17,8 @@ ecm_target_qml_sources(bluejay
     qml/ApplicationMenu.qml
     qml/DevicePage.qml
     qml/DeviceScanner.qml
-    qml/HeaderBar.qml
     qml/MainPage.qml
     qml/script.js
-
-    qml/components/HeaderButton.qml
 
     qml/delegates/Device.qml
 )

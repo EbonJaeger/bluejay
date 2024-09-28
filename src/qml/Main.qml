@@ -30,9 +30,6 @@ Kirigami.ApplicationWindow {
     title: i18nc("Bluejay is the name of the application", "Bluejay")
 
     pageStack {
-        initialPage: MainPage {
-            width: root.width
-            height: root.height
-        }
+        initialPage: MainPage {}
     }
 }

@@ -25,30 +25,39 @@ import org.kde.kirigami as Kirigami
 
 import com.github.ebonjaeger.bluejay as Bluejay
 
-Page {
+Kirigami.Page {
     id: mainView
 
     readonly property BluezQt.Manager manager: BluezQt.Manager
 
-    header: HeaderBar {
-        id: headerBar
-    }
+    padding: 0
 
-    Connections {
-        function onBluetoothToggled(): void {
-            Bluejay.Bluetooth.toggle();
+    globalToolBarStyle: Kirigami.ApplicationHeaderStyle.ToolBar
+
+    actions: [
+        Kirigami.Action {
+            id: toggleBluetoothAction
+            text: i18n("Toggle Bluetooth")
+            icon.name: "network-bluetooth-symbolic"
+            onTriggered: Bluejay.Bluetooth.toggle();
+        },
+        Kirigami.Action {
+            id: toggleDiscoveryAction
+            text: i18n("Toggle discovery")
+            icon.name: "system-search-symbolic"
+            onTriggered: Bluejay.Bluetooth.setDiscovering(!Bluejay.Bluetooth.discovering);
+        },
+        Kirigami.Action {
+            text: i18n("About")
+            icon.name: "help-about-symbolic"
+
+            onTriggered: pageStack.pushDialogLayer(Qt.createComponent("org.kde.kirigamiaddons.formcard", "AboutPage"));
         }
-
-        function onDiscoveringToggled(): void {
-            Bluejay.Bluetooth.setDiscovering(!Bluejay.Bluetooth.discovering);
-        }
-
-        target: headerBar
-    }
+    ]
 
     Connections {
         function onBluetoothBlockedChanged(blocked: bool) {
-            headerBar.setBluetoothBlocked(blocked);
+            toggleDiscoveryAction.enabled = !blocked;
         }
 
         target: manager
@@ -58,7 +67,8 @@ Page {
         function onStateChanged(state: BluezQt.State) {
             var available = state !== BluezQt.Rfkill.Unknown;
 
-            headerBar.setBluetoothAvailable(available);
+            toggleBluetoothAction.enabled = available;
+            toggleDiscoveryAction.enabled = available;
         }
 
         target: manager.rfkill
@@ -66,8 +76,7 @@ Page {
 
     Connections {
         function onDeviceClicked(device: BluezQt.Device) {
-            // TODO: Is there a better way than this, or is this correct?
-            var devicePage = Qt.createComponent("qrc:/qt/qml/com/github/ebonjaeger/bluejay/qml/DevicePage.qml");
+            var devicePage = Qt.createComponent("DevicePage.qml");
 
             detailsPane.replace(null, devicePage, { "device": device });
         }
@@ -77,7 +86,7 @@ Page {
 
     Connections {
         function onDiscoveringChanged(): void {
-            headerBar.setDiscovering(Bluejay.Bluetooth.discovering);
+            // headerBar.setDiscovering(Bluejay.Bluetooth.discovering);
         }
 
         function onErrorOccurred(errorText: string): void {
@@ -92,8 +101,8 @@ Page {
         var available = manager.rfkill.state !== BluezQt.Rfkill.Unknown;
         var blocked = manager.bluetoothBlocked;
 
-        headerBar.setBluetoothAvailable(available);
-        headerBar.setBluetoothBlocked(blocked);
+        toggleBluetoothAction.enabled = available;
+        toggleDiscoveryAction.enabled = available;
     }
 
     ColumnLayout {
