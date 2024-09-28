@@ -16,8 +16,6 @@
  * file, You can obtain one at <https://mozilla.org/MPL/2.0/>.
  */
 
-import "./delegates"
-
 import QtQuick 2.15
 import QtQuick.Controls 2.15
 import QtQuick.Layouts 1.2

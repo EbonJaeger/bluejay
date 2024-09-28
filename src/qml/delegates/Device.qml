@@ -25,7 +25,7 @@ import org.kde.kirigami.delegates
 
 import org.kde.bluezqt as BluezQt
 
-import "../script.js" as Script
+import "script.js" as Script
 
 ItemDelegate {
     id: deviceDelegate

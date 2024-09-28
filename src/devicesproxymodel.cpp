@@ -98,14 +98,14 @@ bool DevicesProxyModel::lessThan(const QModelIndex &left, const QModelIndex &rig
     return QString::localeAwareCompare(leftName, rightName) > 0;
 }
 
-//bool DevicesProxyModel::filterAcceptsRow(int source_row, const QModelIndex &source_parent) const
+// bool DevicesProxyModel::filterAcceptsRow(int source_row, const QModelIndex &source_parent) const
 //{
-//    const auto index = sourceModel()->index(source_row, 0, source_parent);
+//     const auto index = sourceModel()->index(source_row, 0, source_parent);
 //
-//    // Only show paired and connected devices
-//    return index.data(BluezQt::DevicesModel::PairedRole).toBool() ||
-//           index.data(BluezQt::DevicesModel::ConnectedRole).toBool();
-//}
+//     // Only show paired and connected devices
+//     return index.data(BluezQt::DevicesModel::PairedRole).toBool() ||
+//            index.data(BluezQt::DevicesModel::ConnectedRole).toBool();
+// }
 
 /**
  * @brief DevicesProxyModel::adapterHciString

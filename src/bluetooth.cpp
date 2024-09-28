@@ -16,12 +16,12 @@
  * file, You can obtain one at <https://mozilla.org/MPL/2.0/>.
  */
 
-#include "Bluetooth.h"
+#include "bluetooth.h"
 
-Bluetooth::Bluetooth(QObject * parent)
-: QObject(parent)
-, m_manager(new BluezQt::Manager())
-, m_discovering(false)
+Bluetooth::Bluetooth(QObject *parent)
+    : QObject(parent)
+    , m_manager(new BluezQt::Manager())
+    , m_discovering(false)
 {
     auto job = m_manager->init();
 
@@ -87,7 +87,7 @@ void Bluetooth::disable() const
     for (auto &adapter : m_manager->adapters()) {
         auto call = adapter.get()->setPowered(false);
 
-        connect(call, &BluezQt::PendingCall::finished, this, [this, adapter](BluezQt::PendingCall *call){
+        connect(call, &BluezQt::PendingCall::finished, this, [this, adapter](BluezQt::PendingCall *call) {
             if (call->error()) {
                 qWarning() << "Error turning off adapter" << adapter.get()->name() << ":" << call->error() << ":" << call->errorText();
                 emit errorOccurred(call->errorText());
@@ -103,7 +103,7 @@ void Bluetooth::enable() const
     for (auto &adapter : m_manager->adapters()) {
         auto call = adapter.get()->setPowered(true);
 
-        connect(call, &BluezQt::PendingCall::finished, this, [this, adapter](BluezQt::PendingCall *call){
+        connect(call, &BluezQt::PendingCall::finished, this, [this, adapter](BluezQt::PendingCall *call) {
             if (call->error()) {
                 qWarning() << "Error turning on adapter" << adapter.get()->name() << ":" << call->error() << ":" << call->errorText();
                 emit errorOccurred(call->errorText());
@@ -149,7 +149,7 @@ void Bluetooth::setDiscovering(BluezQt::AdapterPtr adapter, bool discovering) co
 
     auto call = discovering ? adapter.get()->startDiscovery() : adapter.get()->stopDiscovery();
 
-    connect(call, &BluezQt::PendingCall::finished, this, [this, adapter](BluezQt::PendingCall *call){
+    connect(call, &BluezQt::PendingCall::finished, this, [this, adapter](BluezQt::PendingCall *call) {
         if (call->error()) {
             qWarning() << "Error setting discovering on adapter '" << adapter.get()->name() << "': " << call->errorText();
             emit errorOccurred(call->errorText());
@@ -166,7 +166,7 @@ void Bluetooth::setDiscoveryFilter(BluezQt::AdapterPtr adapter) const
 
     auto call = adapter.get()->setDiscoveryFilter(filter);
 
-    connect(call, &BluezQt::PendingCall::finished, this, [this, adapter](BluezQt::PendingCall *call){
+    connect(call, &BluezQt::PendingCall::finished, this, [this, adapter](BluezQt::PendingCall *call) {
         if (call->error()) {
             qWarning() << "Error setting filter on adapter '" << adapter.get()->name() << "': " << call->errorText();
             emit errorOccurred(call->errorText());

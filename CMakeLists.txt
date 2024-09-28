@@ -1,30 +1,46 @@
 cmake_minimum_required(VERSION 3.20)
 
-project(BlueJay VERSION 0.1.0 LANGUAGES CXX)
+project(bluejay)
+set(PROJECT_VERSION 0.1.0)
 
-include(GNUInstallDirs)
+set(PROJECT_DEP_VERSION "6.1.80")
+set(QT_MIN_VERSION "6.7")
+set(KF6_MIN_VERSION "6.5.0")
+set(KDE_COMPILERSETTINGS_LEVEL "5.82")
 
 set(CMAKE_AUTORCC ON)
 
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-set(QT6_MIN_VERSION "6.5")
-set(KF6_MIN_VERSION "6.0.0")
+find_package(ECM ${KF6_MIN_VERSION} REQUIRED NO_MODULE)
+set(CMAKE_MODULE_PATH ${ECM_MODULE_PATH})
+
+string(REPLACE "." ";" VERSION_LIST ${PROJECT_VERSION})
+list(GET VERSION_LIST 0 PROJECT_VERSION_MAJOR)
+list(GET VERSION_LIST 1 PROJECT_VERSION_MINOR)
+list(GET VERSION_LIST 2 PROJECT_VERSION_PATCH)
 
 find_package(ECM ${KF6_MIN_VERSION} REQUIRED NO_MODULE)
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${ECM_MODULE_PATH})
 
-include(ECMSetupVersion)
+include(KDEClangFormat)
+include(KDEGitCommitHooks)
 include(KDEInstallDirs)
 include(KDECMakeSettings)
+include(KDECompilerSettings NO_POLICY_SCOPE)
+include(ECMSetupVersion)
+include(ECMGenerateHeaders)
+include(ECMPoQmTools)
+include(ECMQmlModule)
+include(ECMDeprecationSettings)
 
 ecm_setup_version(${PROJECT_VERSION}
     VARIABLE_PREFIX BLUEJAY
-    VERSION_HEADER ${CMAKE_CURRENT_BINARY_DIR}/bluejay-version.h
+    VERSION_HEADER ${CMAKE_CURRENT_BINARY_DIR}/src/bluejay-version.h
 )
 
-find_package(Qt6 ${QT6_MIN_VERSION} CONFIG REQUIRED COMPONENTS
+find_package(Qt6 ${QT_MIN_VERSION} REQUIRED COMPONENTS
     Core
     Gui
     Quick
@@ -33,26 +49,12 @@ find_package(Qt6 ${QT6_MIN_VERSION} CONFIG REQUIRED COMPONENTS
     Widgets
 )
 
-qt_standard_project_setup(REQUIRES 6.5)
+find_package(KF6 ${KF6_MIN_VERSION} REQUIRED COMPONENTS BluezQt CoreAddons I18n Kirigami QQC2DesktopStyle)
 
-find_package(KF6 ${KF6_MIN_VERSION} COMPONENTS BluezQt CoreAddons I18n Kirigami)
+find_package(KF6KirigamiAddons 1.2.0 REQUIRED)
 
-set_package_properties(KF6CoreAddons PROPERTIES
-    TYPE REQUIRED
-    PURPOSE "Basic application components"
+ecm_set_disabled_deprecation_versions(QT 6.7
+    KF 6.4.0
 )
-
-set_package_properties(KF6Kirigami PROPERTIES
-    TYPE REQUIRED
-    PURPOSE "Kirigami UI framework"
-)
-
-find_package(KF6 ${KF6_MIN_VERSION} REQUIRED COMPONENTS QQC2DesktopStyle)
-
-set_package_properties(KF6QQC2DesktopStyle PROPERTIES
-    TYPE RUNTIME
-)
-
-include_directories(${CMAKE_CURRENT_BINARY_DIR})
 
 add_subdirectory(src)

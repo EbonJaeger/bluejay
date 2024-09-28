@@ -21,8 +21,8 @@
 #include <QQmlEngine>
 
 #include <BluezQt/Adapter>
-#include <BluezQt/Manager>
 #include <BluezQt/InitManagerJob>
+#include <BluezQt/Manager>
 #include <BluezQt/PendingCall>
 
 /**
@@ -95,11 +95,11 @@ Q_SIGNALS:
     void errorOccurred(QString errorText) const;
 
 private:
-    BluezQt::Manager * m_manager;
+    BluezQt::Manager *m_manager;
     bool m_discovering;
 
 private:
-    explicit Bluetooth(QObject * parent = nullptr);
+    explicit Bluetooth(QObject *parent = nullptr);
 
     /**
      * @brief Set discovering state.
