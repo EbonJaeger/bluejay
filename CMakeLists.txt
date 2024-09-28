@@ -51,8 +51,6 @@ find_package(Qt6 ${QT_MIN_VERSION} REQUIRED COMPONENTS
 
 find_package(KF6 ${KF6_MIN_VERSION} REQUIRED COMPONENTS BluezQt CoreAddons I18n Kirigami QQC2DesktopStyle)
 
-find_package(KF6KirigamiAddons 1.2.0 REQUIRED)
-
 ecm_set_disabled_deprecation_versions(QT 6.7
     KF 6.4.0
 )
