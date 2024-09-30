@@ -72,6 +72,16 @@ public:
      */
     Q_INVOKABLE void setDiscovering(bool discovering);
 
+    /**
+     * @brief Turn Bluez errors into a useable message.
+     *
+     * Turns Bluez error codes into message suitable for
+     * displaying to the user.
+     *
+     * @param code The numerical error code
+     */
+    Q_INVOKABLE QString errorText(int code) const;
+
 public Q_SLOTS:
     void adapterAdded(BluezQt::AdapterPtr adapter);
     void slotDiscoveringChanged(bool discovering);

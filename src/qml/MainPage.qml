@@ -88,15 +88,6 @@ Kirigami.ScrollablePage {
         target: scanner
     }
 
-    Connections {
-        function onErrorOccurred(errorText: string): void {
-            errorMessage.text = errorText;
-            errorMessage.visible = true;
-        }
-
-        target: Bluejay.Bluetooth
-    }
-
     Component.onCompleted: {
         var available = manager.rfkill.state !== BluezQt.Rfkill.Unknown;
         var blocked = manager.bluetoothBlocked;

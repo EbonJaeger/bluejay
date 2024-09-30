@@ -48,8 +48,9 @@ Kirigami.Page {
             busyIndicator.running = false;
 
             if (call.error) {
-                errorMessage.text = call.errorText;
-                errorMessage.visible = true;
+                var message = Bluetooth.errorText(call.error);
+
+                root.showPassiveNotification(message);
             }
         })
     }

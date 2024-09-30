@@ -23,6 +23,8 @@ import QtQuick.Layouts 1.15
 import org.kde.bluezqt as BluezQt
 import org.kde.kirigami as Kirigami
 
+import com.github.ebonjaeger.bluejay as Bluejay
+
 Kirigami.ApplicationWindow {
     id: root
     visible: true
@@ -32,6 +34,14 @@ Kirigami.ApplicationWindow {
 
     function onCloseClicked() {
         pageStack.pop();
+    }
+
+    Connections {
+        function onErrorOccurred(errorText: string): void {
+            showPassiveNotification(errorText);
+        }
+
+        target: Bluejay.Bluetooth
     }
 
     Connections {

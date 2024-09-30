@@ -90,7 +90,7 @@ void Bluetooth::disable() const
         connect(call, &BluezQt::PendingCall::finished, this, [this, adapter](BluezQt::PendingCall *call) {
             if (call->error()) {
                 qWarning() << "Error turning off adapter" << adapter.get()->name() << ":" << call->error() << ":" << call->errorText();
-                emit errorOccurred(call->errorText());
+                emit errorOccurred(errorText(call->error()));
             }
         });
     }
@@ -106,7 +106,7 @@ void Bluetooth::enable() const
         connect(call, &BluezQt::PendingCall::finished, this, [this, adapter](BluezQt::PendingCall *call) {
             if (call->error()) {
                 qWarning() << "Error turning on adapter" << adapter.get()->name() << ":" << call->error() << ":" << call->errorText();
-                emit errorOccurred(call->errorText());
+                emit errorOccurred(errorText(call->error()));
             }
         });
     }
@@ -156,7 +156,7 @@ void Bluetooth::setDiscovering(BluezQt::AdapterPtr adapter, bool discovering) co
     connect(call, &BluezQt::PendingCall::finished, this, [this, adapter](BluezQt::PendingCall *call) {
         if (call->error()) {
             qWarning() << "Error setting discovering on adapter '" << adapter.get()->name() << "': " << call->errorText();
-            emit errorOccurred(call->errorText());
+            emit errorOccurred(errorText(call->error()));
             return;
         }
     });
@@ -177,7 +177,90 @@ void Bluetooth::setDiscoveryFilter(BluezQt::AdapterPtr adapter) const
     connect(call, &BluezQt::PendingCall::finished, this, [this, adapter](BluezQt::PendingCall *call) {
         if (call->error()) {
             qWarning() << "Error setting filter on adapter '" << adapter.get()->name() << "': " << call->errorText();
-            emit errorOccurred(call->errorText());
+            emit errorOccurred(errorText(call->error()));
         }
     });
+}
+
+QString Bluetooth::errorText(int code) const
+{
+    QString message;
+
+    switch (code) {
+        case BluezQt::PendingCall::Error::NotReady:
+            message = tr("Device is not ready");
+            break;
+        case BluezQt::PendingCall::Error::Failed:
+            message = tr("Connection failed");
+            break;
+        case BluezQt::PendingCall::Error::Rejected:
+            message = tr("Connection rejected");
+            break;
+        case BluezQt::PendingCall::Error::Canceled:
+            message = tr("Connection canceled");
+            break;
+        case BluezQt::PendingCall::Error::InvalidArguments:
+            message = tr("Invalid arguments");
+            break;
+        case BluezQt::PendingCall::Error::AlreadyExists:
+            message = tr("Already exists");
+            break;
+        case BluezQt::PendingCall::Error::DoesNotExist:
+            message = tr("Does not exist");
+            break;
+        case BluezQt::PendingCall::Error::InProgress:
+            message = tr("Already in progress");
+            break;
+        case BluezQt::PendingCall::Error::NotInProgress:
+            message = tr("Not in progress");
+            break;
+        case BluezQt::PendingCall::Error::AlreadyConnected:
+            message = tr("Already connected");
+            break;
+        case BluezQt::PendingCall::Error::ConnectFailed:
+            message = tr("Connection failed");
+            break;
+        case BluezQt::PendingCall::Error::NotConnected:
+            message = tr("Not connected");
+            break;
+        case BluezQt::PendingCall::Error::NotSupported:
+            message = tr("Action not supported");
+            break;
+        case BluezQt::PendingCall::Error::NotAuthorized:
+            message = tr("Not authorized");
+            break;
+        case BluezQt::PendingCall::Error::AuthenticationCanceled:
+            message = tr("Authentication canceled");
+            break;
+        case BluezQt::PendingCall::Error::AuthenticationFailed:
+            message = tr("Authentication failed");
+            break;
+        case BluezQt::PendingCall::Error::AuthenticationRejected:
+            message = tr("Authentication rejected");
+            break;
+        case BluezQt::PendingCall::Error::AuthenticationTimeout:
+            message = tr("Authentication timed out");
+            break;
+        case BluezQt::PendingCall::Error::ConnectionAttemptFailed:
+            message = tr("Connection failed");
+            break;
+        case BluezQt::PendingCall::Error::InvalidLength:
+            message = tr("Invalid packet length");
+            break;
+        case BluezQt::PendingCall::Error::NotPermitted:
+            message = tr("Action not permitted");
+            break;
+        case BluezQt::PendingCall::Error::DBusError:
+            message = tr("DBus error");
+            break;
+        case BluezQt::PendingCall::Error::InternalError:
+            message = tr("Internal error");
+            break;
+        default:
+            message = tr("Unknown error");
+            break;
+    }
+
+    //: Error message for in-app notifications. The intended format is, for example, "Error 2: Connection failed"
+    return tr("Error %1: %2").arg(code).arg(message);
 }
