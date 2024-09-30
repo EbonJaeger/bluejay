@@ -14,7 +14,6 @@ target_sources(bluejay PRIVATE
 ecm_target_qml_sources(bluejay
     SOURCES
     qml/Main.qml
-    qml/ApplicationMenu.qml
     qml/DevicePage.qml
     qml/DeviceScanner.qml
     qml/MainPage.qml

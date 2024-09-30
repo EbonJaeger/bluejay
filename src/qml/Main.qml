@@ -20,6 +20,7 @@ import QtQuick 2.15
 import QtQuick.Controls 2.15 as Controls
 import QtQuick.Layouts 1.15
 
+import org.kde.bluezqt as BluezQt
 import org.kde.kirigami as Kirigami
 
 Kirigami.ApplicationWindow {
@@ -29,7 +30,19 @@ Kirigami.ApplicationWindow {
     height: 600
     title: i18nc("Bluejay is the name of the application", "Bluejay")
 
+    Connections {
+        function onDeviceClicked(device: BluezQt.Device) {
+            var page = Qt.createComponent("DevicePage.qml");
+
+            pageStack.push(page, { "device": device });
+        }
+
+        target: mainView
+    }
+
     pageStack {
-        initialPage: MainPage {}
+        initialPage: MainPage {
+            id: mainView
+        }
     }
 }

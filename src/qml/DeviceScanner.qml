@@ -25,67 +25,60 @@ import org.kde.kirigami as Kirigami
 
 import com.github.ebonjaeger.bluejay
 
-ColumnLayout {
+ListView {
+    id: deviceList
+
     readonly property BluezQt.Manager manager: BluezQt.Manager
 
     signal deviceClicked(device: BluezQt.Device)
 
-    Kirigami.ScrollablePage {
-        Layout.fillWidth: true
-        Layout.fillHeight: true
+    Kirigami.PlaceholderMessage {
+        id: noBluetoothMessage
+        visible: manager.rfkill.state === BluezQt.Rfkill.Unknown
+        icon.name: "edit-none-symbolic"
+        text: i18n("No Bluetooth adapters found")
+        explanation: i18n("Please connect a Bluetooth adapter")
+        implicitWidth: parent.width - (Kirigami.Units.largeSpacing * 4)
+        anchors.centerIn: parent
+    }
 
-        ListView {
-            id: deviceList
+    Kirigami.PlaceholderMessage {
+        id: bluetoothDisabledMessage
+        visible: manager.operational && !manager.bluetoothOperational && !noBluetoothMessage.visible
+        icon.name: "network-bluetooth-inactive-symbolic"
+        text: i18n("Bluetooth is disabled")
+        implicitWidth: parent.width - (Kirigami.Units.largeSpacing * 4)
+        anchors.centerIn: parent
 
-            Kirigami.PlaceholderMessage {
-                id: noBluetoothMessage
-                visible: manager.rfkill.state === BluezQt.Rfkill.Unknown
-                icon.name: "edit-none-symbolic"
-                text: i18n("No Bluetooth adapters found")
-                explanation: i18n("Please connect a Bluetooth adapter")
-                implicitWidth: parent.width - (Kirigami.Units.largeSpacing * 4)
-                anchors.centerIn: parent
-            }
-
-            Kirigami.PlaceholderMessage {
-                id: bluetoothDisabledMessage
-                visible: manager.operational && !manager.bluetoothOperational && !noBluetoothMessage.visible
-                icon.name: "network-bluetooth-inactive-symbolic"
-                text: i18n("Bluetooth is disabled")
-                implicitWidth: parent.width - (Kirigami.Units.largeSpacing * 4)
-                anchors.centerIn: parent
-
-                helpfulAction: Kirigami.Action {
-                    icon.name: "network-bluetooth-symbolic"
-                    text: i18n("Enable")
-                    onTriggered: mainView.toggleBluetooth()
-                }
-            }
-
-            Kirigami.PlaceholderMessage {
-                visible: !noBluetoothMessage.visible && !bluetoothDisabledMessage.visible && deviceList.count === 0
-                icon.name: "network-bluetooth-activated-symbolic"
-                text: i18n("No paired devices")
-                implicitWidth: parent.width - (Kirigami.Units.largeSpacing * 4)
-                anchors.centerIn: parent
-            }
-
-            DevicesProxyModel {
-                id: devicesModel
-                sourceModel: BluezQt.DevicesModel { }
-            }
-
-            model: manager.bluetoothOperational ? devicesModel : null
-
-            section.property: "Connected"
-            section.delegate: Kirigami.ListSectionHeader {
-                Layout.fillWidth: true
-                text: section === "true" ? i18n("Connected") : i18n("Available")
-            }
-
-            delegate: Device {
-                onClicked: deviceClicked(model.Device)
-            }
+        helpfulAction: Kirigami.Action {
+            icon.name: "network-bluetooth-symbolic"
+            text: i18n("Enable")
+            onTriggered: mainView.toggleBluetooth()
         }
+    }
+
+    Kirigami.PlaceholderMessage {
+        visible: !noBluetoothMessage.visible && !bluetoothDisabledMessage.visible && deviceList.count === 0
+        icon.name: "network-bluetooth-activated-symbolic"
+        text: i18n("No paired devices")
+        implicitWidth: parent.width - (Kirigami.Units.largeSpacing * 4)
+        anchors.centerIn: parent
+    }
+
+    DevicesProxyModel {
+        id: devicesModel
+        sourceModel: BluezQt.DevicesModel { }
+    }
+
+    model: manager.bluetoothOperational ? devicesModel : null
+
+    section.property: "Connected"
+    section.delegate: Kirigami.ListSectionHeader {
+        Layout.fillWidth: true
+        text: section === "true" ? i18n("Connected") : i18n("Available")
+    }
+
+    delegate: Device {
+        onClicked: deviceClicked(model.Device)
     }
 }

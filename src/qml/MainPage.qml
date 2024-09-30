@@ -25,12 +25,15 @@ import org.kde.kirigami as Kirigami
 
 import com.github.ebonjaeger.bluejay as Bluejay
 
-Kirigami.Page {
+Kirigami.ScrollablePage {
     id: mainView
 
     readonly property BluezQt.Manager manager: BluezQt.Manager
 
+    signal deviceClicked(device: BluezQt.Device)
+
     padding: 0
+    title: i18n("Devices")
 
     globalToolBarStyle: Kirigami.ApplicationHeaderStyle.ToolBar
 
@@ -38,17 +41,20 @@ Kirigami.Page {
         Kirigami.Action {
             id: toggleBluetoothAction
             text: i18n("Toggle Bluetooth")
+            tooltip: i18n("Turn Bluetooth on or off")
             icon.name: "network-bluetooth-symbolic"
             onTriggered: Bluejay.Bluetooth.toggle();
         },
         Kirigami.Action {
             id: toggleDiscoveryAction
             text: i18n("Toggle discovery")
+            tooltip: i18n("Turn device discovery on or off")
             icon.name: "system-search-symbolic"
             onTriggered: Bluejay.Bluetooth.setDiscovering(!Bluejay.Bluetooth.discovering);
         },
         Kirigami.Action {
             text: i18n("About")
+            tooltip: i18n("Show application information")
             icon.name: "help-about-symbolic"
 
             onTriggered: pageStack.pushDialogLayer(Qt.createComponent("org.kde.kirigamiaddons.formcard", "AboutPage"));
@@ -76,19 +82,13 @@ Kirigami.Page {
 
     Connections {
         function onDeviceClicked(device: BluezQt.Device) {
-            var devicePage = Qt.createComponent("DevicePage.qml");
-
-            detailsPane.replace(null, devicePage, { "device": device });
+            deviceClicked(device);
         }
 
         target: scanner
     }
 
     Connections {
-        function onDiscoveringChanged(): void {
-            // headerBar.setDiscovering(Bluejay.Bluetooth.discovering);
-        }
-
         function onErrorOccurred(errorText: string): void {
             errorMessage.text = errorText;
             errorMessage.visible = true;
@@ -105,38 +105,9 @@ Kirigami.Page {
         toggleDiscoveryAction.enabled = available;
     }
 
-    ColumnLayout {
-       anchors.fill: parent
-       spacing: 0
-
-       Kirigami.InlineMessage {
-            id: errorMessage
-            type: Kirigami.MessageType.Error
-            showCloseButton: true
-            Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter
-            Layout.margins: 0
-            implicitWidth: parent.width * 0.85
-        }
-
-        RowLayout {
-            Layout.fillWidth: true
-            Layout.fillHeight: true
-            spacing: 0
-
-            DeviceScanner {
-                id: scanner
-                Layout.fillWidth: true
-                Layout.fillHeight: true
-                Layout.horizontalStretchFactor: 2
-            }
-
-            StackView {
-                id: detailsPane
-
-                Layout.fillWidth: true
-                Layout.fillHeight: true
-                Layout.horizontalStretchFactor: 1
-            }
-        }
+    DeviceScanner {
+        id: scanner
+        Layout.fillWidth: true
+        Layout.fillHeight: true
     }
 }

@@ -26,7 +26,7 @@ import org.kde.kirigami as Kirigami
 
 import "script.js" as Script
 
-Controls.Page {
+Kirigami.Page {
     required property BluezQt.Device device
 
     function makeCall(call: BluezQt.PendingCall): void {
