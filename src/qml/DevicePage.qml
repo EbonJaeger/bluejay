@@ -29,6 +29,18 @@ import "script.js" as Script
 Kirigami.Page {
     required property BluezQt.Device device
 
+    signal closeClicked()
+
+    title: device.name
+
+    actions: [
+        Kirigami.Action {
+            tooltip: "Close device page"
+            icon.name: "dialog-close-symbolic"
+            onTriggered: closeClicked()
+        }
+    ]
+
     function makeCall(call: BluezQt.PendingCall): void {
         busyIndicator.running = true;
 
@@ -70,11 +82,6 @@ Kirigami.Page {
         anchors.bottomMargin: 8
 
         Controls.Label {
-            text: device.name
-            Kirigami.FormData.label: i18n("Name:")
-        }
-
-        Controls.Label {
             text: device.address
             Kirigami.FormData.label: i18n("Address:")
         }
@@ -101,36 +108,33 @@ Kirigami.Page {
 
         Controls.Label {
             visible: device.battery !== null
-            text: i18n("%1%", device.battery !== null ? device.battery.percentage : "Unknown")
+            text: i18n("%1%", device.battery !== null ? device.battery.percentage : i18nc("Shown when there is no battery information for a device", "Unknown"))
             Kirigami.FormData.label: i18n("Battery:")
         }
     }
 
-    footer: Controls.ToolBar {
-        RowLayout {
-            anchors.top: parent.top
-            anchors.bottom: parent.bottom
-            anchors.right: parent.right
-            layoutDirection: Qt.RightToLeft
-
-            Controls.ToolButton {
+    footer: Kirigami.ActionToolBar {
+        actions: [
+            Kirigami.Action {
                 text: i18n("Forget")
+                tooltip: i18n("Forget this device")
                 visible: device.paired
                 enabled: !busyIndicator.running
-                onClicked: forgetDialog.open()
-            }
+                onTriggered: forgetDialog.open()
+            },
 
-            Controls.ToolButton {
+            Kirigami.Action {
                 text: i18n("Pair")
+                tooltip: i18n("Start pairing process")
                 visible: !device.paired
                 enabled: !busyIndicator.running
-            }
+            },
 
-            Controls.ToolButton {
-                id: connectionButton
+            Kirigami.Action {
                 text: device.connected ? i18n("Disconnect") : i18n("Connect")
+                tooltip: device.connected ? i18n("Disconnect from this device") : i18n("Connect to this device")
                 enabled: !busyIndicator.running
-                onClicked: {
+                onTriggered: {
                     if (device.Connected) {
                         makeCall(device.disconnectFromDevice());
                     } else {
@@ -138,11 +142,18 @@ Kirigami.Page {
                     }
                 }
             }
+        ]
 
-            Controls.BusyIndicator {
-                id: busyIndicator
-                running: false
-            }
+        alignment: Qt.AlignRight
+
+        anchors.left: parent.left
+        anchors.right: parent.right
+
+        position: Controls.ToolBar.Footer
+
+        Controls.BusyIndicator {
+            id: busyIndicator
+            running: false
         }
     }
 }

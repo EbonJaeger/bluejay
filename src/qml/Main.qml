@@ -30,11 +30,22 @@ Kirigami.ApplicationWindow {
     height: 600
     title: i18nc("Bluejay is the name of the application", "Bluejay")
 
+    function onCloseClicked() {
+        pageStack.pop();
+    }
+
     Connections {
         function onDeviceClicked(device: BluezQt.Device) {
-            var page = Qt.createComponent("DevicePage.qml");
+            var component = Qt.createComponent("DevicePage.qml");
+            var page = component.createObject(pageStack, { "device": device });
 
-            pageStack.push(page, { "device": device });
+            if (page == null) {
+                console.error("Unable to create DevicePage");
+                return;
+            }
+
+            page.closeClicked.connect(onCloseClicked);
+            pageStack.push(page);
         }
 
         target: mainView
