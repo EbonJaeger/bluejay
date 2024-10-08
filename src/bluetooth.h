@@ -48,10 +48,26 @@ public:
         return &instance();
     }
 
+    /**
+     * Disables Bluetooth on the system by turning on
+     * rfkill and powering off all connected adapters.
+     */
     Q_INVOKABLE void disable() const;
 
+    /**
+     * Enables Bluetooth on the system by turning off
+     * rfkill and powering on all connected adapters.
+     */
     Q_INVOKABLE void enable() const;
 
+    /**
+     * Turns Bluetooth on or off, depending on whether
+     * Bluetooth is corrently on or off.
+     *
+     * If Bluetooth is currently disabled, it will be
+     * turned on. Likewise, if Bluetooth is enabled,
+     * it will be turned off.
+     */
     Q_INVOKABLE void toggle() const;
 
     /**

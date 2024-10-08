@@ -33,17 +33,15 @@ Bluetooth::Bluetooth(QObject *parent)
         }
 
         // Set the discovery filter for all current Bluetooth adapters
-        for (auto a : m_manager->adapters()) {
-            auto adapter = a.get();
-
-            setDiscoveryFilter(adapter->toSharedPtr());
+        for (auto adapter : m_manager->adapters()) {
+            setDiscoveryFilter(adapter);
 
             // Set the initial discovery state
             if (m_discovering != adapter->isDiscovering()) {
                 setDiscovering(adapter->toSharedPtr(), m_discovering);
             }
 
-            connect(adapter, &BluezQt::Adapter::discoveringChanged, this, &Bluetooth::slotDiscoveringChanged);
+            connect(adapter.get(), &BluezQt::Adapter::discoveringChanged, this, &Bluetooth::slotDiscoveringChanged);
         }
 
         // Handle when an adapter is connected
@@ -71,7 +69,6 @@ Bluetooth &Bluetooth::instance()
 void Bluetooth::adapterAdded(BluezQt::AdapterPtr adapter)
 {
     setDiscoveryFilter(adapter);
-
     connect(adapter.get(), &BluezQt::Adapter::discoveringChanged, this, &Bluetooth::slotDiscoveringChanged);
 }
 
@@ -85,14 +82,7 @@ void Bluetooth::disable() const
     m_manager->setBluetoothBlocked(true);
 
     for (auto &adapter : m_manager->adapters()) {
-        auto call = adapter.get()->setPowered(false);
-
-        connect(call, &BluezQt::PendingCall::finished, this, [this, adapter](BluezQt::PendingCall *call) {
-            if (call->error()) {
-                qWarning() << "Error turning off adapter" << adapter.get()->name() << ":" << call->error() << ":" << call->errorText();
-                emit errorOccurred(errorText(call->error()));
-            }
-        });
+        adapter->setPowered(false);
     }
 }
 
@@ -101,14 +91,7 @@ void Bluetooth::enable() const
     m_manager->setBluetoothBlocked(false);
 
     for (auto &adapter : m_manager->adapters()) {
-        auto call = adapter.get()->setPowered(true);
-
-        connect(call, &BluezQt::PendingCall::finished, this, [this, adapter](BluezQt::PendingCall *call) {
-            if (call->error()) {
-                qWarning() << "Error turning on adapter" << adapter.get()->name() << ":" << call->error() << ":" << call->errorText();
-                emit errorOccurred(errorText(call->error()));
-            }
-        });
+        adapter->setPowered(true);
     }
 }
 
@@ -147,19 +130,11 @@ void Bluetooth::setDiscovering(BluezQt::AdapterPtr adapter, bool discovering) co
     }
 
     // If the adapter is already in the desired state, do nothing
-    if (adapter.get()->isDiscovering() == discovering) {
+    if (adapter->isDiscovering() == discovering) {
         return;
     }
 
-    auto call = discovering ? adapter.get()->startDiscovery() : adapter.get()->stopDiscovery();
-
-    connect(call, &BluezQt::PendingCall::finished, this, [this, adapter](BluezQt::PendingCall *call) {
-        if (call->error()) {
-            qWarning() << "Error setting discovering on adapter '" << adapter.get()->name() << "': " << call->errorText();
-            emit errorOccurred(errorText(call->error()));
-            return;
-        }
-    });
+    discovering ? adapter->startDiscovery() : adapter->stopDiscovery();
 }
 
 void Bluetooth::setDiscoveryFilter(BluezQt::AdapterPtr adapter) const
@@ -171,15 +146,7 @@ void Bluetooth::setDiscoveryFilter(BluezQt::AdapterPtr adapter) const
     QVariantMap filter;
 
     filter.insert("Discoverable", true);
-
-    auto call = adapter.get()->setDiscoveryFilter(filter);
-
-    connect(call, &BluezQt::PendingCall::finished, this, [this, adapter](BluezQt::PendingCall *call) {
-        if (call->error()) {
-            qWarning() << "Error setting filter on adapter '" << adapter.get()->name() << "': " << call->errorText();
-            emit errorOccurred(errorText(call->error()));
-        }
-    });
+    adapter->setDiscoveryFilter(filter);
 }
 
 QString Bluetooth::errorText(int code) const
