@@ -37,7 +37,14 @@ class Bluetooth : public QObject
     QML_SINGLETON
     QML_ELEMENT
 
+    /// This property holds the current rfkill state.
+    Q_PROPERTY(bool blocked READ blocked NOTIFY blockedChanged)
+
+    /// This property holds the current state of discovering.
     Q_PROPERTY(bool discovering READ discovering WRITE setDiscovering NOTIFY discoveringChanged)
+
+    /// This property holds the state of Bluetooth enablement.
+    Q_PROPERTY(bool enabled READ enabled NOTIFY enabledChanged)
 
 public:
     virtual ~Bluetooth();
@@ -47,6 +54,13 @@ public:
         engine->setObjectOwnership(&instance(), QQmlEngine::CppOwnership);
         return &instance();
     }
+
+    /**
+     * Get whether Bluetooth is currently blocked.
+     *
+     * @returns True if Bluetooth is blocked.
+     */
+    Q_INVOKABLE bool blocked() const;
 
     /**
      * Disables Bluetooth on the system by turning on
@@ -59,6 +73,13 @@ public:
      * rfkill and powering on all connected adapters.
      */
     Q_INVOKABLE void enable() const;
+
+    /**
+     * Get whether Bluetooth is currently enabled.
+     *
+     * @returns True if Bluetooth is enabled
+     */
+    Q_INVOKABLE bool enabled() const;
 
     /**
      * Turns Bluetooth on or off, depending on whether
@@ -100,9 +121,18 @@ public:
 
 public Q_SLOTS:
     void adapterAdded(BluezQt::AdapterPtr adapter);
+    void bluetoothBlockedChanged(bool blocked);
+    void bluetoothOperationalChanged(bool operational);
     void slotDiscoveringChanged(bool discovering);
 
 Q_SIGNALS:
+    /**
+     * @brief Blocked state changed
+     *
+     * If rfkill is turned on or off, this signal will be emitted.
+     */
+    void blockedChanged();
+
     /**
      * @brief Discovering state changed
      *
@@ -110,6 +140,13 @@ Q_SIGNALS:
      * this signal will be emitted.
      */
     void discoveringChanged();
+
+    /**
+     * @brief Enabled state changed
+     *
+     * If Bluetooth is turned on or off, this signal will be emitted.
+     */
+    void enabledChanged();
 
     /**
      * @brief Emit that an error occurred
@@ -122,7 +159,9 @@ Q_SIGNALS:
 
 private:
     BluezQt::Manager *m_manager;
+    bool m_blocked;
     bool m_discovering;
+    bool m_enabled;
 
 private:
     explicit Bluetooth(QObject *parent = nullptr);

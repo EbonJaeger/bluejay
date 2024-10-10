@@ -38,7 +38,7 @@ Kirigami.Page {
 
     Kirigami.PlaceholderMessage {
         id: bluetoothDisabledMessage
-        visible: BluezQt.Manager.operational && !BluezQt.Manager.bluetoothOperational && !noBluetoothMessage.visible
+        visible: !Bluejay.Bluetooth.enabled && !noBluetoothMessage.visible
         icon.name: "network-bluetooth-inactive-symbolic"
         text: i18n("Bluetooth is disabled")
         implicitWidth: parent.width - (Kirigami.Units.largeSpacing * 4)

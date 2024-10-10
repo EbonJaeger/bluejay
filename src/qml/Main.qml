@@ -112,6 +112,7 @@ Kirigami.ApplicationWindow {
                                 text: i18n("Toggle discovery")
                                 tooltip: i18n("Turn device discovery on or off")
                                 icon.name: "system-search-symbolic"
+                                enabled: Bluejay.Bluetooth.enabled
                                 onTriggered: Bluejay.Bluetooth.setDiscovering(!Bluejay.Bluetooth.discovering);
                             }
 
@@ -141,7 +142,6 @@ Kirigami.ApplicationWindow {
                 Layout.fillWidth: true
                 Layout.fillHeight: true
 
-
                 ListView {
                     id: deviceList
                     Layout.fillWidth: true
@@ -151,14 +151,13 @@ Kirigami.ApplicationWindow {
                         sourceModel: BluezQt.DevicesModel {}
                     }
 
-                    // TODO: Add to our Bluetooth class for the visibility check
-                    // Kirigami.PlaceholderMessage {
-                    //     visible: !noBluetoothMessage.visible && !bluetoothDisabledMessage.visible && deviceList.count === 0
-                    //     icon.name: "network-bluetooth-activated-symbolic"
-                    //     text: i18n("No paired devices")
-                    //     implicitWidth: parent.width - (Kirigami.Units.largeSpacing * 4)
-                    //     anchors.centerIn: parent
-                    // }
+                    Kirigami.PlaceholderMessage {
+                        visible: Bluejay.Bluetooth.enabled && !Bluejay.Bluetooth.blocked && deviceList.count === 0
+                        icon.name: "network-bluetooth-activated-symbolic"
+                        text: i18n("No paired devices")
+                        implicitWidth: parent.width - (Kirigami.Units.largeSpacing * 4)
+                        anchors.centerIn: parent
+                    }
 
                     model: BluezQt.Manager.bluetoothOperational ? devicesModel : null
 

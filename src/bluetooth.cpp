@@ -21,7 +21,9 @@
 Bluetooth::Bluetooth(QObject *parent)
     : QObject(parent)
     , m_manager(new BluezQt::Manager())
+    , m_blocked(false)
     , m_discovering(false)
+    , m_enabled(true)
 {
     auto job = m_manager->init();
 
@@ -31,6 +33,9 @@ Bluetooth::Bluetooth(QObject *parent)
             emit errorOccurred(job->errorText());
             return;
         }
+
+        m_blocked = m_manager->isBluetoothBlocked();
+        m_enabled = m_manager->isBluetoothOperational();
 
         // Set the discovery filter for all current Bluetooth adapters
         for (auto adapter : m_manager->adapters()) {
@@ -44,8 +49,10 @@ Bluetooth::Bluetooth(QObject *parent)
             connect(adapter.get(), &BluezQt::Adapter::discoveringChanged, this, &Bluetooth::slotDiscoveringChanged);
         }
 
-        // Handle when an adapter is connected
+        // Connect signals
         connect(m_manager, &BluezQt::Manager::adapterAdded, this, &Bluetooth::adapterAdded);
+        connect(m_manager, &BluezQt::Manager::bluetoothBlockedChanged, this, &Bluetooth::bluetoothBlockedChanged);
+        connect(m_manager, &BluezQt::Manager::bluetoothOperationalChanged, this, &Bluetooth::bluetoothOperationalChanged);
     });
     job->start();
 }
@@ -72,9 +79,34 @@ void Bluetooth::adapterAdded(BluezQt::AdapterPtr adapter)
     connect(adapter.get(), &BluezQt::Adapter::discoveringChanged, this, &Bluetooth::slotDiscoveringChanged);
 }
 
+void Bluetooth::bluetoothBlockedChanged(bool blocked)
+{
+    if (m_blocked == blocked) {
+        return;
+    }
+
+    m_blocked = blocked;
+    Q_EMIT blockedChanged();
+}
+
+void Bluetooth::bluetoothOperationalChanged(bool operational)
+{
+    if (m_enabled == operational) {
+        return;
+    }
+
+    m_enabled = operational;
+    Q_EMIT enabledChanged();
+}
+
 void Bluetooth::slotDiscoveringChanged(bool discovering)
 {
     setDiscovering(discovering);
+}
+
+bool Bluetooth::blocked() const
+{
+    return m_blocked;
 }
 
 void Bluetooth::disable() const
@@ -93,6 +125,11 @@ void Bluetooth::enable() const
     for (auto &adapter : m_manager->adapters()) {
         adapter->setPowered(true);
     }
+}
+
+bool Bluetooth::enabled() const
+{
+    return m_enabled;
 }
 
 void Bluetooth::toggle() const
