@@ -14,12 +14,10 @@ target_sources(bluejay PRIVATE
 ecm_target_qml_sources(bluejay
     SOURCES
     qml/Main.qml
+    qml/DeviceDelegate.qml
     qml/DevicePage.qml
-    qml/DeviceScanner.qml
-    qml/MainPage.qml
+    qml/WelcomePage.qml
     qml/script.js
-
-    qml/delegates/Device.qml
 )
 
 target_link_libraries(bluejay PRIVATE

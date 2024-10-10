@@ -16,30 +16,18 @@
  * file, You can obtain one at <https://mozilla.org/MPL/2.0/>.
  */
 
-import QtQuick 2.15
+import QtQuick
 import QtQuick.Dialogs
-import QtQuick.Controls 2.15 as Controls
-import QtQuick.Layouts 1.15
+import QtQuick.Controls as Controls
+import QtQuick.Layouts
 
 import org.kde.bluezqt as BluezQt
 import org.kde.kirigami as Kirigami
 
 import "script.js" as Script
 
-Kirigami.Page {
+Kirigami.ScrollablePage {
     required property BluezQt.Device device
-
-    signal closeClicked()
-
-    title: device.name
-
-    actions: [
-        Kirigami.Action {
-            tooltip: "Close device page"
-            icon.name: "dialog-close-symbolic"
-            onTriggered: closeClicked()
-        }
-    ]
 
     function makeCall(call: BluezQt.PendingCall): void {
         busyIndicator.running = true;
@@ -66,51 +54,59 @@ Kirigami.Page {
         }
     }
 
-    header: Controls.ToolBar {
-        implicitWidth: 96
-        implicitHeight: 96
+    titleDelegate: RowLayout {
+        Layout.fillWidth: true
 
-        Kirigami.Icon {
-            source: device.icon
-            width: 96
-            height: 96
-            anchors.fill: parent
+        Kirigami.Heading {
+            id: heading
+            text: device.name
+            Layout.fillWidth: true
+            Layout.leftMargin: Kirigami.Units.largeSpacing
+            Layout.rightMargin: Kirigami.Units.largeSpacing
+            horizontalAlignment: Text.AlignHCenter
+            elide: Qt.ElideRight
         }
     }
 
-    contentItem: Kirigami.FormLayout {
-        anchors.topMargin: 8
-        anchors.bottomMargin: 8
-
-        Controls.Label {
-            text: device.address
-            Kirigami.FormData.label: i18n("Address:")
+    contentItem: ColumnLayout {
+        Kirigami.Icon {
+            source: device.icon
+            implicitWidth: 96
+            implicitHeight: 96
+            Layout.fillWidth: true
         }
 
-        Controls.Label {
-            text: Script.deviceTypeToString(device)
-            Kirigami.FormData.label: i18n("Type:")
-        }
+        Kirigami.FormLayout {
+            Controls.Label {
+                text: device.address
+                Kirigami.FormData.label: i18n("Address:")
+            }
 
-        Controls.Label {
-            text: device.paired ? i18n("Yes") : i18n("No")
-            Kirigami.FormData.label: i18n("Paired:")
-        }
+            Controls.Label {
+                text: Script.deviceTypeToString(device)
+                Kirigami.FormData.label: i18n("Type:")
+            }
 
-        Controls.Label {
-            text: device.trusted ? i18n("Yes") : i18n("No")
-            Kirigami.FormData.label: i18n("Trusted:")
-        }
+            Controls.Label {
+                text: device.paired ? i18n("Yes") : i18n("No")
+                Kirigami.FormData.label: i18n("Paired:")
+            }
 
-        Controls.Label {
-            text: device.connected ? i18n("Yes") : i18n("No")
-            Kirigami.FormData.label: i18n("Connected:")
-        }
+            Controls.Label {
+                text: device.trusted ? i18n("Yes") : i18n("No")
+                Kirigami.FormData.label: i18n("Trusted:")
+            }
 
-        Controls.Label {
-            visible: device.battery !== null
-            text: i18n("%1%", device.battery !== null ? device.battery.percentage : i18nc("Shown when there is no battery information for a device", "Unknown"))
-            Kirigami.FormData.label: i18n("Battery:")
+            Controls.Label {
+                text: device.connected ? i18n("Yes") : i18n("No")
+                Kirigami.FormData.label: i18n("Connected:")
+            }
+
+            Controls.Label {
+                visible: device.battery !== null
+                text: i18n("%1%", device.battery !== null ? device.battery.percentage : i18nc("Shown when there is no battery information for a device", "Unknown"))
+                Kirigami.FormData.label: i18n("Battery:")
+            }
         }
     }
 

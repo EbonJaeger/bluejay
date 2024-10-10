@@ -16,45 +16,45 @@
  * file, You can obtain one at <https://mozilla.org/MPL/2.0/>.
  */
 
-import QtQuick 2.15
-import QtQuick.Controls 2.15
-import QtQuick.Layouts 1.2
+import QtQuick
+import QtQuick.Controls as Controls
+import QtQuick.Layouts
 
-import org.kde.kirigami
-import org.kde.kirigami.delegates
+import org.kde.kirigami as Kirigami
+import org.kde.kirigami.delegates as Delegates
 
 import org.kde.bluezqt as BluezQt
 
 import "script.js" as Script
 
-ItemDelegate {
-    id: deviceDelegate
+Controls.ItemDelegate {
+    id: delegate
 
     required property var model
 
     function infoText(device: BluezQt.Device): string {
-            const { battery } = device;
-            const labels = [];
+        const { battery } = device;
+        const labels = [];
 
-            labels.push(Script.deviceTypeToString(device));
+        labels.push(Script.deviceTypeToString(device));
 
-            if (battery) {
-                labels.push(i18n("%1% Battery", battery.percentage));
-            }
-
-            return labels.join(" · ");
+        if (battery) {
+            labels.push(i18n("%1% Battery", battery.percentage));
         }
+
+        return labels.join(" · ");
+    }
 
     implicitWidth: parent.width
 
     contentItem: RowLayout {
-        spacing: Units.smallSpacing
+        spacing: Kirigami.Units.smallSpacing
 
-        IconTitleSubtitle {
+        Delegates.IconTitleSubtitle {
             title: model.Name
             subtitle: infoText(model.Device)
             icon.name: model.Icon
-            icon.width: Units.iconSizes.medium
+            icon.width: Kirigami.Units.iconSizes.medium
         }
     }
 }

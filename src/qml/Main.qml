@@ -16,9 +16,9 @@
  * file, You can obtain one at <https://mozilla.org/MPL/2.0/>.
  */
 
-import QtQuick 2.15
-import QtQuick.Controls 2.15 as Controls
-import QtQuick.Layouts 1.15
+import QtQuick
+import QtQuick.Controls as Controls
+import QtQuick.Layouts
 
 import org.kde.bluezqt as BluezQt
 import org.kde.kirigami as Kirigami
@@ -37,33 +37,156 @@ Kirigami.ApplicationWindow {
     }
 
     Connections {
+        target: Bluejay.Bluetooth
+
         function onErrorOccurred(errorText: string): void {
             showPassiveNotification(errorText);
         }
-
-        target: Bluejay.Bluetooth
-    }
-
-    Connections {
-        function onDeviceClicked(device: BluezQt.Device) {
-            var component = Qt.createComponent("DevicePage.qml");
-            var page = component.createObject(pageStack, { "device": device });
-
-            if (page == null) {
-                console.error("Unable to create DevicePage");
-                return;
-            }
-
-            page.closeClicked.connect(onCloseClicked);
-            pageStack.push(page);
-        }
-
-        target: mainView
     }
 
     pageStack {
-        initialPage: MainPage {
-            id: mainView
+        initialPage: WelcomePage {}
+
+        globalToolBar {
+            style: Kirigami.Settings.isMobile ? Kirigami.ApplicationHeaderStyle.Titles : Kirigami.ApplicationHeaderStyle.Auto
+            showNavigationButtons: Kirigami.ApplicationHeaderStyle.ShowBackButton
+        }
+    }
+
+    globalDrawer: Kirigami.GlobalDrawer {
+        id: drawer
+        modal: Kirigami.Settings.isMobile ? true : false
+        width: 16 * Kirigami.Units.gridUnit
+        leftPadding: 0
+        topPadding: 0
+        rightPadding: 0
+        bottomPadding: 0
+
+        Component.onCompleted: if (Kirigami.Settings.isMobile === true) {
+            drawer.close()
+        }
+
+        Behavior on width {
+            NumberAnimation {
+                duration: Kirigami.Units.shortDuration * 2
+                easing.type: Easing.InOutQuart
+            }
+        }
+
+        contentItem: ColumnLayout {
+            spacing: 0
+
+            Controls.ToolBar {
+                Layout.fillWidth: true
+                Layout.preferredHeight: root.pageStack.globalToolBar.preferredHeight
+                leftPadding: 0
+                rightPadding: 0
+
+                contentItem: Item {
+                    Controls.ToolButton {
+                        id: menuButton
+                        icon.name: "application-menu"
+                        onClicked: menu.popup()
+                        x: Kirigami.Units.smallSpacing
+
+                        Behavior on x {
+                            NumberAnimation {
+                                duration: Kirigami.Units.shortDuration * 2
+                                easing.type: Easing.InOutQuart
+                            }
+                        }
+
+                        Controls.Menu {
+                            id: menu
+
+                            Kirigami.Action {
+                                id: toggleBluetoothAction
+                                text: i18n("Toggle Bluetooth")
+                                tooltip: i18n("Turn Bluetooth on or off")
+                                icon.name: "network-bluetooth-symbolic"
+                                onTriggered: Bluejay.Bluetooth.toggle();
+                            }
+
+                            Kirigami.Action {
+                                id: toggleDiscoveryAction
+                                text: i18n("Toggle discovery")
+                                tooltip: i18n("Turn device discovery on or off")
+                                icon.name: "system-search-symbolic"
+                                onTriggered: Bluejay.Bluetooth.setDiscovering(!Bluejay.Bluetooth.discovering);
+                            }
+
+                            Controls.MenuSeparator {}
+
+                            Kirigami.Action {
+                                text: i18n("About")
+                                tooltip: i18n("Show application information")
+                                icon.name: "help-about-symbolic"
+
+                                onTriggered: pageStack.pushDialogLayer(Qt.createComponent("org.kde.kirigamiaddons.formcard", "AboutPage"));
+                            }
+                        }
+                    }
+
+                    Kirigami.Heading {
+                        text: i18n("Devices")
+                        horizontalAlignment: Qt.AlignHCenter
+                        width: parent.width
+                        x: 0
+                        y: Kirigami.Units.smallSpacing
+                    }
+                }
+            }
+
+            Controls.ScrollView {
+                Layout.fillWidth: true
+                Layout.fillHeight: true
+
+
+                ListView {
+                    id: deviceList
+                    Layout.fillWidth: true
+
+                    Bluejay.DevicesProxyModel {
+                        id: devicesModel
+                        sourceModel: BluezQt.DevicesModel {}
+                    }
+
+                    // TODO: Add to our Bluetooth class for the visibility check
+                    // Kirigami.PlaceholderMessage {
+                    //     visible: !noBluetoothMessage.visible && !bluetoothDisabledMessage.visible && deviceList.count === 0
+                    //     icon.name: "network-bluetooth-activated-symbolic"
+                    //     text: i18n("No paired devices")
+                    //     implicitWidth: parent.width - (Kirigami.Units.largeSpacing * 4)
+                    //     anchors.centerIn: parent
+                    // }
+
+                    model: BluezQt.Manager.bluetoothOperational ? devicesModel : null
+
+                    section.property: "Connected"
+                    section.delegate: Kirigami.ListSectionHeader {
+                        Layout.fillWidth: true
+                        text: section === "true" ? i18n("Connected") : i18n("Available")
+                    }
+
+                    delegate: DeviceDelegate {
+                        onClicked: {
+                            const component = Qt.createComponent("com.github.ebonjaeger.bluejay", "DevicePage");
+
+                            if (component.status !== Component.Ready) {
+                                console.error(component.errorString());
+                                return;
+                            }
+
+                            const page = component.createObject(pageStack, {
+                                device: model.Device,
+                            });
+
+                            pageStack.clear();
+                            pageStack.push(page);
+                        }
+                    }
+                }
+            }
         }
     }
 }

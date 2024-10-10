@@ -16,25 +16,19 @@
  * file, You can obtain one at <https://mozilla.org/MPL/2.0/>.
  */
 
-import QtQuick 2.15
-import QtQuick.Controls 2.15 as Controls
-import QtQuick.Layouts 1.2
+import QtQuick
 
 import org.kde.bluezqt as BluezQt
 import org.kde.kirigami as Kirigami
 
-import com.github.ebonjaeger.bluejay
+import com.github.ebonjaeger.bluejay as Bluejay
 
-ListView {
-    id: deviceList
-
-    readonly property BluezQt.Manager manager: BluezQt.Manager
-
-    signal deviceClicked(device: BluezQt.Device)
+Kirigami.Page {
+    id: root
 
     Kirigami.PlaceholderMessage {
         id: noBluetoothMessage
-        visible: manager.rfkill.state === BluezQt.Rfkill.Unknown
+        visible: BluezQt.Manager.rfkill.state === BluezQt.Rfkill.Unknown
         icon.name: "edit-none-symbolic"
         text: i18n("No Bluetooth adapters found")
         explanation: i18n("Please connect a Bluetooth adapter")
@@ -44,7 +38,7 @@ ListView {
 
     Kirigami.PlaceholderMessage {
         id: bluetoothDisabledMessage
-        visible: manager.operational && !manager.bluetoothOperational && !noBluetoothMessage.visible
+        visible: BluezQt.Manager.operational && !BluezQt.Manager.bluetoothOperational && !noBluetoothMessage.visible
         icon.name: "network-bluetooth-inactive-symbolic"
         text: i18n("Bluetooth is disabled")
         implicitWidth: parent.width - (Kirigami.Units.largeSpacing * 4)
@@ -53,32 +47,15 @@ ListView {
         helpfulAction: Kirigami.Action {
             icon.name: "network-bluetooth-symbolic"
             text: i18n("Enable")
-            onTriggered: mainView.toggleBluetooth()
+            onTriggered: Bluejay.Bluetooth.toggle()
         }
     }
 
     Kirigami.PlaceholderMessage {
-        visible: !noBluetoothMessage.visible && !bluetoothDisabledMessage.visible && deviceList.count === 0
-        icon.name: "network-bluetooth-activated-symbolic"
-        text: i18n("No paired devices")
-        implicitWidth: parent.width - (Kirigami.Units.largeSpacing * 4)
         anchors.centerIn: parent
-    }
-
-    DevicesProxyModel {
-        id: devicesModel
-        sourceModel: BluezQt.DevicesModel { }
-    }
-
-    model: manager.bluetoothOperational ? devicesModel : null
-
-    section.property: "Connected"
-    section.delegate: Kirigami.ListSectionHeader {
-        Layout.fillWidth: true
-        text: section === "true" ? i18n("Connected") : i18n("Available")
-    }
-
-    delegate: Device {
-        onClicked: deviceClicked(model.Device)
+        visible: !noBluetoothMessage.visible && !bluetoothDisabledMessage.visible
+        width: parent.width - (Kirigami.Units.largeSpacing * 4)
+        icon.name: "network-bluetooth"
+        text: i18n("No device selected. Click a device to get started.")
     }
 }
