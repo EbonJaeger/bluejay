@@ -26,7 +26,9 @@ import org.kde.kirigami as Kirigami
 
 import "script.js" as Script
 
-Kirigami.ScrollablePage {
+Kirigami.Page {
+    id: devicePage
+
     required property BluezQt.Device device
 
     function makeCall(call: BluezQt.PendingCall): void {
@@ -68,45 +70,42 @@ Kirigami.ScrollablePage {
         }
     }
 
-    contentItem: ColumnLayout {
+    contentItem: Kirigami.FormLayout {
         Kirigami.Icon {
             source: device.icon
             implicitWidth: 96
             implicitHeight: 96
-            Layout.fillWidth: true
         }
 
-        Kirigami.FormLayout {
-            Controls.Label {
-                text: device.address
-                Kirigami.FormData.label: i18n("Address:")
-            }
+        Controls.Label {
+            text: device.address
+            Kirigami.FormData.label: i18n("Address:")
+        }
 
-            Controls.Label {
-                text: Script.deviceTypeToString(device)
-                Kirigami.FormData.label: i18n("Type:")
-            }
+        Controls.Label {
+            text: Script.deviceTypeToString(device)
+            Kirigami.FormData.label: i18n("Type:")
+        }
 
-            Controls.Label {
-                text: device.paired ? i18n("Yes") : i18n("No")
-                Kirigami.FormData.label: i18n("Paired:")
-            }
+        Controls.Label {
+            text: device.paired ? i18n("Yes") : i18n("No")
+            Kirigami.FormData.label: i18n("Paired:")
+        }
 
-            Controls.Label {
-                text: device.trusted ? i18n("Yes") : i18n("No")
-                Kirigami.FormData.label: i18n("Trusted:")
-            }
+        Controls.Label {
+            text: device.trusted ? i18n("Yes") : i18n("No")
+            Kirigami.FormData.label: i18n("Trusted:")
+        }
 
-            Controls.Label {
-                text: device.connected ? i18n("Yes") : i18n("No")
-                Kirigami.FormData.label: i18n("Connected:")
-            }
+        Controls.Label {
+            text: device.connected ? i18n("Yes") : i18n("No")
+            Kirigami.FormData.label: i18n("Connected:")
+        }
 
-            Controls.Label {
-                visible: device.battery !== null
-                text: i18n("%1%", device.battery !== null ? device.battery.percentage : i18nc("Shown when there is no battery information for a device", "Unknown"))
-                Kirigami.FormData.label: i18n("Battery:")
-            }
+        Controls.Label {
+            visible: device.battery !== null
+            text: i18n("%1%", device.battery !== null ? device.battery.percentage : i18nc("Shown when there is no battery information for a device", "Unknown"))
+            Kirigami.FormData.label: i18n("Battery:")
         }
     }
 
