@@ -28,9 +28,18 @@ import com.github.ebonjaeger.bluejay as Bluejay
 Kirigami.ApplicationWindow {
     id: root
     visible: true
-    width: 800
-    height: 600
     title: i18nc("Bluejay is the name of the application", "Bluejay")
+
+    property int minWideScreenWidth: 525
+    property bool wideScreen: width >= minWideScreenWidth
+
+    width: Kirigami.Settings.isMobile ? Kirigami.Units.gridUnit * 10 : Kirigami.Units.gridUnit * 42
+    height: Kirigami.Settings.isMobile ? Kirigami.Units.gridUnit * 10 : Kirigami.Units.gridUnit * 28
+
+    minimumWidth: Kirigami.Settings.isMobile ? Kirigami.Units.gridUnit * 10 : Kirigami.Units.gridUnit * 20
+    minimumHeight: Kirigami.Settings.isMobile ? Kirigami.Units.gridUnit * 10 : Kirigami.Units.gridUnit * 16
+
+    onWideScreenChanged: Kirigami.Settings.isMobile ? drawer.close() : (!wideScreen ? drawer.close() : drawer.open())
 
     function onCloseClicked() {
         pageStack.pop();
@@ -41,6 +50,14 @@ Kirigami.ApplicationWindow {
 
         function onErrorOccurred(errorText: string): void {
             showPassiveNotification(errorText);
+        }
+    }
+
+    Component.onCompleted: {
+        if (Kirigami.Settings.isMobile) {
+            drawer.close();
+        } else {
+            drawer.open();
         }
     }
 
@@ -62,8 +79,10 @@ Kirigami.ApplicationWindow {
         rightPadding: 0
         bottomPadding: 0
 
-        Component.onCompleted: if (Kirigami.Settings.isMobile === true) {
-            drawer.close()
+        Component.onCompleted: {
+            if (Kirigami.Settings.isMobile) {
+                drawer.close();
+            }
         }
 
         Behavior on width {
@@ -180,8 +199,11 @@ Kirigami.ApplicationWindow {
                                 device: model.Device,
                             });
 
-                            pageStack.clear();
-                            pageStack.push(page);
+                            if (!pageStack.items[1]) {
+                                pageStack.push(page);
+                            } else {
+                                pageStack.replace(page);
+                            }
                         }
                     }
                 }
