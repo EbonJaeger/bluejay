@@ -199,11 +199,11 @@ Kirigami.ApplicationWindow {
                                 device: model.Device,
                             });
 
-                            if (!pageStack.items[1]) {
-                                pageStack.push(page);
-                            } else {
-                                pageStack.replace(page);
+                            if (pageStack.items.length === 2) {
+                                pageStack.pop();
                             }
+
+                            pageStack.push(page);
                         }
                     }
                 }
