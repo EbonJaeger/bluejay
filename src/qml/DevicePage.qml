@@ -131,7 +131,7 @@ Kirigami.Page {
                 tooltip: device.connected ? i18n("Disconnect from this device") : i18n("Connect to this device")
                 enabled: !busyIndicator.running
                 onTriggered: {
-                    if (device.Connected) {
+                    if (device.connected) {
                         makeCall(device.disconnectFromDevice());
                     } else {
                         makeCall(device.connectToDevice());
