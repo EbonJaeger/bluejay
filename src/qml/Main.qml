@@ -53,6 +53,29 @@ Kirigami.ApplicationWindow {
         }
     }
 
+    Connections {
+        target: Bluejay.Bluetooth.agent()
+
+        function onPinRequested(deviceName: string, pin: string): void {
+            const component = Qt.createComponent("com.github.ebonjaeger.bluejay", "PasskeyDialog");
+            const dialog = component.createObject(root, {
+                deviceName: deviceName,
+                passkey: pin,
+            });
+            dialog.show();
+        }
+
+        function onConfirmationRequested(deviceName: string, passkey: string, request: Bluejay.VoidRequest): void {
+            const component = Qt.createComponent("com.github.ebonjaeger.bluejay", "ConfirmationDialog");
+            const dialog = component.createObject(root, {
+                deviceName: deviceName,
+                passkey: passkey,
+                request: request
+            });
+            dialog.open();
+        }
+    }
+
     Component.onCompleted: {
         if (Kirigami.Settings.isMobile) {
             drawer.close();

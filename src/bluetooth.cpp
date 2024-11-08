@@ -20,6 +20,7 @@
 
 Bluetooth::Bluetooth(QObject *parent)
     : QObject(parent)
+    , m_agent(new BtAgent(this))
     , m_manager(new BluezQt::Manager())
     , m_blocked(false)
     , m_discovering(false)
@@ -37,6 +38,10 @@ Bluetooth::Bluetooth(QObject *parent)
         m_blocked = m_manager->isBluetoothBlocked();
         m_enabled = m_manager->isBluetoothOperational();
 
+        // Make sure to register our Agent
+        bluetoothOperationalChanged(m_enabled);
+        connect(m_manager, &BluezQt::Manager::bluetoothOperationalChanged, this, &Bluetooth::bluetoothOperationalChanged);
+
         // Set the discovery filter for all current Bluetooth adapters
         for (auto adapter : m_manager->adapters()) {
             setDiscoveryFilter(adapter);
@@ -52,7 +57,6 @@ Bluetooth::Bluetooth(QObject *parent)
         // Connect signals
         connect(m_manager, &BluezQt::Manager::adapterAdded, this, &Bluetooth::adapterAdded);
         connect(m_manager, &BluezQt::Manager::bluetoothBlockedChanged, this, &Bluetooth::bluetoothBlockedChanged);
-        connect(m_manager, &BluezQt::Manager::bluetoothOperationalChanged, this, &Bluetooth::bluetoothOperationalChanged);
     });
     job->start();
 }
@@ -91,8 +95,10 @@ void Bluetooth::bluetoothBlockedChanged(bool blocked)
 
 void Bluetooth::bluetoothOperationalChanged(bool operational)
 {
-    if (m_enabled == operational) {
-        return;
+    if (operational) {
+        m_manager->registerAgent(m_agent);
+    } else {
+        BluezQt::Manager::startService();
     }
 
     m_enabled = operational;
@@ -102,6 +108,11 @@ void Bluetooth::bluetoothOperationalChanged(bool operational)
 void Bluetooth::slotDiscoveringChanged(bool discovering)
 {
     setDiscovering(discovering);
+}
+
+BtAgent *Bluetooth::agent() const
+{
+    return m_agent;
 }
 
 bool Bluetooth::blocked() const

@@ -25,6 +25,8 @@
 #include <BluezQt/Manager>
 #include <BluezQt/PendingCall>
 
+#include "btagent.h"
+
 /**
  * @class Bluetooth
  *
@@ -54,6 +56,13 @@ public:
         engine->setObjectOwnership(&instance(), QQmlEngine::CppOwnership);
         return &instance();
     }
+
+    /**
+     * Get the Bluetooth Agent for pairing.
+     *
+     * @returns The Bluetooth agent.
+     */
+    Q_INVOKABLE BtAgent *agent() const;
 
     /**
      * Get whether Bluetooth is currently blocked.
@@ -158,6 +167,7 @@ Q_SIGNALS:
     void errorOccurred(QString errorText) const;
 
 private:
+    BtAgent *m_agent;
     BluezQt::Manager *m_manager;
     bool m_blocked;
     bool m_discovering;

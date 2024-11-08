@@ -9,12 +9,14 @@ jobs:
       run: |
         dnf --assumeyes install gcc-c++ cmake git-core \
           'cmake(Qt6Core)' \
+          'cmake(Qt6DBus)' \
           'cmake(Qt6Gui)' \
           'cmake(Qt6Quick)' \
           'cmake(Qt6UiTools)' \
           'cmake(Qt6Widgets)' \
           'cmake(KF6BluezQt)' \
           'cmake(KF6CoreAddons)' \
+          'cmake(KF6DBusAddons)' \
           'cmake(KF6I18n)' \
           'cmake(KF6Kirigami)' \
           'cmake(KF6QQC2DesktopStyle)' \

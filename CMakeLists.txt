@@ -42,6 +42,7 @@ ecm_setup_version(${PROJECT_VERSION}
 
 find_package(Qt6 ${QT_MIN_VERSION} REQUIRED COMPONENTS
     Core
+    DBus
     Gui
     Quick
     QuickControls2
@@ -49,7 +50,7 @@ find_package(Qt6 ${QT_MIN_VERSION} REQUIRED COMPONENTS
     Widgets
 )
 
-find_package(KF6 ${KF6_MIN_VERSION} REQUIRED COMPONENTS BluezQt CoreAddons I18n Kirigami QQC2DesktopStyle)
+find_package(KF6 ${KF6_MIN_VERSION} REQUIRED COMPONENTS BluezQt CoreAddons DBusAddons I18n Kirigami QQC2DesktopStyle)
 
 ecm_set_disabled_deprecation_versions(QT 6.7
     KF 6.4.0
