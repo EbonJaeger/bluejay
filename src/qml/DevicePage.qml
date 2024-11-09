@@ -122,6 +122,7 @@ Kirigami.Page {
                 tooltip: i18n("Start pairing process")
                 visible: !device.paired
                 enabled: !busyIndicator.running
+                onTriggered: makeCall(device.pair())
             },
             Kirigami.Action {
                 text: device.connected ? i18n("Disconnect") : i18n("Connect")
