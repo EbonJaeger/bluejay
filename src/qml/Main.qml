@@ -60,7 +60,7 @@ Kirigami.ApplicationWindow {
             const component = Qt.createComponent("com.github.ebonjaeger.bluejay", "PasskeyDialog");
             const dialog = component.createObject(root, {
                 deviceName: deviceName,
-                passkey: pin,
+                passkey: pin
             });
             dialog.show();
         }
@@ -146,7 +146,7 @@ Kirigami.ApplicationWindow {
                                 text: i18n("Toggle Bluetooth")
                                 tooltip: i18n("Turn Bluetooth on or off")
                                 icon.name: "network-bluetooth-symbolic"
-                                onTriggered: Bluejay.Bluetooth.toggle();
+                                onTriggered: Bluejay.Bluetooth.toggle()
                             }
 
                             Kirigami.Action {
@@ -155,7 +155,7 @@ Kirigami.ApplicationWindow {
                                 tooltip: i18n("Turn device discovery on or off")
                                 icon.name: "system-search-symbolic"
                                 enabled: Bluejay.Bluetooth.enabled
-                                onTriggered: Bluejay.Bluetooth.setDiscovering(!Bluejay.Bluetooth.discovering);
+                                onTriggered: Bluejay.Bluetooth.setDiscovering(!Bluejay.Bluetooth.discovering)
                             }
 
                             Controls.MenuSeparator {}
@@ -165,7 +165,7 @@ Kirigami.ApplicationWindow {
                                 tooltip: i18n("Show application information")
                                 icon.name: "help-about-symbolic"
 
-                                onTriggered: pageStack.pushDialogLayer(Qt.createComponent("org.kde.kirigamiaddons.formcard", "AboutPage"));
+                                onTriggered: pageStack.pushDialogLayer(Qt.createComponent("org.kde.kirigamiaddons.formcard", "AboutPage"))
                             }
                         }
                     }
@@ -212,20 +212,16 @@ Kirigami.ApplicationWindow {
                     delegate: DeviceDelegate {
                         onClicked: {
                             const component = Qt.createComponent("com.github.ebonjaeger.bluejay", "DevicePage");
-
                             if (component.status !== Component.Ready) {
                                 console.error(component.errorString());
                                 return;
                             }
-
                             const page = component.createObject(pageStack, {
-                                device: model.Device,
+                                device: model.Device
                             });
-
                             if (pageStack.items.length === 2) {
                                 pageStack.pop();
                             }
-
                             pageStack.push(page);
                         }
                     }

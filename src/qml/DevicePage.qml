@@ -33,16 +33,13 @@ Kirigami.Page {
 
     function makeCall(call: BluezQt.PendingCall): void {
         busyIndicator.running = true;
-
         call.finished.connect(call => {
             busyIndicator.running = false;
-
             if (call.error) {
                 var message = Bluetooth.errorText(call.error);
-
                 root.showPassiveNotification(message);
             }
-        })
+        });
     }
 
     MessageDialog {
@@ -51,7 +48,9 @@ Kirigami.Page {
         informativeText: i18n("If you want to connect to this device after forgetting, you will have to pair it again.")
         buttons: MessageDialog.Yes | MessageDialog.Cancel
         onAccepted: {
-            const { adapter } = device;
+            const {
+                adapter
+            } = device;
             makeCall(adapter.removeDevice(device));
         }
     }
@@ -118,14 +117,12 @@ Kirigami.Page {
                 enabled: !busyIndicator.running
                 onTriggered: forgetDialog.open()
             },
-
             Kirigami.Action {
                 text: i18n("Pair")
                 tooltip: i18n("Start pairing process")
                 visible: !device.paired
                 enabled: !busyIndicator.running
             },
-
             Kirigami.Action {
                 text: device.connected ? i18n("Disconnect") : i18n("Connect")
                 tooltip: device.connected ? i18n("Disconnect from this device") : i18n("Connect to this device")

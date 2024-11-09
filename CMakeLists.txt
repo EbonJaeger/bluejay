@@ -35,25 +35,23 @@ include(ECMPoQmTools)
 include(ECMQmlModule)
 include(ECMDeprecationSettings)
 
-ecm_setup_version(${PROJECT_VERSION}
-    VARIABLE_PREFIX BLUEJAY
-    VERSION_HEADER ${CMAKE_CURRENT_BINARY_DIR}/src/bluejay-version.h
-)
+ecm_setup_version(${PROJECT_VERSION} VARIABLE_PREFIX BLUEJAY VERSION_HEADER
+                  ${CMAKE_CURRENT_BINARY_DIR}/src/bluejay-version.h)
 
-find_package(Qt6 ${QT_MIN_VERSION} REQUIRED COMPONENTS
-    Core
-    DBus
-    Gui
-    Quick
-    QuickControls2
-    UiTools
-    Widgets
-)
+find_package(
+  Qt6 ${QT_MIN_VERSION} REQUIRED
+  COMPONENTS Core
+             DBus
+             Gui
+             Quick
+             QuickControls2
+             UiTools
+             Widgets)
 
-find_package(KF6 ${KF6_MIN_VERSION} REQUIRED COMPONENTS BluezQt CoreAddons DBusAddons I18n Kirigami QQC2DesktopStyle)
+find_package(
+  KF6 ${KF6_MIN_VERSION} REQUIRED COMPONENTS BluezQt CoreAddons DBusAddons I18n
+                                             Kirigami QQC2DesktopStyle)
 
-ecm_set_disabled_deprecation_versions(QT 6.7
-    KF 6.4.0
-)
+ecm_set_disabled_deprecation_versions(QT 6.7 KF 6.4.0)
 
 add_subdirectory(src)

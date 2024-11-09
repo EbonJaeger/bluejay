@@ -18,8 +18,8 @@
 
 #pragma once
 
-#include <QQmlEngine>
 #include <BluezQt/Request>
+#include <QQmlEngine>
 
 /**
  * @class Bluejay::VoidRequest voidrequest.h <Bluejay/VoidRequest>

@@ -33,15 +33,14 @@ Controls.ItemDelegate {
     required property var model
 
     function infoText(device: BluezQt.Device): string {
-        const { battery } = device;
+        const {
+            battery
+        } = device;
         const labels = [];
-
         labels.push(Script.deviceTypeToString(device));
-
         if (battery) {
             labels.push(i18n("%1% Battery", battery.percentage));
         }
-
         return labels.join(" · ");
     }
 
