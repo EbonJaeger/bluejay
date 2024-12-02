@@ -62,33 +62,25 @@ QVariant DevicesProxyModel::data(const QModelIndex &index, int role) const
 
 bool DevicesProxyModel::lessThan(const QModelIndex &left, const QModelIndex &right) const
 {
-    auto leftPaired = left.data(BluezQt::DevicesModel::PairedRole).toBool();
-    auto rightPaired = left.data(BluezQt::DevicesModel::PairedRole).toBool();
-    auto leftTrusted = left.data(BluezQt::DevicesModel::TrustedRole).toBool();
-    auto rightTrusted = left.data(BluezQt::DevicesModel::TrustedRole).toBool();
+    const auto leftPaired = left.data(BluezQt::DevicesModel::PairedRole).toBool();
+    const auto rightPaired = left.data(BluezQt::DevicesModel::PairedRole).toBool();
+    const auto leftTrusted = left.data(BluezQt::DevicesModel::TrustedRole).toBool();
+    const auto rightTrusted = left.data(BluezQt::DevicesModel::TrustedRole).toBool();
 
     // Paired and trusted (thus setup) devices first
-    auto leftSetup = leftPaired || leftTrusted;
-    auto rightSetup = rightPaired || rightTrusted;
+    const auto leftSetup = leftPaired || leftTrusted;
+    const auto rightSetup = rightPaired || rightTrusted;
 
     if (leftSetup != rightSetup) {
-        if (leftSetup) {
-            return false;
-        } else {
-            return true;
-        }
+        return !leftSetup;
     }
 
     // Then connected devices
-    auto leftConnected = left.data(BluezQt::DevicesModel::ConnectedRole).toBool();
-    auto rightConnected = right.data(BluezQt::DevicesModel::ConnectedRole).toBool();
+    const auto leftConnected = left.data(BluezQt::DevicesModel::ConnectedRole).toBool();
+    const auto rightConnected = right.data(BluezQt::DevicesModel::ConnectedRole).toBool();
 
     if (leftConnected != rightConnected) {
-        if (leftConnected) {
-            return false;
-        } else {
-            return true;
-        }
+        return !leftConnected;
     }
 
     // All else fails, sort alphabetically
@@ -97,15 +89,6 @@ bool DevicesProxyModel::lessThan(const QModelIndex &left, const QModelIndex &rig
 
     return QString::localeAwareCompare(leftName, rightName) > 0;
 }
-
-// bool DevicesProxyModel::filterAcceptsRow(int source_row, const QModelIndex &source_parent) const
-//{
-//     const auto index = sourceModel()->index(source_row, 0, source_parent);
-//
-//     // Only show paired and connected devices
-//     return index.data(BluezQt::DevicesModel::PairedRole).toBool() ||
-//            index.data(BluezQt::DevicesModel::ConnectedRole).toBool();
-// }
 
 /**
  * @brief DevicesProxyModel::adapterHciString
@@ -116,13 +99,13 @@ bool DevicesProxyModel::lessThan(const QModelIndex &left, const QModelIndex &rig
  */
 QString DevicesProxyModel::adapterHciString(const QString &ubi) const
 {
-    auto startIndex = ubi.indexOf(QLatin1String("/hci")) + 1;
+    const auto startIndex = ubi.indexOf(QLatin1String("/hci")) + 1;
 
     if (startIndex < 1) {
         return {};
     }
 
-    auto endIndex = ubi.indexOf(QLatin1Char('/'), startIndex);
+    const auto endIndex = ubi.indexOf(QLatin1Char('/'), startIndex);
 
     if (endIndex == -1) {
         return ubi.mid(startIndex);
