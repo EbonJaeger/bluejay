@@ -25,6 +25,8 @@
 #include <QStandardPaths>
 #include <QXmlStreamReader>
 
+using namespace Bluejay;
+
 BtAgent::BtAgent(QObject *parent)
     : Agent(parent)
     , i_fromDatabase(false)

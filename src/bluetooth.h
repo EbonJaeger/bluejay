@@ -22,6 +22,8 @@
 
 #include "btagent.h"
 
+namespace Bluejay
+{
 /**
  * @class Bluetooth
  *
@@ -133,19 +135,19 @@ public:
      */
     Q_INVOKABLE static QString deviceTypeToString(BluezQt::Device::Type type, const QStringList &uuids) ;
 
-public Q_SLOTS:
-    void adapterAdded(const BluezQt::AdapterPtr& adapter);
+    public Q_SLOTS:
+        void adapterAdded(const BluezQt::AdapterPtr& adapter);
     void bluetoothBlockedChanged(bool blocked);
     void bluetoothOperationalChanged(bool operational);
     void slotDiscoveringChanged(bool discovering);
 
-Q_SIGNALS:
-    /**
-     * @brief Blocked state changed
-     *
-     * If rfkill is turned on or off, this signal will be emitted.
-     */
-    void blockedChanged();
+    Q_SIGNALS:
+        /**
+         * @brief Blocked state changed
+         *
+         * If rfkill is turned on or off, this signal will be emitted.
+         */
+        void blockedChanged();
 
     /**
      * @brief Discovering state changed
@@ -203,3 +205,4 @@ private:
      */
     void setDiscoveryFilter(const BluezQt::AdapterPtr& adapter) const;
 };
+}

@@ -21,6 +21,8 @@
 #include <BluezQt/Request>
 #include <QQmlEngine>
 
+namespace Bluejay
+{
 /**
  * @class Bluejay::VoidRequest voidrequest.h <Bluejay/VoidRequest>
  *
@@ -72,3 +74,4 @@ public:
 private:
     BluezQt::Request<void> m_request;
 };
+}

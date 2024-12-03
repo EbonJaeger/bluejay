@@ -18,6 +18,8 @@
 
 #include "voidrequest.h"
 
+using namespace Bluejay;
+
 VoidRequest::VoidRequest(const BluezQt::Request<void> &request, QObject *parent)
     : QObject(parent)
     , m_request(request)

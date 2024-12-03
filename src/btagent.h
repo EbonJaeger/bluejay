@@ -23,6 +23,8 @@
 
 #include "voidrequest.h"
 
+namespace Bluejay
+{
 class BtAgent : public BluezQt::Agent
 {
     Q_OBJECT
@@ -42,11 +44,12 @@ public:
     void displayPasskey(BluezQt::DevicePtr device, const QString &passkey, const QString &entered) override;
     void requestConfirmation(BluezQt::DevicePtr device, const QString &passkey, const BluezQt::Request<void> &request) override;
 
-Q_SIGNALS:
-    void pinRequested(QString deviceName, const QString &pin);
+    Q_SIGNALS:
+        void pinRequested(QString deviceName, const QString &pin);
     void confirmationRequested(QString deviceName, const QString &passkey, const VoidRequest *request);
 
 private:
     bool i_fromDatabase;
     QString m_pin;
 };
+}

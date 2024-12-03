@@ -24,6 +24,8 @@
 
 #include "bluetooth.h"
 
+using namespace Bluejay;
+
 Bluetooth::Bluetooth(QObject *parent)
     : QObject(parent)
     , m_agent(new BtAgent(this))
