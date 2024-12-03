@@ -27,8 +27,7 @@ ecm_target_qml_sources(
   qml/DeviceDelegate.qml
   qml/DevicePage.qml
   qml/PasskeyDialog.qml
-  qml/WelcomePage.qml
-  qml/script.js)
+  qml/WelcomePage.qml)
 
 target_link_libraries(
   bluejay

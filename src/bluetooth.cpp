@@ -16,6 +16,8 @@
  * file, You can obtain one at <https://mozilla.org/MPL/2.0/>.
  */
 
+#include <BluezQt/Services>
+
 #include "bluetooth.h"
 
 Bluetooth::Bluetooth(QObject *parent)
@@ -195,6 +197,98 @@ void Bluetooth::setDiscoveryFilter(BluezQt::AdapterPtr adapter) const
 
     filter.insert("Discoverable", true);
     adapter->setDiscoveryFilter(filter);
+}
+
+QString Bluetooth::deviceTypeToString(const BluezQt::Device::Type type, const QStringList &uuids)
+{
+    switch (type) {
+    case BluezQt::Device::Phone:
+        //: Used to show the type of the Bluetooth device
+        return tr("Phone");
+    case BluezQt::Device::Modem:
+        //: Used to show the type of the Bluetooth device
+        return tr("Modem");
+    case BluezQt::Device::Computer:
+        //: Used to show the type of the Bluetooth device
+        return tr("Computer");
+    case BluezQt::Device::Network:
+        //: Used to show the type of the Bluetooth device
+        return tr("Network");
+    case BluezQt::Device::Headset:
+        //: Used to show the type of the Bluetooth device
+        return tr("Headset");
+    case BluezQt::Device::Headphones:
+        //: Used to show the type of the Bluetooth device
+        return tr("Headphones");
+    case BluezQt::Device::AudioVideo:
+        //: Used to show the type of the Bluetooth device
+        return tr("Multimedia");
+    case BluezQt::Device::Keyboard:
+        //: Used to show the type of the Bluetooth device
+        return tr("Keyboard");
+    case BluezQt::Device::Mouse:
+        //: Used to show the type of the Bluetooth device
+        return tr("Mouse");
+    case BluezQt::Device::Joypad:
+        //: Used to show the type of the Bluetooth device
+        return tr("Joypad");
+    case BluezQt::Device::Tablet:
+        //: Used to show the type of the Bluetooth device
+        return tr("Tablet");
+    case BluezQt::Device::Peripheral:
+        //: Used to show the type of the Bluetooth device
+        return tr("Peripheral");
+    case BluezQt::Device::Camera:
+        //: Used to show the type of the Bluetooth device
+        return tr("Camera");
+    case BluezQt::Device::Printer:
+        //: Used to show the type of the Bluetooth device
+        return tr("Printer");
+    case BluezQt::Device::Imaging:
+        //: Used to show the type of the Bluetooth device
+        return tr("Imaging");
+    case BluezQt::Device::Wearable:
+        //: Used to show the type of the Bluetooth device
+        return tr("Wearable");
+    case BluezQt::Device::Toy:
+        //: Used to show the type of the Bluetooth device
+        return tr("Toy");
+    case BluezQt::Device::Health:
+        //: Used to show the type of the Bluetooth device
+        return tr("Health");
+    default:
+        QStringList profiles;
+
+        if (uuids.contains(BluezQt::Services::ObexFileTransfer)) {
+            profiles.append(tr("File transfer"));
+        }
+
+        if (uuids.contains(BluezQt::Services::ObexObjectPush)) {
+            profiles.append(tr("Send file"));
+        }
+
+        if (uuids.contains(BluezQt::Services::HumanInterfaceDevice)) {
+            //: Used to show the type of the Bluetooth device
+            profiles.append(tr("Input"));
+        }
+
+        if (uuids.contains(BluezQt::Services::AdvancedAudioDistribution)) {
+            //: Used to show the type of the Bluetooth device
+            profiles.append(tr("Audio"));
+        }
+
+        if (uuids.contains(BluezQt::Services::Nap)) {
+            //: Used to show the type of the Bluetooth device
+            profiles.append(tr("Network"));
+        }
+
+        if (profiles.empty()) {
+            //: Used to show the type of the Bluetooth device
+            profiles.append(tr("Other"));
+        }
+
+        return profiles.join(", ");
+    }
 }
 
 QString Bluetooth::errorText(int code) const

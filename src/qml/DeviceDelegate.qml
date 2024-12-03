@@ -25,8 +25,6 @@ import org.kde.kirigami.delegates as Delegates
 
 import org.kde.bluezqt as BluezQt
 
-import "script.js" as Script
-
 Controls.ItemDelegate {
     id: delegate
 
@@ -34,10 +32,12 @@ Controls.ItemDelegate {
 
     function infoText(device: BluezQt.Device): string {
         const {
-            battery
+            battery,
+            type,
+            uuids
         } = device;
         const labels = [];
-        labels.push(Script.deviceTypeToString(device));
+        labels.push(Bluetooth.deviceTypeToString(type, uuids));
         if (battery) {
             labels.push(i18n("%1% Battery", battery.percentage));
         }

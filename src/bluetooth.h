@@ -92,7 +92,7 @@ public:
 
     /**
      * Turns Bluetooth on or off, depending on whether
-     * Bluetooth is corrently on or off.
+     * Bluetooth is currently on or off.
      *
      * If Bluetooth is currently disabled, it will be
      * turned on. Likewise, if Bluetooth is enabled,
@@ -119,7 +119,7 @@ public:
     Q_INVOKABLE void setDiscovering(bool discovering);
 
     /**
-     * @brief Turn Bluez errors into a useable message.
+     * @brief Turn Bluez errors into a usable message.
      *
      * Turns Bluez error codes into message suitable for
      * displaying to the user.
@@ -127,6 +127,16 @@ public:
      * @param code The numerical error code
      */
     Q_INVOKABLE QString errorText(int code) const;
+
+    /**
+     * @brief Get a localized string for a device's type.
+     *
+     * Gets the appropriate localized string for a device's type.
+     *
+     * @param type The type of the Bluetooth device
+     * @param uuids The UUIDs of the Bluetooth device
+     */
+    Q_INVOKABLE static QString deviceTypeToString(BluezQt::Device::Type type, const QStringList &uuids) ;
 
 public Q_SLOTS:
     void adapterAdded(BluezQt::AdapterPtr adapter);
@@ -162,7 +172,7 @@ Q_SIGNALS:
      *
      * When an error occurs, we want to show it in the UI.
      * Since we only want to display error text, we don't need
-     * the entirity of BluezQt's error/PendingCall class.
+     * the entirety of BluezQt's error/PendingCall class.
      */
     void errorOccurred(QString errorText) const;
 
@@ -194,7 +204,7 @@ private:
      * filter on the given adapter to only show discoverable
      * devices.
      *
-     * @param adapter The Bluetooth adapater
+     * @param adapter The Bluetooth adapter
      */
     void setDiscoveryFilter(BluezQt::AdapterPtr adapter) const;
 };

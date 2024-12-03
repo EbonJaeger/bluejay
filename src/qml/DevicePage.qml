@@ -24,8 +24,6 @@ import QtQuick.Layouts
 import org.kde.bluezqt as BluezQt
 import org.kde.kirigami as Kirigami
 
-import "script.js" as Script
-
 Kirigami.Page {
     id: devicePage
 
@@ -82,7 +80,7 @@ Kirigami.Page {
         }
 
         Controls.Label {
-            text: Script.deviceTypeToString(device)
+            text: Bluetooth.deviceTypeToString(device.type, device.uuids)
             Kirigami.FormData.label: i18n("Type:")
         }
 
