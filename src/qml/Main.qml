@@ -48,6 +48,24 @@ Kirigami.ApplicationWindow {
     Connections {
         target: Bluejay.Bluetooth
 
+        function onBlockedChanged(): void {
+            if (!Bluejay.Bluetooth.blocked) {
+                // Go back to the welcome page if Bluetooth is blocked
+                if (pageStack.items.length === 2) {
+                    pageStack.pop();
+                }
+            }
+        }
+
+        function onEnabledChanged(): void {
+            if (!Bluejay.Bluetooth.enabled) {
+                // Go back to the welcome page if Bluetooth is disabled
+                if (pageStack.items.length === 2) {
+                    pageStack.pop();
+                }
+            }
+        }
+
         function onErrorOccurred(errorText: string): void {
             showPassiveNotification(errorText);
         }
