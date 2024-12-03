@@ -25,6 +25,8 @@ import org.kde.kirigami.delegates as Delegates
 
 import org.kde.bluezqt as BluezQt
 
+import com.github.ebonjaeger.bluejay as Bluejay
+
 Controls.ItemDelegate {
     id: delegate
 
@@ -37,7 +39,7 @@ Controls.ItemDelegate {
             uuids
         } = device;
         const labels = [];
-        labels.push(Bluetooth.deviceTypeToString(type, uuids));
+        labels.push(Bluejay.Bluetooth.deviceTypeToString(type, uuids));
         if (battery) {
             labels.push(i18n("%1% Battery", battery.percentage));
         }

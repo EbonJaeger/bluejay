@@ -24,6 +24,8 @@ import QtQuick.Layouts
 import org.kde.bluezqt as BluezQt
 import org.kde.kirigami as Kirigami
 
+import com.github.ebonjaeger.bluejay as Bluejay
+
 Kirigami.Page {
     id: devicePage
 
@@ -34,7 +36,7 @@ Kirigami.Page {
         call.finished.connect(call => {
             busyIndicator.running = false;
             if (call.error) {
-                var message = Bluetooth.errorText(call.error);
+                var message = Bluejay.Bluetooth.errorText(call.error);
                 root.showPassiveNotification(message);
             }
         });
@@ -80,7 +82,7 @@ Kirigami.Page {
         }
 
         Controls.Label {
-            text: Bluetooth.deviceTypeToString(device.type, device.uuids)
+            text: Bluejay.Bluetooth.deviceTypeToString(device.type, device.uuids)
             Kirigami.FormData.label: i18n("Type:")
         }
 
