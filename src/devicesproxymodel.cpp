@@ -22,7 +22,7 @@ DevicesProxyModel::DevicesProxyModel(QObject *parent)
     : QSortFilterProxyModel(parent)
 {
     setDynamicSortFilter(true);
-    sort(0, Qt::DescendingOrder);
+    QSortFilterProxyModel::sort(0, Qt::DescendingOrder);
 }
 
 QHash<int, QByteArray> DevicesProxyModel::roleNames() const
@@ -34,7 +34,7 @@ QHash<int, QByteArray> DevicesProxyModel::roleNames() const
     return roles;
 }
 
-QVariant DevicesProxyModel::data(const QModelIndex &index, int role) const
+QVariant DevicesProxyModel::data(const QModelIndex &index, const int role) const
 {
     switch (role) {
     case SectionRole:
@@ -97,7 +97,7 @@ bool DevicesProxyModel::lessThan(const QModelIndex &left, const QModelIndex &rig
  * @param ubi the UBI of the Bluetooth device
  * @return "hciX" part from UBI "/org/bluez/hciX/dev_xx_xx_xx_xx_xx_xx"
  */
-QString DevicesProxyModel::adapterHciString(const QString &ubi) const
+QString DevicesProxyModel::adapterHciString(const QString &ubi)
 {
     const auto startIndex = ubi.indexOf(QLatin1String("/hci")) + 1;
 

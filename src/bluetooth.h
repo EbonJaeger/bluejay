@@ -20,11 +20,6 @@
 
 #include <QQmlEngine>
 
-#include <BluezQt/Adapter>
-#include <BluezQt/InitManagerJob>
-#include <BluezQt/Manager>
-#include <BluezQt/PendingCall>
-
 #include "btagent.h"
 
 /**
@@ -49,9 +44,9 @@ class Bluetooth : public QObject
     Q_PROPERTY(bool enabled READ enabled NOTIFY enabledChanged)
 
 public:
-    virtual ~Bluetooth();
+    ~Bluetooth() override;
     static Bluetooth &instance();
-    static Bluetooth *create(QQmlEngine *engine, QJSEngine *)
+    static Bluetooth *create(const QQmlEngine *engine, QJSEngine *)
     {
         engine->setObjectOwnership(&instance(), QQmlEngine::CppOwnership);
         return &instance();
@@ -126,7 +121,7 @@ public:
      *
      * @param code The numerical error code
      */
-    Q_INVOKABLE QString errorText(int code) const;
+    Q_INVOKABLE static QString errorText(int code) ;
 
     /**
      * @brief Get a localized string for a device's type.
@@ -139,7 +134,7 @@ public:
     Q_INVOKABLE static QString deviceTypeToString(BluezQt::Device::Type type, const QStringList &uuids) ;
 
 public Q_SLOTS:
-    void adapterAdded(BluezQt::AdapterPtr adapter);
+    void adapterAdded(const BluezQt::AdapterPtr& adapter);
     void bluetoothBlockedChanged(bool blocked);
     void bluetoothOperationalChanged(bool operational);
     void slotDiscoveringChanged(bool discovering);
@@ -194,7 +189,7 @@ private:
      * @param adapter The adapter to set the state for
      * @param discovering Whether to start or stop discovering
      */
-    void setDiscovering(BluezQt::AdapterPtr adapter, bool discovering) const;
+    void setDiscovering(const BluezQt::AdapterPtr& adapter, bool discovering) const;
 
     /**
      * @brief Set the discovery filter.
@@ -206,5 +201,5 @@ private:
      *
      * @param adapter The Bluetooth adapter
      */
-    void setDiscoveryFilter(BluezQt::AdapterPtr adapter) const;
+    void setDiscoveryFilter(const BluezQt::AdapterPtr& adapter) const;
 };

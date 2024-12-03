@@ -16,6 +16,10 @@
  * file, You can obtain one at <https://mozilla.org/MPL/2.0/>.
  */
 
+#include <BluezQt/Adapter>
+#include <BluezQt/InitManagerJob>
+#include <BluezQt/Manager>
+#include <BluezQt/PendingCall>
 #include <BluezQt/Services>
 
 #include "bluetooth.h"
@@ -28,12 +32,12 @@ Bluetooth::Bluetooth(QObject *parent)
     , m_discovering(false)
     , m_enabled(true)
 {
-    auto job = m_manager->init();
+    const auto job = m_manager->init();
 
-    connect(job, &BluezQt::InitManagerJob::result, this, [this](BluezQt::InitManagerJob *job) {
-        if (job->error()) {
-            qWarning() << "Error initializing the BluezQt Manager: " << job->errorText();
-            emit errorOccurred(job->errorText());
+    connect(job, &BluezQt::InitManagerJob::result, this, [this](const BluezQt::InitManagerJob *j) {
+        if (j->error()) {
+            qWarning() << "Error initializing the BluezQt Manager: " << j->errorText();
+            emit errorOccurred(j->errorText());
             return;
         }
 
@@ -45,7 +49,7 @@ Bluetooth::Bluetooth(QObject *parent)
         connect(m_manager, &BluezQt::Manager::bluetoothOperationalChanged, this, &Bluetooth::bluetoothOperationalChanged);
 
         // Set the discovery filter for all current Bluetooth adapters
-        for (auto adapter : m_manager->adapters()) {
+        for (const auto& adapter : m_manager->adapters()) {
             setDiscoveryFilter(adapter);
 
             // Set the initial discovery state
@@ -67,7 +71,7 @@ Bluetooth::~Bluetooth()
 {
     // Turn off discovering on adapters on exit
     if (m_discovering) {
-        for (auto &adapter : m_manager->adapters()) {
+        for (const auto &adapter : m_manager->adapters()) {
             setDiscovering(adapter, false);
         }
     }
@@ -79,13 +83,13 @@ Bluetooth &Bluetooth::instance()
     return _instance;
 }
 
-void Bluetooth::adapterAdded(BluezQt::AdapterPtr adapter)
+void Bluetooth::adapterAdded(const BluezQt::AdapterPtr& adapter)
 {
     setDiscoveryFilter(adapter);
     connect(adapter.get(), &BluezQt::Adapter::discoveringChanged, this, &Bluetooth::slotDiscoveringChanged);
 }
 
-void Bluetooth::bluetoothBlockedChanged(bool blocked)
+void Bluetooth::bluetoothBlockedChanged(const bool blocked)
 {
     if (m_blocked == blocked) {
         return;
@@ -95,7 +99,7 @@ void Bluetooth::bluetoothBlockedChanged(bool blocked)
     Q_EMIT blockedChanged();
 }
 
-void Bluetooth::bluetoothOperationalChanged(bool operational)
+void Bluetooth::bluetoothOperationalChanged(const bool operational)
 {
     if (operational) {
         m_manager->registerAgent(m_agent);
@@ -107,7 +111,7 @@ void Bluetooth::bluetoothOperationalChanged(bool operational)
     Q_EMIT enabledChanged();
 }
 
-void Bluetooth::slotDiscoveringChanged(bool discovering)
+void Bluetooth::slotDiscoveringChanged(const bool discovering)
 {
     setDiscovering(discovering);
 }
@@ -126,7 +130,7 @@ void Bluetooth::disable() const
 {
     m_manager->setBluetoothBlocked(true);
 
-    for (auto &adapter : m_manager->adapters()) {
+    for (const auto &adapter : m_manager->adapters()) {
         adapter->setPowered(false);
     }
 }
@@ -135,7 +139,7 @@ void Bluetooth::enable() const
 {
     m_manager->setBluetoothBlocked(false);
 
-    for (auto &adapter : m_manager->adapters()) {
+    for (const auto &adapter : m_manager->adapters()) {
         adapter->setPowered(true);
     }
 }
@@ -159,7 +163,7 @@ bool Bluetooth::discovering() const
     return m_discovering;
 }
 
-void Bluetooth::setDiscovering(bool discovering)
+void Bluetooth::setDiscovering(const bool discovering)
 {
     if (m_discovering == discovering) {
         return;
@@ -168,12 +172,12 @@ void Bluetooth::setDiscovering(bool discovering)
     m_discovering = discovering;
     emit discoveringChanged();
 
-    for (auto &adapter : m_manager->adapters()) {
+    for (const auto &adapter : m_manager->adapters()) {
         setDiscovering(adapter, m_discovering);
     }
 }
 
-void Bluetooth::setDiscovering(BluezQt::AdapterPtr adapter, bool discovering) const
+void Bluetooth::setDiscovering(const BluezQt::AdapterPtr& adapter, const bool discovering) const
 {
     if (!m_manager->isBluetoothOperational() || m_manager->isBluetoothBlocked()) {
         return;
@@ -187,7 +191,7 @@ void Bluetooth::setDiscovering(BluezQt::AdapterPtr adapter, bool discovering) co
     discovering ? adapter->startDiscovery() : adapter->stopDiscovery();
 }
 
-void Bluetooth::setDiscoveryFilter(BluezQt::AdapterPtr adapter) const
+void Bluetooth::setDiscoveryFilter(const BluezQt::AdapterPtr& adapter) const
 {
     if (!m_manager->isBluetoothOperational() || m_manager->isBluetoothBlocked()) {
         return;
@@ -291,7 +295,7 @@ QString Bluetooth::deviceTypeToString(const BluezQt::Device::Type type, const QS
     }
 }
 
-QString Bluetooth::errorText(int code) const
+QString Bluetooth::errorText(const int code)
 {
     QString message;
 

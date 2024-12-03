@@ -43,7 +43,7 @@ public:
     /**
      * Destroys a VoidRequest object.
      */
-    virtual ~VoidRequest();
+    ~VoidRequest() override;
 
     /**
      * Accepts the request.

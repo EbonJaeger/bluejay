@@ -33,13 +33,13 @@ public:
         DeviceFullNameRole = BluezQt::DevicesModel::LastRole + 11,
     };
 
-    DevicesProxyModel(QObject *parent = nullptr);
+    explicit DevicesProxyModel(QObject *parent = nullptr);
 
     QHash<int, QByteArray> roleNames() const override;
     QVariant data(const QModelIndex &index, int role) const override;
     bool lessThan(const QModelIndex &left, const QModelIndex &right) const override;
 
-    Q_INVOKABLE QString adapterHciString(const QString &ubi) const;
+    Q_INVOKABLE static QString adapterHciString(const QString &ubi);
 
 private:
     bool duplicateIndexAddress(const QModelIndex &index) const;

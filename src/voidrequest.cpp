@@ -25,8 +25,7 @@ VoidRequest::VoidRequest(const BluezQt::Request<void> &request, QObject *parent)
 }
 
 VoidRequest::~VoidRequest()
-{
-}
+= default;
 
 void VoidRequest::accept() const
 {

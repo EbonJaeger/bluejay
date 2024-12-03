@@ -26,7 +26,8 @@
 #include <QXmlStreamReader>
 
 BtAgent::BtAgent(QObject *parent)
-    : BluezQt::Agent(parent)
+    : Agent(parent)
+    , i_fromDatabase(false)
 {
 }
 
@@ -35,13 +36,13 @@ QString BtAgent::pin() const
     return m_pin;
 }
 
-void BtAgent::setPin(const QString pin)
+void BtAgent::setPin(const QString& pin)
 {
     m_pin = pin;
     i_fromDatabase = false;
 }
 
-QString BtAgent::generatePin(BluezQt::DevicePtr device)
+QString BtAgent::generatePin(const BluezQt::DevicePtr& device)
 {
     i_fromDatabase = false;
     m_pin = QString::number(QRandomGenerator::global()->bounded(RAND_MAX)).left(6);
@@ -95,7 +96,7 @@ QString BtAgent::generatePin(BluezQt::DevicePtr device)
 
         // Generate a new PIN if the device only supports a maximum number of characters
         if (m_pin.startsWith("max:")) {
-            auto num = m_pin.right(m_pin.length() - 4).toInt();
+            const auto num = m_pin.right(m_pin.length() - 4).toInt();
             m_pin = QString::number(QRandomGenerator::global()->bounded(RAND_MAX)).left(num);
         }
 
@@ -111,27 +112,27 @@ QDBusObjectPath BtAgent::objectPath() const
     return QDBusObjectPath(QStringLiteral("/agent"));
 }
 
-void BtAgent::requestPinCode(BluezQt::DevicePtr device, const BluezQt::Request<QString> &request)
+void BtAgent::requestPinCode(const BluezQt::DevicePtr device, const BluezQt::Request<QString> &request)
 {
     qDebug() << "AGENT-RequestPinCode" << device->ubi();
     Q_EMIT pinRequested(device->name(), m_pin);
     request.accept(m_pin);
 }
 
-void BtAgent::displayPinCode(BluezQt::DevicePtr device, const QString &pinCode)
+void BtAgent::displayPinCode(const BluezQt::DevicePtr device, const QString &pinCode)
 {
     qDebug() << "AGENT-DisplayPinCode" << device->ubi() << pinCode;
     Q_EMIT pinRequested(device->name(), pinCode);
 }
 
-void BtAgent::requestPasskey(BluezQt::DevicePtr device, const BluezQt::Request<quint32> &request)
+void BtAgent::requestPasskey(const BluezQt::DevicePtr device, const BluezQt::Request<quint32> &request)
 {
     const auto pin = generatePin(device);
     qDebug() << "AGENT-RequestPasskey" << device->ubi() << pin;
     request.accept(pin.toUInt());
 }
 
-void BtAgent::displayPasskey(BluezQt::DevicePtr device, const QString &passkey, const QString &entered)
+void BtAgent::displayPasskey(const BluezQt::DevicePtr device, const QString &passkey, const QString &entered)
 {
     Q_UNUSED(entered);
 
@@ -139,7 +140,7 @@ void BtAgent::displayPasskey(BluezQt::DevicePtr device, const QString &passkey, 
     Q_EMIT pinRequested(device->name(), passkey);
 }
 
-void BtAgent::requestConfirmation(BluezQt::DevicePtr device, const QString &passkey, const BluezQt::Request<void> &request)
+void BtAgent::requestConfirmation(const BluezQt::DevicePtr device, const QString &passkey, const BluezQt::Request<void> &request)
 {
     qDebug() << "AGENT-RequestConfirmation" << device->ubi() << passkey;
     const auto v = new VoidRequest(request);

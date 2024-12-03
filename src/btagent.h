@@ -31,8 +31,8 @@ public:
     explicit BtAgent(QObject *parent = nullptr);
 
     QString pin() const;
-    void setPin(const QString pin);
-    QString generatePin(BluezQt::DevicePtr device);
+    void setPin(const QString& pin);
+    QString generatePin(const BluezQt::DevicePtr& device);
 
     QDBusObjectPath objectPath() const override;
 
@@ -43,8 +43,8 @@ public:
     void requestConfirmation(BluezQt::DevicePtr device, const QString &passkey, const BluezQt::Request<void> &request) override;
 
 Q_SIGNALS:
-    void pinRequested(const QString deviceName, const QString &pin);
-    void confirmationRequested(const QString deviceName, const QString &passkey, const VoidRequest *request);
+    void pinRequested(QString deviceName, const QString &pin);
+    void confirmationRequested(QString deviceName, const QString &passkey, const VoidRequest *request);
 
 private:
     bool i_fromDatabase;
