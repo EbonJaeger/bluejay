@@ -23,11 +23,12 @@ import QtQuick.Layouts
 
 import org.kde.bluezqt as BluezQt
 import org.kde.kirigami as Kirigami
+import org.kde.kirigamiaddons.formcard as FormCard
 
 import com.github.ebonjaeger.bluejay as Bluejay
 
-Kirigami.Page {
-    id: devicePage
+FormCard.FormCardPage {
+    id: page
 
     required property BluezQt.Device device
 
@@ -50,8 +51,8 @@ Kirigami.Page {
         onAccepted: {
             const {
                 adapter
-            } = device;
-            makeCall(adapter.removeDevice(device));
+            } = page.device;
+            page.makeCall(adapter.removeDevice(device));
         }
     }
 
@@ -60,7 +61,7 @@ Kirigami.Page {
 
         Kirigami.Heading {
             id: heading
-            text: device.name
+            text: page.device.name
             Layout.fillWidth: true
             Layout.leftMargin: Kirigami.Units.largeSpacing
             Layout.rightMargin: Kirigami.Units.largeSpacing
@@ -69,92 +70,118 @@ Kirigami.Page {
         }
     }
 
-    contentItem: Kirigami.FormLayout {
-        Kirigami.Icon {
-            source: device.icon
-            implicitWidth: 96
-            implicitHeight: 96
+    Kirigami.Icon {
+        Layout.fillWidth: true
+        source: page.device.icon
+        implicitWidth: 96
+        implicitHeight: 96
+    }
+
+    FormCard.FormHeader {
+        title: i18n("Status")
+    }
+
+    FormCard.FormCard {
+        FormCard.FormTextDelegate {
+            text: i18n("Address")
+            description: page.device.address
         }
 
-        Controls.Label {
-            text: device.address
-            Kirigami.FormData.label: i18n("Address:")
+        FormCard.FormTextDelegate {
+            text: i18n("Type")
+            description: Bluejay.Bluetooth.deviceTypeToString(device.type, device.uuids)
         }
 
-        Controls.Label {
-            text: Bluejay.Bluetooth.deviceTypeToString(device.type, device.uuids)
-            Kirigami.FormData.label: i18n("Type:")
+        FormCard.FormTextDelegate {
+            text: i18n("Paired")
+            description: page.device.paired ? i18n("Yes") : i18n("No")
         }
 
-        Controls.Label {
-            text: device.paired ? i18n("Yes") : i18n("No")
-            Kirigami.FormData.label: i18n("Paired:")
+        FormCard.FormTextDelegate {
+            text: i18n("Connected")
+            description: page.device.connected ? i18n("Yes") : i18n("No")
         }
 
-        Controls.Label {
-            text: device.connected ? i18n("Yes") : i18n("No")
-            Kirigami.FormData.label: i18n("Connected:")
+        FormCard.FormTextDelegate {
+            visible: page.device.battery !== null
+            text: i18n("Battery")
+            description: i18n("%1%", page.device.battery !== null ? page.device.battery.percentage : i18nc("Shown when there is no battery information for a device", "Unknown"))
+        }
+    }
+
+    FormCard.FormHeader {
+        title: i18n("Device Settings")
+    }
+
+    FormCard.FormCard {
+        FormCard.FormSectionText {
+            text: i18nc("Section header for access settings on a Bluetooth device", "Access")
         }
 
-        Controls.Label {
-            visible: device.battery !== null
-            text: i18n("%1%", device.battery !== null ? device.battery.percentage : i18nc("Shown when there is no battery information for a device", "Unknown"))
-            Kirigami.FormData.label: i18n("Battery:")
+        FormCard.FormSwitchDelegate {
+            id: trusted
+            enabled: !busyIndicator.running && page.device.paired
+            checked: page.device.trusted
+            text: i18n("Trusted")
+            description: i18n("Allow incoming connections from this device without confirmation")
+            onToggled: Bluejay.Bluetooth.setDeviceTrusted(page.device.address, checked)
         }
 
-        Controls.CheckBox {
-            id: trustedCheckbox
-            enabled: !busyIndicator.running && device.paired
-            checked: device.trusted
-            Kirigami.FormData.label: i18n("Trusted:")
-            onToggled: {
-                const trusted = !device.trusted;
-                Bluejay.Bluetooth.setDeviceTrusted(device.address, trusted);
-            }
-        }
-
-        Controls.CheckBox {
-            id: blockedCheckbox
+        FormCard.FormSwitchDelegate {
+            id: blocked
             enabled: !busyIndicator.running
-            checked: device.blocked
-            Kirigami.FormData.label: i18n("Blocked:")
-            onToggled: {
-                const blocked = !device.blocked;
-                Bluejay.Bluetooth.setDeviceBlocked(device.address, blocked);
+            checked: page.device.blocked
+            text: i18n("Blocked")
+            description: i18n("Reject incoming connections from this device")
+            onToggled: Bluejay.Bluetooth.setDeviceBlocked(page.device.address, checked)
+        }
+
+        Kirigami.Separator {
+            Layout.leftMargin: Kirigami.Units.largeSpacing
+            Layout.rightMargin: Kirigami.Units.largeSpacing
+            Layout.fillWidth: true
+        }
+
+        FormCard.FormSectionText {
+            text: i18nc("Section header for device management", "Manage")
+        }
+
+        FormButton {
+            text: i18n("Pair")
+            description: i18n("Pair with this device")
+            visible: !page.device.paired
+            onClicked: page.makeCall(page.device.pair())
+        }
+
+        FormButton {
+            text: if (page.device.connected) {
+                return i18n("Disconnect")
+            } else {
+                return i18n("Connect")
             }
+            description: if (page.device.connected) {
+                return i18n("Disconnect from this device")
+            } else {
+                return i18n("Connect to this device")
+            }
+            onClicked: {
+                if (page.device.connected) {
+                    page.makeCall(page.device.disconnectFromDevice());
+                } else {
+                    page.makeCall(page.device.connectToDevice());
+                }
+            }
+        }
+
+        FormButton {
+            text: i18n("Forget")
+            description: i18n("Forget this device")
+            visible: page.device.paired
+            onClicked: forgetDialog.open()
         }
     }
 
     footer: Kirigami.ActionToolBar {
-        actions: [
-            Kirigami.Action {
-                text: i18n("Forget")
-                tooltip: i18n("Forget this device")
-                visible: device.paired
-                enabled: !busyIndicator.running
-                onTriggered: forgetDialog.open()
-            },
-            Kirigami.Action {
-                text: i18n("Pair")
-                tooltip: i18n("Start pairing process")
-                visible: !device.paired
-                enabled: !busyIndicator.running
-                onTriggered: makeCall(device.pair())
-            },
-            Kirigami.Action {
-                text: device.connected ? i18n("Disconnect") : i18n("Connect")
-                tooltip: device.connected ? i18n("Disconnect from this device") : i18n("Connect to this device")
-                enabled: !busyIndicator.running
-                onTriggered: {
-                    if (device.connected) {
-                        makeCall(device.disconnectFromDevice());
-                    } else {
-                        makeCall(device.connectToDevice());
-                    }
-                }
-            }
-        ]
-
         alignment: Qt.AlignRight
 
         anchors.left: parent.left

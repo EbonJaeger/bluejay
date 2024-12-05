@@ -22,6 +22,7 @@ target_sources(
 ecm_target_qml_sources(
   bluejay
   SOURCES
+  qml/components/FormButton.qml
   qml/Main.qml
   qml/ConfirmationDialog.qml
   qml/DeviceDelegate.qml
