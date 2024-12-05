@@ -51,7 +51,7 @@ Bluetooth::Bluetooth(QObject *parent)
         connect(m_manager, &BluezQt::Manager::bluetoothOperationalChanged, this, &Bluetooth::bluetoothOperationalChanged);
 
         // Set the discovery filter for all current Bluetooth adapters
-        for (const auto& adapter : m_manager->adapters()) {
+        for (const auto &adapter : m_manager->adapters()) {
             setDiscoveryFilter(adapter);
 
             // Set the initial discovery state
@@ -85,7 +85,7 @@ Bluetooth &Bluetooth::instance()
     return _instance;
 }
 
-void Bluetooth::adapterAdded(const BluezQt::AdapterPtr& adapter)
+void Bluetooth::adapterAdded(const BluezQt::AdapterPtr &adapter)
 {
     setDiscoveryFilter(adapter);
     connect(adapter.get(), &BluezQt::Adapter::discoveringChanged, this, &Bluetooth::slotDiscoveringChanged);
@@ -179,7 +179,7 @@ void Bluetooth::setDiscovering(const bool discovering)
     }
 }
 
-void Bluetooth::setDiscovering(const BluezQt::AdapterPtr& adapter, const bool discovering) const
+void Bluetooth::setDiscovering(const BluezQt::AdapterPtr &adapter, const bool discovering) const
 {
     if (!m_manager->isBluetoothOperational() || m_manager->isBluetoothBlocked()) {
         return;
@@ -193,7 +193,7 @@ void Bluetooth::setDiscovering(const BluezQt::AdapterPtr& adapter, const bool di
     discovering ? adapter->startDiscovery() : adapter->stopDiscovery();
 }
 
-void Bluetooth::setDiscoveryFilter(const BluezQt::AdapterPtr& adapter) const
+void Bluetooth::setDiscoveryFilter(const BluezQt::AdapterPtr &adapter) const
 {
     if (!m_manager->isBluetoothOperational() || m_manager->isBluetoothBlocked()) {
         return;
@@ -295,6 +295,30 @@ QString Bluetooth::deviceTypeToString(const BluezQt::Device::Type type, const QS
 
         return profiles.join(", ");
     }
+}
+
+void Bluetooth::setDeviceTrusted(const QString &address, bool trusted) const
+{
+    const auto device = m_manager->deviceForAddress(address);
+
+    if (!device) {
+        Q_EMIT errorOccurred(tr("Could not find device"));
+        return;
+    }
+
+    device->setTrusted(trusted);
+}
+
+void Bluetooth::setDeviceBlocked(const QString &address, bool blocked) const
+{
+    const auto device = m_manager->deviceForAddress(address);
+
+    if (!device) {
+        Q_EMIT errorOccurred(tr("Could not find device"));
+        return;
+    }
+
+    device->setBlocked(blocked);
 }
 
 QString Bluetooth::errorText(const int code)

@@ -123,7 +123,7 @@ public:
      *
      * @param code The numerical error code
      */
-    Q_INVOKABLE static QString errorText(int code) ;
+    Q_INVOKABLE static QString errorText(int code);
 
     /**
      * @brief Get a localized string for a device's type.
@@ -133,21 +133,43 @@ public:
      * @param type The type of the Bluetooth device
      * @param uuids The UUIDs of the Bluetooth device
      */
-    Q_INVOKABLE static QString deviceTypeToString(BluezQt::Device::Type type, const QStringList &uuids) ;
+    Q_INVOKABLE static QString deviceTypeToString(BluezQt::Device::Type type, const QStringList &uuids);
 
-    public Q_SLOTS:
-        void adapterAdded(const BluezQt::AdapterPtr& adapter);
+    /**
+     * @brief Set the trusted status of a device.
+     *
+     * Sets whether a device is trusted or not. Trusted devices
+     * are allowed to initiate connections without needing authorization,
+     * e.g. when sending a file.
+     *
+     * @param address The address of the device
+     * @param trusted The state to set
+     */
+    Q_INVOKABLE void setDeviceTrusted(const QString &address, bool trusted) const;
+
+    /**
+     * @brief Set the blocked status of a device.
+     *
+     * Sets whether a device is blocked from connecting.
+     *
+     * @param address The address of the device
+     * @param blocked The state to set
+     */
+    Q_INVOKABLE void setDeviceBlocked(const QString &address, bool blocked) const;
+
+public Q_SLOTS:
+    void adapterAdded(const BluezQt::AdapterPtr &adapter);
     void bluetoothBlockedChanged(bool blocked);
     void bluetoothOperationalChanged(bool operational);
     void slotDiscoveringChanged(bool discovering);
 
-    Q_SIGNALS:
-        /**
-         * @brief Blocked state changed
-         *
-         * If rfkill is turned on or off, this signal will be emitted.
-         */
-        void blockedChanged();
+Q_SIGNALS:
+    /**
+     * @brief Blocked state changed
+     *
+     * If rfkill is turned on or off, this signal will be emitted.
+     */
+    void blockedChanged();
 
     /**
      * @brief Discovering state changed
@@ -191,7 +213,7 @@ private:
      * @param adapter The adapter to set the state for
      * @param discovering Whether to start or stop discovering
      */
-    void setDiscovering(const BluezQt::AdapterPtr& adapter, bool discovering) const;
+    void setDiscovering(const BluezQt::AdapterPtr &adapter, bool discovering) const;
 
     /**
      * @brief Set the discovery filter.
@@ -203,6 +225,6 @@ private:
      *
      * @param adapter The Bluetooth adapter
      */
-    void setDiscoveryFilter(const BluezQt::AdapterPtr& adapter) const;
+    void setDiscoveryFilter(const BluezQt::AdapterPtr &adapter) const;
 };
 }

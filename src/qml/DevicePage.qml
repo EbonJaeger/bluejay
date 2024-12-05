@@ -92,11 +92,6 @@ Kirigami.Page {
         }
 
         Controls.Label {
-            text: device.trusted ? i18n("Yes") : i18n("No")
-            Kirigami.FormData.label: i18n("Trusted:")
-        }
-
-        Controls.Label {
             text: device.connected ? i18n("Yes") : i18n("No")
             Kirigami.FormData.label: i18n("Connected:")
         }
@@ -105,6 +100,28 @@ Kirigami.Page {
             visible: device.battery !== null
             text: i18n("%1%", device.battery !== null ? device.battery.percentage : i18nc("Shown when there is no battery information for a device", "Unknown"))
             Kirigami.FormData.label: i18n("Battery:")
+        }
+
+        Controls.CheckBox {
+            id: trustedCheckbox
+            enabled: !busyIndicator.running && device.paired
+            checked: device.trusted
+            Kirigami.FormData.label: i18n("Trusted:")
+            onToggled: {
+                const trusted = !device.trusted;
+                Bluejay.Bluetooth.setDeviceTrusted(device.address, trusted);
+            }
+        }
+
+        Controls.CheckBox {
+            id: blockedCheckbox
+            enabled: !busyIndicator.running
+            checked: device.blocked
+            Kirigami.FormData.label: i18n("Blocked:")
+            onToggled: {
+                const blocked = !device.blocked;
+                Bluejay.Bluetooth.setDeviceBlocked(device.address, blocked);
+            }
         }
     }
 
