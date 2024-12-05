@@ -1,0 +1,11 @@
+# SPDX-License-Identifier: CC0-1.0
+# SPDX-FileCopyrightText: 2024 Evan Maddock <maddock.evan@vivaldi.net>
+[Desktop Entry]
+Name=Bluejay
+Comment=Bluetooth device manager
+Version=1.0
+Exec=bluejay
+Icon=bluetooth-active
+Type=Application
+Terminal=false
+Categories=Qt;Utility

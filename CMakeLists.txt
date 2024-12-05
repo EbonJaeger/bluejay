@@ -55,3 +55,8 @@ find_package(
 ecm_set_disabled_deprecation_versions(QT 6.7 KF 6.4.0)
 
 add_subdirectory(src)
+
+install(PROGRAMS com.github.ebonjaeger.bluejay.desktop
+        DESTINATION ${KDE_INSTALL_APPDIR})
+install(FILES com.github.ebonjaeger.bluejay.metainfo.xml
+        DESTINATION ${KDE_INSTALL_METAINFODIR})
