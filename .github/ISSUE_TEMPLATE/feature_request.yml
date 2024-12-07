@@ -7,6 +7,8 @@ body:
     attributes:
       label: Proposal
       description: If you have any idea on how it could be addressed, please note it below.
+    validations:
+      required: true
   - type: textarea
     id: cases
     attributes:
