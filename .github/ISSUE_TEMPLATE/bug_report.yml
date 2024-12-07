@@ -1,0 +1,54 @@
+name: Bug Report
+description: Let us know about an unexpected error, a crash, or an incorrect behavior.
+title: "[BUG] "
+body:
+  - type: markdown
+    attributes:
+      value: |
+        ⚠️ Before submitting this issue, please check the open issues and ensure that you fill in as much as possible in this template.
+        📝 If including build failures, or general tool output, please ensure they are in English, i.e. `LC_ALL=C LANG=C`.
+  - type: textarea
+    id: description
+    attributes:
+      label: Description
+      description: Describe in detail the issue you encountered.
+    validations:
+      required: true
+  - type: input
+    id: version
+    attributes:
+      label: Version
+      description: Version of Bluejay you are using.
+    validations:
+      required: true
+  - type: input
+    id: os
+    attributes:
+      label: OS
+      description: What operating system you are using.
+      placeholder: Solus 4.6
+    validations:
+      required: true
+  - type: textarea
+    id: reproduce
+    attributes:
+      label: Steps to reproduce
+      description: Give the exact steps to reproduce the issue.
+      placeholder: |
+        1. Go to '...'
+        2. Click on '...'
+        3. Scroll down to '...'
+        4. See error
+    validations:
+      required: true
+  - type: textarea
+    id: expected-result
+    attributes:
+      label: Expected result
+      description: What you expected to happen.
+    validations:
+      required: true
+  - type: textarea
+    id: additional-information
+    attributes:
+      label: Add any other information about this issue, such as logs, screenshots, etc.
