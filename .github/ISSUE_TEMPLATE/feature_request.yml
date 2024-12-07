@@ -18,7 +18,7 @@ body:
     id: version
     attributes:
       label: Version
-      description: description: Version of Bluejay you are using.
+      description: Version of Bluejay you are using.
     validations:
       required: true
   - type: textarea
