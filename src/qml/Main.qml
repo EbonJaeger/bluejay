@@ -104,6 +104,7 @@ Kirigami.ApplicationWindow {
 
     pageStack {
         initialPage: WelcomePage {}
+        columnView.columnResizeMode: Kirigami.ColumnView.SingleColumn
 
         globalToolBar {
             style: Kirigami.Settings.isMobile ? Kirigami.ApplicationHeaderStyle.Titles : Kirigami.ApplicationHeaderStyle.Auto
