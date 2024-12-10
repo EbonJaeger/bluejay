@@ -25,8 +25,6 @@
 #include <QStandardPaths>
 #include <QXmlStreamReader>
 
-using namespace Bluejay;
-
 BtAgent::BtAgent(QObject *parent)
     : Agent(parent)
     , i_fromDatabase(false)
@@ -38,18 +36,18 @@ QString BtAgent::pin() const
     return m_pin;
 }
 
-void BtAgent::setPin(const QString& pin)
+void BtAgent::setPin(const QString &pin)
 {
     m_pin = pin;
     i_fromDatabase = false;
 }
 
-QString BtAgent::generatePin(const BluezQt::DevicePtr& device)
+QString BtAgent::generatePin(const BluezQt::DevicePtr &device)
 {
     i_fromDatabase = false;
     m_pin = QString::number(QRandomGenerator::global()->bounded(RAND_MAX)).left(6);
 
-    const auto databasePath = QStandardPaths::locate(QStandardPaths::AppLocalDataLocation, "pin-code-database.xml");
+    const auto databasePath = QStandardPaths::locate(QStandardPaths::AppLocalDataLocation, QStringLiteral("pin-code-database.xml"));
     QFile file(databasePath);
 
     if (!file.open(QIODevice::ReadOnly)) {
@@ -97,7 +95,7 @@ QString BtAgent::generatePin(const BluezQt::DevicePtr& device)
         i_fromDatabase = true;
 
         // Generate a new PIN if the device only supports a maximum number of characters
-        if (m_pin.startsWith("max:")) {
+        if (m_pin.startsWith(QStringLiteral("max:"))) {
             const auto num = m_pin.right(m_pin.length() - 4).toInt();
             m_pin = QString::number(QRandomGenerator::global()->bounded(RAND_MAX)).left(num);
         }

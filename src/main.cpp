@@ -26,6 +26,10 @@
 #include <QQmlContext>
 #include <QQuickStyle>
 
+#if KI18N_VERSION >= QT_VERSION_CHECK(6, 8, 0)
+#include <KLocalizedQmlContext>
+#endif
+
 #include "bluejay-version.h"
 
 using namespace Qt::Literals::StringLiterals;
@@ -73,7 +77,12 @@ int main(int argc, char *argv[])
         },
         Qt::QueuedConnection);
 
+#if KI18N_VERSION >= QT_VERSION_CHECK(6, 8, 0)
+    engine.rootContext()->setContextObject(new KLocalizedQmlContext(&engine));
+#else
     engine.rootContext()->setContextObject(new KLocalizedContext(&engine));
+#endif
+
     engine.loadFromModule("com.github.ebonjaeger.bluejay", "Main");
 
     if (engine.rootObjects().isEmpty()) {

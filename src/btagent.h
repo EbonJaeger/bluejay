@@ -23,8 +23,6 @@
 
 #include "voidrequest.h"
 
-namespace Bluejay
-{
 class BtAgent : public BluezQt::Agent
 {
     Q_OBJECT
@@ -52,4 +50,3 @@ private:
     bool i_fromDatabase;
     QString m_pin;
 };
-}

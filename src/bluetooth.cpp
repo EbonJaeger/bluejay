@@ -24,8 +24,6 @@
 
 #include "bluetooth.h"
 
-using namespace Bluejay;
-
 Bluetooth::Bluetooth(QObject *parent)
     : QObject(parent)
     , m_agent(new BtAgent(this))
@@ -39,7 +37,7 @@ Bluetooth::Bluetooth(QObject *parent)
     connect(job, &BluezQt::InitManagerJob::result, this, [this](const BluezQt::InitManagerJob *j) {
         if (j->error()) {
             qWarning() << "Error initializing the BluezQt Manager: " << j->errorText();
-            emit errorOccurred(j->errorText());
+            Q_EMIT errorOccurred(j->errorText());
             return;
         }
 
@@ -172,7 +170,7 @@ void Bluetooth::setDiscovering(const bool discovering)
     }
 
     m_discovering = discovering;
-    emit discoveringChanged();
+    Q_EMIT discoveringChanged();
 
     for (const auto &adapter : m_manager->adapters()) {
         setDiscovering(adapter, m_discovering);
@@ -201,7 +199,7 @@ void Bluetooth::setDiscoveryFilter(const BluezQt::AdapterPtr &adapter) const
 
     QVariantMap filter;
 
-    filter.insert("Discoverable", true);
+    filter.insert(QLatin1String("Discoverable"), true);
     adapter->setDiscoveryFilter(filter);
 }
 
@@ -293,7 +291,7 @@ QString Bluetooth::deviceTypeToString(const BluezQt::Device::Type type, const QS
             profiles.append(tr("Other"));
         }
 
-        return profiles.join(", ");
+        return profiles.join(QStringLiteral(", "));
     }
 }
 

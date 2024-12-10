@@ -22,8 +22,6 @@
 
 #include "btagent.h"
 
-namespace Bluejay
-{
 /**
  * @class Bluetooth
  *
@@ -227,4 +225,3 @@ private:
      */
     void setDiscoveryFilter(const BluezQt::AdapterPtr &adapter) const;
 };
-}
