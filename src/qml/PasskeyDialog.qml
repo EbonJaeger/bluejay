@@ -28,13 +28,13 @@ Kirigami.PromptDialog {
     property string passkey
 
     title: i18nc("@title:window", "Pairing Requested")
-    subtitle: i18n("Pair request from '%1'.", deviceName)
+    subtitle: i18n("Pair request from <b>%1</b>.", root.deviceName)
     dialogType: Kirigami.PromptDialog.Information
     standardButtons: Kirigami.Dialog.Close
 
     ColumnLayout {
         Text {
-            text: passkey
+            text: root.passkey
             font.pointSize: 24
             horizontalAlignment: Text.AlignHCenter
         }

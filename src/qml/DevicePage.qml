@@ -23,6 +23,7 @@ import QtQuick.Layouts
 
 import org.kde.bluezqt as BluezQt
 import org.kde.kirigami as Kirigami
+import org.kde.kirigamiaddons.components as Components
 import org.kde.kirigamiaddons.formcard as FormCard
 
 import com.github.ebonjaeger.bluejay as Bluejay
@@ -41,22 +42,28 @@ FormCard.FormCardPage {
             if (call.error) {
                 var message = Bluejay.Bluetooth.errorText(call.error);
                 root.showPassiveNotification(message);
-            } else {
-                root.showPassiveNotification(i18n("Connected to device '%1'", page.device.name));
             }
         });
     }
 
-    MessageDialog {
+    Components.MessageDialog {
         id: forgetDialog
-        text: i18n("Are you sure you want to forget this device?")
-        informativeText: i18n("If you want to connect to this device after forgetting, you will have to pair it again.")
-        buttons: MessageDialog.Yes | MessageDialog.Cancel
+        dialogType: Components.MessageDialog.Warning
+        title: i18nc("@window:title", "Forget Device")
+        standardButtons: MessageDialog.Yes | MessageDialog.Cancel
         onAccepted: {
             const {
                 adapter
             } = page.device;
             page.makeCall(adapter.removeDevice(device));
+            close();
+        }
+        onRejected: close()
+
+        Controls.Label {
+            Layout.fillWidth: true
+            wrapMode: Text.WordWrap
+            text: i18n("Are you sure you want to forget device <b>%1</b>? If you want to connect to this device after forgetting it, you will have to pair it again.", page.device.name)
         }
     }
 
