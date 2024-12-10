@@ -27,6 +27,7 @@ The following KDE Frameworks are required:
 - DBusAddons
 - I18n
 - Kirigami
+- KirigamiAddons
 - QQC2DesktopStyle
 
 In addition to the above, you will need CMake, and `extra-cmake-modules`.
@@ -34,7 +35,7 @@ In addition to the above, you will need CMake, and `extra-cmake-modules`.
 To install all needed dependencies on Solus, run:
 
 ```bash
-sudo eopkg it -c system.devel extra-cmake-modules qt6-base-devel qt6-tools-devel qt6-declarative-devel kf6-bluezqt-devel kf6-kcoreaddons-devel kf6-dbusaddons-devel kf6-ki18n-devel kf6-kirigami-devel kf6-qqc2-desktop-style-devel
+sudo eopkg it -c system.devel extra-cmake-modules qt6-base-devel qt6-tools-devel qt6-declarative-devel kf6-bluezqt-devel kf6-kcoreaddons-devel kf6-dbusaddons-devel kf6-ki18n-devel kf6-kirigami-devel kf6-qqc2-desktop-style-devel kirigami-addons-devel
 ```
 
 ## Building
