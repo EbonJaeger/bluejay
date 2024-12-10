@@ -19,6 +19,7 @@ jobs:
           'cmake(KF6DBusAddons)' \
           'cmake(KF6I18n)' \
           'cmake(KF6Kirigami)' \
+          'cmake(KF6KirigamiAddons)' \
           'cmake(KF6QQC2DesktopStyle)' \
           extra-cmake-modules
     - uses: actions/checkout@v4
