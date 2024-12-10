@@ -31,23 +31,23 @@ Kirigami.PromptDialog {
     property Bluejay.VoidRequest request
 
     title: i18nc("@title:window", "Pairing Requested")
-    subtitle: i18n("Pair request from '%1'. Do you want to pair?", deviceName)
+    subtitle: i18n("Pair request from <b>%1</b>. Do you want to pair?", root.deviceName)
     dialogType: Kirigami.PromptDialog.Information
     standardButtons: Kirigami.Dialog.Yes | Kirigami.Dialog.Cancel
 
     onAccepted: {
         console.debug("Pairing accepted");
-        request.accept();
+        root.request.accept();
     }
 
     onRejected: {
         console.debug("Pairing cancelled");
-        request.cancel();
+        root.request.cancel();
     }
 
     ColumnLayout {
         Text {
-            text: passkey
+            text: root.passkey
             font.pointSize: 24
             horizontalAlignment: Text.AlignHCenter
         }
