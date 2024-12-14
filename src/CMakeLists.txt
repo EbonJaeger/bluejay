@@ -63,4 +63,4 @@ if(NOT ANDROID)
 endif()
 
 install(TARGETS bluejay-app ${KDE_INSTALL_TARGETS_DEFAULT_ARGS})
-install(FILES pin-code-database.xml DESTINATION ${KDE_INSTALL_DIR}/bluejay)
+install(FILES pin-code-database.xml DESTINATION ${KDE_INSTALL_DATADIR}/bluejay)
