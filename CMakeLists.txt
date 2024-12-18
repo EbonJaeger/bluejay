@@ -50,8 +50,15 @@ set_package_properties(
   TYPE REQUIRED
   PURPOSE "Basic application components")
 
-find_package(KF6 ${KF6_MIN_VERSION} COMPONENTS BluezQt CoreAddons DBusAddons
-                                               I18n Kirigami QQC2DesktopStyle)
+find_package(
+  KF6 ${KF6_MIN_VERSION}
+  COMPONENTS BluezQt
+             Config
+             CoreAddons
+             DBusAddons
+             I18n
+             Kirigami
+             QQC2DesktopStyle)
 set_package_properties(
   KF6 PROPERTIES
   TYPE REQUIRED
@@ -80,6 +87,8 @@ install(PROGRAMS com.github.ebonjaeger.bluejay.desktop
         DESTINATION ${KDE_INSTALL_APPDIR})
 install(FILES com.github.ebonjaeger.bluejay.metainfo.xml
         DESTINATION ${KDE_INSTALL_METAINFODIR})
+install(FILES com.github.ebonjaeger.bluejay.svg
+        DESTINATION ${KDE_INSTALL_FULL_ICONDIR}/hicolor/scalable/apps)
 
 feature_summary(WHAT ALL INCLUDE_QUIET_PACKAGES
                          FATAL_ON_MISSING_REQUIRED_PACKAGES)

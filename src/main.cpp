@@ -62,7 +62,8 @@ int main(int argc, char *argv[])
                     QStringLiteral("https://github.com/EbonJaeger"));
 
     KAboutData::setApplicationData(about);
-    QGuiApplication::setWindowIcon(QIcon::fromTheme(QStringLiteral("bluetooth-active")));
+    QGuiApplication::setWindowIcon(QIcon::fromTheme(QStringLiteral("com.github.ebonjaeger.bluejay")));
+    QGuiApplication::setDesktopFileName(QStringLiteral("com.github.ebonjaeger.bluejay"));
 
     qml_register_types_com_github_ebonjaeger_bluejay();
 

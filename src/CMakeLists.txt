@@ -1,5 +1,7 @@
 add_library(
   bluejay STATIC
+  application.cpp
+  application.h
   bluetooth.cpp
   bluetooth.h
   btagent.cpp
@@ -52,7 +54,8 @@ target_link_libraries(
          KF6::CoreAddons
          KF6::DBusAddons
          KF6::I18n
-         KF6::Kirigami)
+         KF6::Kirigami
+         KirigamiAddonsStatefulApp)
 
 if(TARGET KF6::I18nQml)
   target_link_libraries(bluejay PUBLIC KF6::I18nQml)

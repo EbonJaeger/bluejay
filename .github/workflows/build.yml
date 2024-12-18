@@ -15,6 +15,7 @@ jobs:
           'cmake(Qt6UiTools)' \
           'cmake(Qt6Widgets)' \
           'cmake(KF6BluezQt)' \
+          'cmake(KF6Config)' \
           'cmake(KF6CoreAddons)' \
           'cmake(KF6DBusAddons)' \
           'cmake(KF6I18n)' \
