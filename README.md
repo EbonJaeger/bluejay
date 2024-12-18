@@ -1,4 +1,4 @@
-# <img src="https://github.com/EbonJaeger/bluejay/blob/main/logo.png"> Bluejay
+# <img src="https://github.com/EbonJaeger/bluejay/blob/main/logo.png" width="64"> Bluejay
 
 A Bluetooth manager and Bluez front-end. With it, you can pair devices, connect to and remove devices, turn Bluetooth on and off, and more. Bluejay is powered by the Qt6 graphical toolkit and KDE Frameworks.
 
