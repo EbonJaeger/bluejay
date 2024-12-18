@@ -22,13 +22,12 @@ import QtQuick.Layouts
 
 import org.kde.bluezqt as BluezQt
 import org.kde.kirigami as Kirigami
+import org.kde.kirigamiaddons.statefulapp as StatefulApp
 
 import com.github.ebonjaeger.bluejay as Bluejay
 
-Kirigami.ApplicationWindow {
+StatefulApp.StatefulWindow {
     id: root
-    visible: true
-    title: i18nc("Bluejay is the name of the application", "Bluejay")
 
     property int minWideScreenWidth: 525
     property bool wideScreen: width >= minWideScreenWidth
@@ -40,6 +39,9 @@ Kirigami.ApplicationWindow {
     minimumHeight: Kirigami.Settings.isMobile ? Kirigami.Units.gridUnit * 10 : Kirigami.Units.gridUnit * 16
 
     onWideScreenChanged: Kirigami.Settings.isMobile ? drawer.close() : (!wideScreen ? drawer.close() : drawer.open())
+
+    application: Bluejay.App
+    windowName: "main"
 
     function onCloseClicked() {
         pageStack.pop();
