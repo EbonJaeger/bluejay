@@ -22,15 +22,23 @@ import QtQuick.Layouts
 
 import org.kde.kirigami as Kirigami
 import org.kde.kirigami.delegates as Delegates
+import org.kde.kirigamiaddons.delegates
 
 import org.kde.bluezqt as BluezQt
 
-import com.github.ebonjaeger.bluejay as Bluejay
+import com.github.ebonjaeger.bluejay
 
-Controls.ItemDelegate {
-    id: delegate
+RoundedItemDelegate {
+    id: root
 
+    required property string address
+    required property string name
+    required property string iconName
+    required property BluezQt.Device device
     required property var model
+
+    highlighted: NavigationController.deviceAddress === address
+    activeFocusOnTab: true
 
     function infoText(device: BluezQt.Device): string {
         const {
@@ -39,7 +47,7 @@ Controls.ItemDelegate {
             uuids
         } = device;
         const labels = [];
-        labels.push(Bluejay.Bluetooth.deviceTypeToString(type, uuids));
+        labels.push(Bluetooth.deviceTypeToString(type, uuids));
         if (battery) {
             labels.push(i18n("%1% Battery", battery.percentage));
         }
@@ -48,14 +56,17 @@ Controls.ItemDelegate {
 
     implicitWidth: parent.width
 
-    contentItem: RowLayout {
-        spacing: Kirigami.Units.smallSpacing
-
-        Delegates.IconTitleSubtitle {
-            title: model.Name
-            subtitle: infoText(model.Device)
-            icon.name: model.Icon
-            icon.width: Kirigami.Units.iconSizes.medium
-        }
+    contentItem: Delegates.IconTitleSubtitle {
+        title: root.name
+        subtitle: infoText(root.device)
+        icon.name: root.iconName
     }
+
+    TapHandler {
+        onTapped: NavigationController.deviceAddress = root.address
+    }
+
+    Controls.ToolTip.text: root.name
+    Controls.ToolTip.visible: hovered
+    Controls.ToolTip.delay: Kirigami.Units.toolTipDelay
 }
