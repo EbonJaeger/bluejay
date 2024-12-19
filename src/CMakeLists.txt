@@ -8,6 +8,8 @@ add_library(
   btagent.h
   devicesproxymodel.cpp
   devicesproxymodel.h
+  navigationcontroller.cpp
+  navigationcontroller.h
   voidrequest.cpp
   voidrequest.h)
 
