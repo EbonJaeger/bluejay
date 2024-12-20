@@ -58,6 +58,7 @@ int main(int argc, char *argv[])
                      i18n("© Evan Maddock"));
     about.setHomepage(QStringLiteral("https://github.com/EbonJaeger/bluejay"));
     about.setBugAddress(QByteArray("https://github.com/EbonJaeger/bluejay/issues"));
+    about.setDesktopFileName(QStringLiteral("com.github.ebonjaeger.bluejay"));
     about.addAuthor(QStringLiteral("Evan Maddock"),
                     i18n("Maintainer"),
                     QStringLiteral("maddock.evan@vivaldi.net"),
