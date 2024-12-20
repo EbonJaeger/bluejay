@@ -51,18 +51,28 @@ StatefulApp.StatefulWindow {
         NavigationController.deviceAddress = "";
     }
 
+    function onAboutBackRequested(event): void {
+        NavigationController.aboutOpen = false;
+
+        var device = BluezQt.Manager.deviceForAddress(NavigationController.deviceAddress);
+
+        if (device === null) {
+            NavigationController.deviceAddress = "";
+        }
+    }
+
     Connections {
         target: Bluetooth
 
         function onBlockedChanged(): void {
-            if (!Bluetooth.blocked) {
+            if (!Bluetooth.blocked && !NavigationController.aboutOpen) {
                 // Go back to the welcome page if Bluetooth is blocked
                 NavigationController.deviceAddress = "";
             }
         }
 
         function onEnabledChanged(): void {
-            if (!Bluetooth.enabled) {
+            if (!Bluetooth.enabled && !NavigationController.aboutOpen) {
                 // Go back to the welcome page if Bluetooth is disabled
                 NavigationController.deviceAddress = "";
             }
@@ -73,7 +83,7 @@ StatefulApp.StatefulWindow {
         }
 
         function onDeviceRemoved(address: string): void {
-            if (address === NavigationController.deviceAddress) {
+            if (address === NavigationController.deviceAddress && !NavigationController.aboutOpen) {
                 NavigationController.deviceAddress = "";
             }
         }
@@ -231,11 +241,13 @@ StatefulApp.StatefulWindow {
                                 icon.name: "help-about-symbolic"
 
                                 onTriggered: {
-                                    if (root.pageStack.items.length === 2) {
-                                        pageStack.pop();
-                                    }
+                                    const component = Qt.createComponent("org.kde.kirigamiaddons.formcard", "AboutPage");
+                                    const page = component.createObject(root.pageStack);
 
-                                    root.pageStack.push(Qt.createComponent("org.kde.kirigamiaddons.formcard", "AboutPage").createObject(root.pageStack));
+                                    page.backRequested.connect(onAboutBackRequested);
+                                    root.pageStack.push(page);
+
+                                    NavigationController.aboutOpen = true;
                                 }
                             }
                         }

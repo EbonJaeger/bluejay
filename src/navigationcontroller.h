@@ -30,6 +30,9 @@ class NavigationController : public QObject
     /// This property holds the current device address.
     Q_PROPERTY(QString deviceAddress READ deviceAddress WRITE setDeviceAddress NOTIFY deviceAddressChanged)
 
+    /// This property holds whether or not the About page is open.
+    Q_PROPERTY(bool aboutOpen READ aboutOpen WRITE setAboutOpen NOTIFY aboutOpenChanged)
+
 public:
     explicit NavigationController(QObject *parent = nullptr);
     ~NavigationController() override = default;
@@ -37,9 +40,14 @@ public:
     QString deviceAddress() const;
     void setDeviceAddress(const QString &address);
 
+    bool aboutOpen() const;
+    void setAboutOpen(bool open);
+
 Q_SIGNALS:
     void deviceAddressChanged();
+    void aboutOpenChanged();
 
 private:
     QString m_deviceAddress;
+    bool m_aboutOpen;
 };

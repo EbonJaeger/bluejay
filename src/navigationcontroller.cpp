@@ -20,6 +20,7 @@
 
 NavigationController::NavigationController(QObject *parent)
     : QObject(parent)
+    , m_aboutOpen(false)
 {
 }
 
@@ -37,6 +38,22 @@ void NavigationController::setDeviceAddress(const QString &address)
     m_deviceAddress = address;
 
     Q_EMIT deviceAddressChanged();
+}
+
+bool NavigationController::aboutOpen() const
+{
+    return m_aboutOpen;
+}
+
+void NavigationController::setAboutOpen(bool open)
+{
+    if (open == m_aboutOpen) {
+        return;
+    }
+
+    m_aboutOpen = open;
+
+    Q_EMIT aboutOpenChanged();
 }
 
 #include "moc_navigationcontroller.cpp"
