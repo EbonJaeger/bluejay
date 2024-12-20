@@ -24,7 +24,7 @@ import org.kde.bluezqt as BluezQt
 import org.kde.kirigami as Kirigami
 import org.kde.kirigamiaddons.statefulapp as StatefulApp
 
-import com.github.ebonjaeger.bluejay as Bluejay
+import com.github.ebonjaeger.bluejay
 
 StatefulApp.StatefulWindow {
     id: root
@@ -40,31 +40,31 @@ StatefulApp.StatefulWindow {
 
     onWideScreenChanged: Kirigami.Settings.isMobile ? drawer.close() : (!wideScreen ? drawer.close() : drawer.open())
 
-    application: Bluejay.App
+    application: App
     windowName: "main"
 
     function onCloseClicked() {
         pageStack.pop();
     }
 
+    function onBackRequested(event): void {
+        NavigationController.deviceAddress = "";
+    }
+
     Connections {
-        target: Bluejay.Bluetooth
+        target: Bluetooth
 
         function onBlockedChanged(): void {
-            if (!Bluejay.Bluetooth.blocked) {
+            if (!Bluetooth.blocked) {
                 // Go back to the welcome page if Bluetooth is blocked
-                if (pageStack.items.length === 2) {
-                    pageStack.pop();
-                }
+                NavigationController.deviceAddress = "";
             }
         }
 
         function onEnabledChanged(): void {
-            if (!Bluejay.Bluetooth.enabled) {
+            if (!Bluetooth.enabled) {
                 // Go back to the welcome page if Bluetooth is disabled
-                if (pageStack.items.length === 2) {
-                    pageStack.pop();
-                }
+                NavigationController.deviceAddress = "";
             }
         }
 
@@ -74,7 +74,7 @@ StatefulApp.StatefulWindow {
     }
 
     Connections {
-        target: Bluejay.Bluetooth.agent()
+        target: Bluetooth.agent()
 
         function onPinRequested(deviceName: string, pin: string): void {
             const component = Qt.createComponent("com.github.ebonjaeger.bluejay", "PasskeyDialog");
@@ -85,7 +85,7 @@ StatefulApp.StatefulWindow {
             dialog.show();
         }
 
-        function onConfirmationRequested(deviceName: string, passkey: string, request: Bluejay.VoidRequest): void {
+        function onConfirmationRequested(deviceName: string, passkey: string, request: VoidRequest): void {
             const component = Qt.createComponent("com.github.ebonjaeger.bluejay", "ConfirmationDialog");
             const dialog = component.createObject(root, {
                 deviceName: deviceName,
@@ -93,6 +93,44 @@ StatefulApp.StatefulWindow {
                 request: request
             });
             dialog.open();
+        }
+    }
+
+    Connections {
+        target: NavigationController
+
+        function onDeviceAddressChanged() {
+            var device = BluezQt.Manager.deviceForAddress(NavigationController.deviceAddress);
+
+            // If no device, e.g. when the back button was clicked,
+            // clear the stack and push the Welcome Page.
+            if (device === null) {
+                pageStack.clear();
+                pageStack.push(Qt.createComponent("com.github.ebonjaeger.bluejay", "WelcomePage").createObject(pageStack));
+                return;
+            }
+
+            const component = Qt.createComponent("com.github.ebonjaeger.bluejay", "DevicePage");
+
+            if (component.status !== Component.Ready) {
+                console.error(component.errorString());
+                return;
+            }
+
+            const page = component.createObject(pageStack, {
+                device: device
+            });
+
+            page.backRequested.connect(onBackRequested);
+
+            // TODO: Evan: We can't check the NavigationController here, since the page is already
+            // created by this point, and thus the deviceAddress property is already set.
+            // Which means that the WelcomePage will always be removed when the page is pushed.
+            if (pageStack.items.length === 2) {
+                pageStack.pop();
+            }
+
+            pageStack.push(page);
         }
     }
 
@@ -167,7 +205,7 @@ StatefulApp.StatefulWindow {
                                 text: i18n("Toggle Bluetooth")
                                 tooltip: i18n("Turn Bluetooth on or off")
                                 icon.name: "network-bluetooth-symbolic"
-                                onTriggered: Bluejay.Bluetooth.toggle()
+                                onTriggered: Bluetooth.toggle()
                             }
 
                             Kirigami.Action {
@@ -175,8 +213,8 @@ StatefulApp.StatefulWindow {
                                 text: i18n("Toggle discovery")
                                 tooltip: i18n("Turn device discovery on or off")
                                 icon.name: "system-search-symbolic"
-                                enabled: Bluejay.Bluetooth.enabled
-                                onTriggered: Bluejay.Bluetooth.setDiscovering(!Bluejay.Bluetooth.discovering)
+                                enabled: Bluetooth.enabled
+                                onTriggered: Bluetooth.setDiscovering(!Bluetooth.discovering)
                             }
 
                             Controls.MenuSeparator {}
@@ -209,13 +247,13 @@ StatefulApp.StatefulWindow {
                     id: deviceList
                     Layout.fillWidth: true
 
-                    Bluejay.DevicesProxyModel {
+                    DevicesProxyModel {
                         id: devicesModel
                         sourceModel: BluezQt.DevicesModel {}
                     }
 
                     Kirigami.PlaceholderMessage {
-                        visible: Bluejay.Bluetooth.enabled && !Bluejay.Bluetooth.blocked && deviceList.count === 0
+                        visible: Bluetooth.enabled && !Bluetooth.blocked && deviceList.count === 0
                         icon.name: "network-bluetooth-activated-symbolic"
                         text: i18n("No paired devices")
                         implicitWidth: parent.width - (Kirigami.Units.largeSpacing * 4)
@@ -231,20 +269,10 @@ StatefulApp.StatefulWindow {
                     }
 
                     delegate: DeviceDelegate {
-                        onClicked: {
-                            const component = Qt.createComponent("com.github.ebonjaeger.bluejay", "DevicePage");
-                            if (component.status !== Component.Ready) {
-                                console.error(component.errorString());
-                                return;
-                            }
-                            const page = component.createObject(pageStack, {
-                                device: model.Device
-                            });
-                            if (pageStack.items.length === 2) {
-                                pageStack.pop();
-                            }
-                            pageStack.push(page);
-                        }
+                        address: model.Address
+                        name: model.Name
+                        iconName: model.Icon
+                        device: model.Device
                     }
                 }
             }
