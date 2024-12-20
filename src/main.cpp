@@ -56,6 +56,8 @@ int main(int argc, char *argv[])
                      i18n("Bluetooth device manager"),
                      KAboutLicense::Unknown,
                      i18n("© Evan Maddock"));
+    about.setHomepage(QStringLiteral("https://github.com/EbonJaeger/bluejay"));
+    about.setBugAddress(QByteArray("https://github.com/EbonJaeger/bluejay/issues"));
     about.addAuthor(QStringLiteral("Evan Maddock"),
                     i18n("Maintainer"),
                     QStringLiteral("maddock.evan@vivaldi.net"),

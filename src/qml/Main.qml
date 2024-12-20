@@ -230,7 +230,13 @@ StatefulApp.StatefulWindow {
                                 tooltip: i18n("Show application information")
                                 icon.name: "help-about-symbolic"
 
-                                onTriggered: pageStack.pushDialogLayer(Qt.createComponent("org.kde.kirigamiaddons.formcard", "AboutPage"))
+                                onTriggered: {
+                                    if (root.pageStack.items.length === 2) {
+                                        pageStack.pop();
+                                    }
+
+                                    root.pageStack.push(Qt.createComponent("org.kde.kirigamiaddons.formcard", "AboutPage").createObject(root.pageStack));
+                                }
                             }
                         }
                     }
