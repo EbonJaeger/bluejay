@@ -71,6 +71,12 @@ StatefulApp.StatefulWindow {
         function onErrorOccurred(errorText: string): void {
             showPassiveNotification(errorText);
         }
+
+        function onDeviceRemoved(address: string): void {
+            if (address === NavigationController.deviceAddress) {
+                NavigationController.deviceAddress = "";
+            }
+        }
     }
 
     Connections {

@@ -63,6 +63,7 @@ Bluetooth::Bluetooth(QObject *parent)
         // Connect signals
         connect(m_manager, &BluezQt::Manager::adapterAdded, this, &Bluetooth::adapterAdded);
         connect(m_manager, &BluezQt::Manager::bluetoothBlockedChanged, this, &Bluetooth::bluetoothBlockedChanged);
+        connect(m_manager, &BluezQt::Manager::deviceRemoved, this, &Bluetooth::onDeviceRemoved);
     });
     job->start();
 }
@@ -114,6 +115,11 @@ void Bluetooth::bluetoothOperationalChanged(const bool operational)
 void Bluetooth::slotDiscoveringChanged(const bool discovering)
 {
     setDiscovering(discovering);
+}
+
+void Bluetooth::onDeviceRemoved(const BluezQt::DevicePtr device) const
+{
+    Q_EMIT deviceRemoved(device->address());
 }
 
 BtAgent *Bluetooth::agent() const

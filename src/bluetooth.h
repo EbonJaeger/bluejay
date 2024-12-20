@@ -160,6 +160,7 @@ public Q_SLOTS:
     void bluetoothBlockedChanged(bool blocked);
     void bluetoothOperationalChanged(bool operational);
     void slotDiscoveringChanged(bool discovering);
+    void onDeviceRemoved(const BluezQt::DevicePtr device) const;
 
 Q_SIGNALS:
     /**
@@ -192,6 +193,13 @@ Q_SIGNALS:
      * the entirety of BluezQt's error/PendingCall class.
      */
     void errorOccurred(QString errorText) const;
+
+    /**
+     * @brief Emit that a device was removed
+     *
+     * When a device is removed, this signal will be emitted.
+     */
+    void deviceRemoved(QString address) const;
 
 private:
     BtAgent *m_agent;
