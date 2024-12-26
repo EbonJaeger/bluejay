@@ -40,6 +40,8 @@ QVariant DevicesProxyModel::data(const QModelIndex &index, const int role) const
     case SectionRole:
         if (index.data(BluezQt::DevicesModel::ConnectedRole).toBool()) {
             return QStringLiteral("Connected");
+        } else if (index.data(BluezQt::DevicesModel::PairedRole).toBool()) {
+            return QStringLiteral("Paired");
         }
 
         return QStringLiteral("Available");
@@ -62,28 +64,27 @@ QVariant DevicesProxyModel::data(const QModelIndex &index, const int role) const
 
 bool DevicesProxyModel::lessThan(const QModelIndex &left, const QModelIndex &right) const
 {
-    const auto leftPaired = left.data(BluezQt::DevicesModel::PairedRole).toBool();
-    const auto rightPaired = left.data(BluezQt::DevicesModel::PairedRole).toBool();
-    const auto leftTrusted = left.data(BluezQt::DevicesModel::TrustedRole).toBool();
-    const auto rightTrusted = left.data(BluezQt::DevicesModel::TrustedRole).toBool();
-
-    // Paired and trusted (thus setup) devices first
-    const auto leftSetup = leftPaired || leftTrusted;
-    const auto rightSetup = rightPaired || rightTrusted;
-
-    if (leftSetup != rightSetup) {
-        return !leftSetup;
-    }
-
-    // Then connected devices
+    // Connected devices should be at the top
     const auto leftConnected = left.data(BluezQt::DevicesModel::ConnectedRole).toBool();
     const auto rightConnected = right.data(BluezQt::DevicesModel::ConnectedRole).toBool();
 
-    if (leftConnected != rightConnected) {
-        return !leftConnected;
+    if (leftConnected && !rightConnected) {
+        return false;
+    } else if (!leftConnected && rightConnected) {
+        return true;
     }
 
-    // All else fails, sort alphabetically
+    // Now we want paired devices before unpaired
+    const auto leftPaired = left.data(BluezQt::DevicesModel::PairedRole).toBool();
+    const auto rightPaired = right.data(BluezQt::DevicesModel::PairedRole).toBool();
+
+    if (leftPaired && !rightPaired) {
+        return false;
+    } else if (!leftPaired && rightPaired) {
+        return true;
+    }
+
+    // Sort alphabetically
     const auto &leftName = left.data(BluezQt::DevicesModel::NameRole).toString();
     const auto &rightName = right.data(BluezQt::DevicesModel::NameRole).toString();
 

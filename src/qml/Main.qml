@@ -295,10 +295,19 @@ StatefulApp.StatefulWindow {
 
                     model: BluezQt.Manager.bluetoothOperational ? devicesModel : null
 
-                    section.property: "Connected"
+                    section.property: "Section"
                     section.delegate: Kirigami.ListSectionHeader {
+                        required property string section
+
                         Layout.fillWidth: true
-                        text: section === "true" ? i18n("Connected") : i18n("Available")
+                        text: switch (section) {
+                            case "Connected":
+                                return i18n("Connected");
+                            case "Paired":
+                                return i18n("Paired");
+                            default:
+                                return i18n("Available");
+                        }
                     }
 
                     delegate: DeviceDelegate {
