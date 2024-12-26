@@ -16,10 +16,10 @@ add_library(
 ecm_add_qml_module(
   bluejay
   URI
-  "com.github.ebonjaeger.bluejay"
+  "io.github.ebonjaeger.bluejay"
   GENERATE_PLUGIN_SOURCE
   OUTPUT_DIRECTORY
-  ${CMAKE_BINARY_DIR}/src/com/github/ebonjaeger/bluejay
+  ${CMAKE_BINARY_DIR}/src/io/github/ebonjaeger/bluejay
   QML_FILES
   qml/components/FormButton.qml
   qml/components/FormToggleButton.qml

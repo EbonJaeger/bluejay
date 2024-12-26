@@ -34,7 +34,7 @@
 
 using namespace Qt::Literals::StringLiterals;
 
-void qml_register_types_com_github_ebonjaeger_bluejay();
+void qml_register_types_io_github_ebonjaeger_bluejay();
 
 int main(int argc, char *argv[])
 {
@@ -58,17 +58,17 @@ int main(int argc, char *argv[])
                      i18n("© Evan Maddock"));
     about.setHomepage(QStringLiteral("https://github.com/EbonJaeger/bluejay"));
     about.setBugAddress(QByteArray("https://github.com/EbonJaeger/bluejay/issues"));
-    about.setDesktopFileName(QStringLiteral("com.github.ebonjaeger.bluejay"));
+    about.setDesktopFileName(QStringLiteral("io.github.ebonjaeger.bluejay"));
     about.addAuthor(QStringLiteral("Evan Maddock"),
                     i18n("Maintainer"),
                     QStringLiteral("maddock.evan@vivaldi.net"),
                     QStringLiteral("https://github.com/EbonJaeger"));
 
     KAboutData::setApplicationData(about);
-    QGuiApplication::setWindowIcon(QIcon::fromTheme(QStringLiteral("com.github.ebonjaeger.bluejay")));
-    QGuiApplication::setDesktopFileName(QStringLiteral("com.github.ebonjaeger.bluejay"));
+    QGuiApplication::setWindowIcon(QIcon::fromTheme(QStringLiteral("io.github.ebonjaeger.bluejay")));
+    QGuiApplication::setDesktopFileName(QStringLiteral("io.github.ebonjaeger.bluejay"));
 
-    qml_register_types_com_github_ebonjaeger_bluejay();
+    qml_register_types_io_github_ebonjaeger_bluejay();
 
     QQmlApplicationEngine engine;
 
@@ -87,7 +87,7 @@ int main(int argc, char *argv[])
     engine.rootContext()->setContextObject(new KLocalizedContext(&engine));
 #endif
 
-    engine.loadFromModule("com.github.ebonjaeger.bluejay", "Main");
+    engine.loadFromModule("io.github.ebonjaeger.bluejay", "Main");
 
     if (engine.rootObjects().isEmpty()) {
         return -1;

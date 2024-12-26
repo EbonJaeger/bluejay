@@ -26,7 +26,7 @@ import org.kde.kirigamiaddons.delegates
 
 import org.kde.bluezqt as BluezQt
 
-import com.github.ebonjaeger.bluejay
+import io.github.ebonjaeger.bluejay
 
 RoundedItemDelegate {
     id: root

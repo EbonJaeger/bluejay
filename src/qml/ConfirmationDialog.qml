@@ -21,7 +21,7 @@ import QtQuick.Layouts
 
 import org.kde.kirigami as Kirigami
 
-import com.github.ebonjaeger.bluejay as Bluejay
+import io.github.ebonjaeger.bluejay as Bluejay
 
 Kirigami.PromptDialog {
     id: root

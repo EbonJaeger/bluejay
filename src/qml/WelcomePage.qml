@@ -21,7 +21,7 @@ import QtQuick
 import org.kde.bluezqt as BluezQt
 import org.kde.kirigami as Kirigami
 
-import com.github.ebonjaeger.bluejay as Bluejay
+import io.github.ebonjaeger.bluejay as Bluejay
 
 Kirigami.Page {
     id: root

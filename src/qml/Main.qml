@@ -24,7 +24,7 @@ import org.kde.bluezqt as BluezQt
 import org.kde.kirigami as Kirigami
 import org.kde.kirigamiaddons.statefulapp as StatefulApp
 
-import com.github.ebonjaeger.bluejay
+import io.github.ebonjaeger.bluejay
 
 StatefulApp.StatefulWindow {
     id: root
@@ -93,7 +93,7 @@ StatefulApp.StatefulWindow {
         target: Bluetooth.agent()
 
         function onPinRequested(deviceName: string, pin: string): void {
-            const component = Qt.createComponent("com.github.ebonjaeger.bluejay", "PasskeyDialog");
+            const component = Qt.createComponent("io.github.ebonjaeger.bluejay", "PasskeyDialog");
             const dialog = component.createObject(root, {
                 deviceName: deviceName,
                 passkey: pin
@@ -102,7 +102,7 @@ StatefulApp.StatefulWindow {
         }
 
         function onConfirmationRequested(deviceName: string, passkey: string, request: VoidRequest): void {
-            const component = Qt.createComponent("com.github.ebonjaeger.bluejay", "ConfirmationDialog");
+            const component = Qt.createComponent("io.github.ebonjaeger.bluejay", "ConfirmationDialog");
             const dialog = component.createObject(root, {
                 deviceName: deviceName,
                 passkey: passkey,
@@ -122,11 +122,11 @@ StatefulApp.StatefulWindow {
             // clear the stack and push the Welcome Page.
             if (device === null) {
                 pageStack.clear();
-                pageStack.push(Qt.createComponent("com.github.ebonjaeger.bluejay", "WelcomePage").createObject(pageStack));
+                pageStack.push(Qt.createComponent("io.github.ebonjaeger.bluejay", "WelcomePage").createObject(pageStack));
                 return;
             }
 
-            const component = Qt.createComponent("com.github.ebonjaeger.bluejay", "DevicePage");
+            const component = Qt.createComponent("io.github.ebonjaeger.bluejay", "DevicePage");
 
             if (component.status !== Component.Ready) {
                 console.error(component.errorString());

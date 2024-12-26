@@ -26,7 +26,7 @@ import org.kde.kirigami as Kirigami
 import org.kde.kirigamiaddons.components as Components
 import org.kde.kirigamiaddons.formcard as FormCard
 
-import com.github.ebonjaeger.bluejay as Bluejay
+import io.github.ebonjaeger.bluejay as Bluejay
 
 import "components"
 
