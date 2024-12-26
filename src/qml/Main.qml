@@ -260,6 +260,15 @@ StatefulApp.StatefulWindow {
                         x: 0
                         y: Kirigami.Units.smallSpacing
                     }
+
+                    Controls.BusyIndicator {
+                        visible: Bluetooth.discovering
+                        hoverEnabled: true
+                        Controls.ToolTip.text: i18nc("Tooltip shown when hovering over a spinner", "Discovering devices...")
+                        Controls.ToolTip.delay: Kirigami.Units.toolTipDelay
+                        Controls.ToolTip.visible: hovered
+                        x: parent.width - width - Kirigami.Units.smallSpacing
+                    }
                 }
             }
 
