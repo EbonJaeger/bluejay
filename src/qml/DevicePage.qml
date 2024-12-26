@@ -28,6 +28,8 @@ import org.kde.kirigamiaddons.formcard as FormCard
 
 import com.github.ebonjaeger.bluejay as Bluejay
 
+import "components"
+
 FormCard.FormCardPage {
     id: page
 
@@ -152,18 +154,24 @@ FormCard.FormCardPage {
 
         FormCard.FormDelegateSeparator {}
 
-        FormCard.FormButtonDelegate {
+        FormToggleButton {
+            id: manageButton
             text: i18n("Manage")
             description: i18n("Additional settings for this device")
             onClicked: {
-                trusted.visible = !trusted.visible;
-                blocked.visible = !blocked.visible;
+                manageButton.highlighted = !manageButton.highlighted;
+
+                if (highlighted) {
+                    manageButton.direction = Qt.DownArrow
+                } else {
+                    manageButton.direction = Qt.RightArrow
+                }
             }
         }
 
         FormCard.FormSwitchDelegate {
             id: trusted
-            visible: false
+            visible: manageButton.highlighted
             enabled: page.device.paired
             checked: page.device.trusted
             text: i18n("Trusted")
@@ -173,7 +181,7 @@ FormCard.FormCardPage {
 
         FormCard.FormSwitchDelegate {
             id: blocked
-            visible: false
+            visible: manageButton.highlighted
             checked: page.device.blocked
             text: i18n("Blocked")
             description: i18n("Reject incoming connections from this device")

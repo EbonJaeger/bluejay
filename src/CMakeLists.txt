@@ -22,6 +22,7 @@ ecm_add_qml_module(
   ${CMAKE_BINARY_DIR}/src/com/github/ebonjaeger/bluejay
   QML_FILES
   qml/components/FormButton.qml
+  qml/components/FormToggleButton.qml
   qml/Main.qml
   qml/ConfirmationDialog.qml
   qml/DeviceDelegate.qml
