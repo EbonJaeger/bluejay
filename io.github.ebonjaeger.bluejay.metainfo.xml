@@ -35,7 +35,7 @@ SPDX-FileCopyrightText: 2024 Evan Maddock <maddock.evan@vivaldi.net>
   <launchable type="desktop-id">io.github.ebonjaeger.bluejay.desktop</launchable>
   <screenshots>
     <screenshot type="default">
-      <caption>The Bluejay main window.</caption>
+      <caption>The Bluejay main window</caption>
       <image>https://github.com/EbonJaeger/bluejay/blob/main/screenshot.png</image>
     </screenshot>
   </screenshots>
