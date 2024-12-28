@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8" ?>
+<?xml version="1.0" encoding="utf-8"?>
 <!--
 SPDX-License-Identifier: CC0-1.0
 SPDX-FileCopyrightText: 2024 Evan Maddock <maddock.evan@vivaldi.net>
@@ -8,15 +8,14 @@ SPDX-FileCopyrightText: 2024 Evan Maddock <maddock.evan@vivaldi.net>
   <name>Bluejay</name>
   <summary>Bluetooth device manager</summary>
   <description>
-    <p
-        >Bluejay is a Bluetooth manager and Bluez front-end. With it, you can pair devices, connect to and remove devices, turn Bluetooth on and off, and more. This project is powered by the Qt6 graphical toolkit and KDE Frameworks.</p>
+    <p>Bluejay is a Bluetooth manager and Bluez front-end. With it, you can pair devices, connect to and remove devices, turn Bluetooth on and off, and more. This project is powered by the Qt6 graphical toolkit and KDE Frameworks.</p>
   </description>
   <url type="homepage">https://github.com/EbonJaeger/bluejay</url>
   <url type="bugtracker">https://github.com/EbonJaeger/bluejay/issues</url>
   <url type="vcs-browser">https://github.com/EbonJaeger/bluejay</url>
   <metadata_license>CC0-1.0</metadata_license>
   <project_license>MPL-2.0</project_license>
-  <content_rating type="oars-1.1" />
+  <content_rating type="oars-1.1"/>
   <categories>
     <category>Utility</category>
   </categories>
@@ -28,10 +27,20 @@ SPDX-FileCopyrightText: 2024 Evan Maddock <maddock.evan@vivaldi.net>
   <provides>
     <binary>bluejay</binary>
   </provides>
+  <developer id="io.github.ebonjaeger">
+    <name translate="no">Evan Maddock</name>
+    <url>https://github.com/EbonJaeger</url>
+  </developer>
   <!-- TODO: Add release notes -->
-  <launchable
-        type="desktop-id"
-    >io.github.ebonjaeger.bluejay.desktop</launchable>
-  <!-- TODO: Add screenshot(s) -->
-  <!-- TODO: Add branding colors -->
+  <launchable type="desktop-id">io.github.ebonjaeger.bluejay.desktop</launchable>
+  <screenshots>
+    <screenshot type="default">
+      <caption>The Bluejay main window.</caption>
+      <image>https://github.com/EbonJaeger/bluejay/blob/main/screenshot.png</image>
+    </screenshot>
+  </screenshots>
+  <branding>
+    <color type="primary" scheme_preference="light">#1e90ff</color>
+    <color type="primary" scheme_preference="dark">#095fb3</color>
+  </branding>
 </component>
