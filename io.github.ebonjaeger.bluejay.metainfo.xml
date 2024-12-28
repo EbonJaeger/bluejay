@@ -31,7 +31,13 @@ SPDX-FileCopyrightText: 2024 Evan Maddock <maddock.evan@vivaldi.net>
     <name translate="no">Evan Maddock</name>
     <url>https://github.com/EbonJaeger</url>
   </developer>
-  <!-- TODO: Add release notes -->
+  <releases>
+    <release version="0.1.0" date="2024-12-28">
+      <description>
+        <p>This is the initial pre-release of Bluejay! It is meant to get some user feedback ahead of the big 1.0.</p>
+      </description>
+    </release>
+  </releases>
   <launchable type="desktop-id">io.github.ebonjaeger.bluejay.desktop</launchable>
   <screenshots>
     <screenshot type="default">
