@@ -83,6 +83,8 @@ endif()
 
 add_subdirectory(src)
 
+ki18n_install(po)
+
 install(PROGRAMS io.github.ebonjaeger.bluejay.desktop
         DESTINATION ${KDE_INSTALL_APPDIR})
 install(FILES io.github.ebonjaeger.bluejay.metainfo.xml

@@ -1,0 +1,12 @@
+[main]
+host = https://app.transifex.com
+
+[o:ebonjaeger:p:bluejay:r:bluejay]
+file_filter            = po/<lang>/bluejay.po
+source_file            = po/bluejay.pot
+type                   = POT
+minimum_perc           = 0
+resource_name          = bluejay.pot
+replace_edited_strings = false
+keep_translations      = false
+
