@@ -1,23 +1,25 @@
-
-# Czech translation for Bluejay
+# SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR "Evan Maddock"
 # This file is distributed under the same license as the PACKAGE package.
-# FIRST AUTHOR Amerey <info@amerey.eu>, 2025.
-#
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# 
+# Translators:
+# Evan Maddock, 2025
+# 
 #, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: \n"
+"Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: https://github.com/EbonJaeger/bluejay/issues\n"
 "POT-Creation-Date: 2024-12-30 12:52-0500\n"
-"PO-Revision-Date: 2025-01-11 00:48+0100\n"
-"Last-Translator: Amerey <info@amerey.eu>\n"
-"Language-Team: \n"
-"Language: cs\n"
+"PO-Revision-Date: 2025-01-18 16:47+0000\n"
+"Last-Translator: Evan Maddock, 2025\n"
+"Language-Team: Czech (https://app.transifex.com/ebonjaeger/teams/203684/cs/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 3.4.4\n"
+"Language: cs\n"
+"Plural-Forms: nplurals=4; plural=(n == 1 && n % 1 == 0) ? 0 : (n >= 2 && n <= 4 && n % 1 == 0) ? 1: (n % 1 != 0 ) ? 2 : 3;\n"
 
 #: main.cpp:54
 #, kde-format
@@ -67,9 +69,8 @@ msgid ""
 "Are you sure you want to forget device <b>%1</b>? If you want to connect to "
 "this device after forgetting it, you will have to pair it again."
 msgstr ""
-"Opravdu chcete odebrat zařízení <b>%1</b>? Pokud se chcete k tomuto "
-"zařízení připojit poté, co jste jej odebrali, budete jej muset znovu "
-"spárovat."
+"Opravdu chcete odebrat zařízení <b>%1</b>? Pokud se chcete k tomuto zařízení"
+" připojit poté, co jste jej odebrali, budete jej muset znovu spárovat."
 
 #: qml/DevicePage.qml:115
 #, kde-format
@@ -277,4 +278,3 @@ msgstr "Aktivovat"
 #, kde-format
 msgid "No device selected. Click a device to get started."
 msgstr "Není vybráno žádné zařízení. Začněte kliknutím na zařízení."
-
