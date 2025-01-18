@@ -1,0 +1,280 @@
+
+# Czech translation for Bluejay
+# Copyright (C) YEAR "Evan Maddock"
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR Amerey <info@amerey.eu>, 2025.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"Report-Msgid-Bugs-To: https://github.com/EbonJaeger/bluejay/issues\n"
+"POT-Creation-Date: 2024-12-30 12:52-0500\n"
+"PO-Revision-Date: 2025-01-11 00:48+0100\n"
+"Last-Translator: Amerey <info@amerey.eu>\n"
+"Language-Team: \n"
+"Language: cs\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 3.4.4\n"
+
+#: main.cpp:54
+#, kde-format
+msgid "Bluejay"
+msgstr "Bluejay"
+
+#: main.cpp:56
+#, kde-format
+msgid "Bluetooth device manager"
+msgstr "Správce zařízení Bluetooth"
+
+#: main.cpp:58
+#, kde-format
+msgid "© Evan Maddock"
+msgstr "© Evan Maddock"
+
+#: main.cpp:63
+#, kde-format
+msgid "Maintainer"
+msgstr "Správce"
+
+#: qml/ConfirmationDialog.qml:33 qml/PasskeyDialog.qml:30
+#, kde-format
+msgctxt "@title:window"
+msgid "Pairing Requested"
+msgstr "Vyžádáno párování"
+
+#: qml/ConfirmationDialog.qml:34
+#, kde-format
+msgid "Pair request from <b>%1</b>. Do you want to pair?"
+msgstr "Žádost o spárování od <b>%1</b>. Chcete spárovat?"
+
+#: qml/DeviceDelegate.qml:52
+#, kde-format
+msgid "%1% Battery"
+msgstr "%1% baterie"
+
+#: qml/DevicePage.qml:54
+#, kde-format
+msgctxt "@window:title"
+msgid "Forget Device"
+msgstr "Odebrat zařízení"
+
+#: qml/DevicePage.qml:68
+#, kde-format
+msgid ""
+"Are you sure you want to forget device <b>%1</b>? If you want to connect to "
+"this device after forgetting it, you will have to pair it again."
+msgstr ""
+"Opravdu chcete odebrat zařízení <b>%1</b>? Pokud se chcete k tomuto "
+"zařízení připojit poté, co jste jej odebrali, budete jej muset znovu "
+"spárovat."
+
+#: qml/DevicePage.qml:115
+#, kde-format
+msgid "Device Settings"
+msgstr "Nastavení zařízení"
+
+#: qml/DevicePage.qml:122
+#, kde-format
+msgid "Pair"
+msgstr "Spárovat"
+
+#: qml/DevicePage.qml:123
+#, kde-format
+msgid "Pair with this device"
+msgstr "Spárovat s tímto zařízením"
+
+#: qml/DevicePage.qml:130
+#, kde-format
+msgid "Disconnect"
+msgstr "Odpojit"
+
+#: qml/DevicePage.qml:132
+#, kde-format
+msgid "Connect"
+msgstr "Připojit"
+
+#: qml/DevicePage.qml:135
+#, kde-format
+msgid "Disconnect from this device"
+msgstr "Odpojit od tohoto zařízení"
+
+#: qml/DevicePage.qml:137
+#, kde-format
+msgid "Connect to this device"
+msgstr "Připojit k tomuto zařízení"
+
+#: qml/DevicePage.qml:149
+#, kde-format
+msgid "Forget"
+msgstr "Odebrat"
+
+#: qml/DevicePage.qml:150
+#, kde-format
+msgid "Forget this device"
+msgstr "Odebrat toto zařízení"
+
+#: qml/DevicePage.qml:159
+#, kde-format
+msgid "Manage"
+msgstr "Spravovat"
+
+#: qml/DevicePage.qml:160
+#, kde-format
+msgid "Additional settings for this device"
+msgstr "Další nastavení pro toto zařízení"
+
+#: qml/DevicePage.qml:177
+#, kde-format
+msgid "Trusted"
+msgstr "Důvěryhodné"
+
+#: qml/DevicePage.qml:178
+#, kde-format
+msgid "Allow incoming connections from this device without confirmation"
+msgstr "Povolit příchozí připojení z tohoto zařízení bez potvrzení"
+
+#: qml/DevicePage.qml:186
+#, kde-format
+msgid "Blocked"
+msgstr "Blokováné"
+
+#: qml/DevicePage.qml:187
+#, kde-format
+msgid "Reject incoming connections from this device"
+msgstr "Odmítnout příchozí spojení z tohoto zařízení"
+
+#: qml/DevicePage.qml:193
+#, kde-format
+msgid "Status"
+msgstr "Stav"
+
+#: qml/DevicePage.qml:198
+#, kde-format
+msgid "Address"
+msgstr "Adresa"
+
+#: qml/DevicePage.qml:203
+#, kde-format
+msgid "Type"
+msgstr "Typ"
+
+#: qml/DevicePage.qml:208 qml/Main.qml:307
+#, kde-format
+msgid "Paired"
+msgstr "Spárováno"
+
+#: qml/DevicePage.qml:209 qml/DevicePage.qml:214
+#, kde-format
+msgid "Yes"
+msgstr "Ano"
+
+#: qml/DevicePage.qml:209 qml/DevicePage.qml:214
+#, kde-format
+msgid "No"
+msgstr "Ne"
+
+#: qml/DevicePage.qml:213 qml/Main.qml:305
+#, kde-format
+msgid "Connected"
+msgstr "Připojeno"
+
+#: qml/DevicePage.qml:219
+#, kde-format
+msgid "Battery"
+msgstr "Baterie"
+
+#: qml/DevicePage.qml:220
+#, kde-format
+msgctxt "Shown when there is no battery information for a device"
+msgid "Unknown"
+msgstr "Žádné informace"
+
+#: qml/DevicePage.qml:220
+#, kde-format
+msgid "%1%"
+msgstr "%1%"
+
+#: qml/Main.qml:221
+#, kde-format
+msgid "Toggle Bluetooth"
+msgstr "Přepnout Bluetooth"
+
+#: qml/Main.qml:222
+#, kde-format
+msgid "Turn Bluetooth on or off"
+msgstr "Zapnout nebo vypnout Bluetooth"
+
+#: qml/Main.qml:229
+#, kde-format
+msgid "Toggle discovery"
+msgstr "Přepnout objevování"
+
+#: qml/Main.qml:230
+#, kde-format
+msgid "Turn device discovery on or off"
+msgstr "Zapnout nebo vypnout vyhledávání zařízení"
+
+#: qml/Main.qml:239
+#, kde-format
+msgid "About"
+msgstr "O aplikaci"
+
+#: qml/Main.qml:240
+#, kde-format
+msgid "Show application information"
+msgstr "Zobrazit informace o aplikaci"
+
+#: qml/Main.qml:257
+#, kde-format
+msgid "Devices"
+msgstr "Zařízení"
+
+#: qml/Main.qml:267
+#, kde-format
+msgctxt "Tooltip shown when hovering over a spinner"
+msgid "Discovering devices..."
+msgstr "Objevování zařízení..."
+
+#: qml/Main.qml:291
+#, kde-format
+msgid "No paired devices"
+msgstr "Žádná spárovaná zařízení"
+
+#: qml/Main.qml:309
+#, kde-format
+msgid "Available"
+msgstr "Dostupné"
+
+#: qml/PasskeyDialog.qml:31
+#, kde-format
+msgid "Pair request from <b>%1</b>."
+msgstr "Žádost o spárování od <b>%1</b>."
+
+#: qml/WelcomePage.qml:33
+#, kde-format
+msgid "No Bluetooth adapters found"
+msgstr "Nebyly nalezeny žádné adaptéry Bluetooth"
+
+#: qml/WelcomePage.qml:34
+#, kde-format
+msgid "Please connect a Bluetooth adapter"
+msgstr "Připojte prosím adaptér Bluetooth"
+
+#: qml/WelcomePage.qml:43
+#, kde-format
+msgid "Bluetooth is disabled"
+msgstr "Bluetooth je deaktivován"
+
+#: qml/WelcomePage.qml:49
+#, kde-format
+msgid "Enable"
+msgstr "Aktivovat"
+
+#: qml/WelcomePage.qml:59
+#, kde-format
+msgid "No device selected. Click a device to get started."
+msgstr "Není vybráno žádné zařízení. Začněte kliknutím na zařízení."
+
