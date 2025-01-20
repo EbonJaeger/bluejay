@@ -1,0 +1,278 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR "Evan Maddock"
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# 
+# Translators:
+# Stephan, 2025
+# 
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: https://github.com/EbonJaeger/bluejay/issues\n"
+"POT-Creation-Date: 2024-12-30 12:52-0500\n"
+"PO-Revision-Date: 2025-01-10 16:25+0000\n"
+"Last-Translator: Stephan, 2025\n"
+"Language-Team: Chinese (China) (https://app.transifex.com/ebonjaeger/teams/203684/zh_CN/)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: zh_CN\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+
+#: main.cpp:54
+#, kde-format
+msgid "Bluejay"
+msgstr "Bluejay"
+
+#: main.cpp:56
+#, kde-format
+msgid "Bluetooth device manager"
+msgstr "蓝牙设备管理"
+
+#: main.cpp:58
+#, kde-format
+msgid "© Evan Maddock"
+msgstr "© Evan Maddock"
+
+#: main.cpp:63
+#, kde-format
+msgid "Maintainer"
+msgstr "维护人员"
+
+#: qml/ConfirmationDialog.qml:33 qml/PasskeyDialog.qml:30
+#, kde-format
+msgctxt "@title:window"
+msgid "Pairing Requested"
+msgstr "已请求配对"
+
+#: qml/ConfirmationDialog.qml:34
+#, kde-format
+msgid "Pair request from <b>%1</b>. Do you want to pair?"
+msgstr "设备 %1</b> 请求配对，.你想配对吗？"
+
+#: qml/DeviceDelegate.qml:52
+#, kde-format
+msgid "%1% Battery"
+msgstr "%1%电池"
+
+#: qml/DevicePage.qml:54
+#, kde-format
+msgctxt "@window:title"
+msgid "Forget Device"
+msgstr "忘记设备"
+
+#: qml/DevicePage.qml:68
+#, kde-format
+msgid ""
+"Are you sure you want to forget device <b>%1</b>? If you want to connect to "
+"this device after forgetting it, you will have to pair it again."
+msgstr "你确定要忘记设备%11吗？如果你在忘记后想要连接这个设备，你将需要重新配对。"
+
+#: qml/DevicePage.qml:115
+#, kde-format
+msgid "Device Settings"
+msgstr "设备设置"
+
+#: qml/DevicePage.qml:122
+#, kde-format
+msgid "Pair"
+msgstr "配对"
+
+#: qml/DevicePage.qml:123
+#, kde-format
+msgid "Pair with this device"
+msgstr "配对这个设备"
+
+#: qml/DevicePage.qml:130
+#, kde-format
+msgid "Disconnect"
+msgstr "掐断"
+
+#: qml/DevicePage.qml:132
+#, kde-format
+msgid "Connect"
+msgstr "连接"
+
+#: qml/DevicePage.qml:135
+#, kde-format
+msgid "Disconnect from this device"
+msgstr "掐断这个设备"
+
+#: qml/DevicePage.qml:137
+#, kde-format
+msgid "Connect to this device"
+msgstr "连接这个设备"
+
+#: qml/DevicePage.qml:149
+#, kde-format
+msgid "Forget"
+msgstr "忘记"
+
+#: qml/DevicePage.qml:150
+#, kde-format
+msgid "Forget this device"
+msgstr "忘记这个设备"
+
+#: qml/DevicePage.qml:159
+#, kde-format
+msgid "Manage"
+msgstr "管理"
+
+#: qml/DevicePage.qml:160
+#, kde-format
+msgid "Additional settings for this device"
+msgstr ""
+
+#: qml/DevicePage.qml:177
+#, kde-format
+msgid "Trusted"
+msgstr ""
+
+#: qml/DevicePage.qml:178
+#, kde-format
+msgid "Allow incoming connections from this device without confirmation"
+msgstr ""
+
+#: qml/DevicePage.qml:186
+#, kde-format
+msgid "Blocked"
+msgstr ""
+
+#: qml/DevicePage.qml:187
+#, kde-format
+msgid "Reject incoming connections from this device"
+msgstr ""
+
+#: qml/DevicePage.qml:193
+#, kde-format
+msgid "Status"
+msgstr "状态"
+
+#: qml/DevicePage.qml:198
+#, kde-format
+msgid "Address"
+msgstr "地址"
+
+#: qml/DevicePage.qml:203
+#, kde-format
+msgid "Type"
+msgstr "类型"
+
+#: qml/DevicePage.qml:208 qml/Main.qml:307
+#, kde-format
+msgid "Paired"
+msgstr "已配对"
+
+#: qml/DevicePage.qml:209 qml/DevicePage.qml:214
+#, kde-format
+msgid "Yes"
+msgstr "是"
+
+#: qml/DevicePage.qml:209 qml/DevicePage.qml:214
+#, kde-format
+msgid "No"
+msgstr "否"
+
+#: qml/DevicePage.qml:213 qml/Main.qml:305
+#, kde-format
+msgid "Connected"
+msgstr "已连接"
+
+#: qml/DevicePage.qml:219
+#, kde-format
+msgid "Battery"
+msgstr "电池"
+
+#: qml/DevicePage.qml:220
+#, kde-format
+msgctxt "Shown when there is no battery information for a device"
+msgid "Unknown"
+msgstr "无知"
+
+#: qml/DevicePage.qml:220
+#, kde-format
+msgid "%1%"
+msgstr "%1%"
+
+#: qml/Main.qml:221
+#, kde-format
+msgid "Toggle Bluetooth"
+msgstr ""
+
+#: qml/Main.qml:222
+#, kde-format
+msgid "Turn Bluetooth on or off"
+msgstr "开或关蓝牙"
+
+#: qml/Main.qml:229
+#, kde-format
+msgid "Toggle discovery"
+msgstr ""
+
+#: qml/Main.qml:230
+#, kde-format
+msgid "Turn device discovery on or off"
+msgstr "开或关设备识别"
+
+#: qml/Main.qml:239
+#, kde-format
+msgid "About"
+msgstr "关于"
+
+#: qml/Main.qml:240
+#, kde-format
+msgid "Show application information"
+msgstr "表示应用信息"
+
+#: qml/Main.qml:257
+#, kde-format
+msgid "Devices"
+msgstr "设备"
+
+#: qml/Main.qml:267
+#, kde-format
+msgctxt "Tooltip shown when hovering over a spinner"
+msgid "Discovering devices..."
+msgstr "发现设备"
+
+#: qml/Main.qml:291
+#, kde-format
+msgid "No paired devices"
+msgstr ""
+
+#: qml/Main.qml:309
+#, kde-format
+msgid "Available"
+msgstr ""
+
+#: qml/PasskeyDialog.qml:31
+#, kde-format
+msgid "Pair request from <b>%1</b>."
+msgstr ""
+
+#: qml/WelcomePage.qml:33
+#, kde-format
+msgid "No Bluetooth adapters found"
+msgstr ""
+
+#: qml/WelcomePage.qml:34
+#, kde-format
+msgid "Please connect a Bluetooth adapter"
+msgstr ""
+
+#: qml/WelcomePage.qml:43
+#, kde-format
+msgid "Bluetooth is disabled"
+msgstr ""
+
+#: qml/WelcomePage.qml:49
+#, kde-format
+msgid "Enable"
+msgstr ""
+
+#: qml/WelcomePage.qml:59
+#, kde-format
+msgid "No device selected. Click a device to get started."
+msgstr ""
