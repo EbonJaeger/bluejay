@@ -32,6 +32,11 @@ SPDX-FileCopyrightText: 2024 Evan Maddock <maddock.evan@vivaldi.net>
     <url>https://github.com/EbonJaeger</url>
   </developer>
   <releases>
+    <release version="1.0.0" date="2025-01-21">
+      <description>
+        <p>This is the first full release of Bluejay!</p>
+      </description>
+    </release>
     <release version="0.1.0" date="2024-12-28">
       <description>
         <p>This is the initial pre-release of Bluejay! It is meant to get some user feedback ahead of the big 1.0.</p>
