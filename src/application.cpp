@@ -23,9 +23,4 @@ App::App(QObject *parent)
 {
 }
 
-QString App::iconName(const QIcon &icon)
-{
-    return icon.name();
-}
-
 #include "moc_application.cpp"
