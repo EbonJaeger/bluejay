@@ -31,6 +31,4 @@ class App : public AbstractKirigamiApplication
 public:
     explicit App(QObject *parent = nullptr);
     ~App() override = default;
-
-    Q_INVOKABLE [[nodiscard]] static QString iconName(const QIcon &icon);
 };
