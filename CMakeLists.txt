@@ -69,7 +69,7 @@ set_package_properties(
   TYPE REQUIRED
   PURPOSE "Kirigami application UI framework")
 
-find_package(KF6KirigamiAddons 1.4.0 REQUIRED)
+find_package(KF6KirigamiAddons 1.7.0 REQUIRED)
 set_package_properties(
   KF6KirigamiAddons PROPERTIES
   TYPE REQUIRED

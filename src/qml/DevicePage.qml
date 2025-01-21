@@ -28,8 +28,6 @@ import org.kde.kirigamiaddons.formcard as FormCard
 
 import io.github.ebonjaeger.bluejay as Bluejay
 
-import "components"
-
 FormCard.FormCardPage {
     id: page
 
@@ -69,24 +67,16 @@ FormCard.FormCardPage {
         }
     }
 
-    Kirigami.OverlaySheet {
+    Controls.Dialog {
         visible: page.busy
-        showCloseButton: false
-        header: null
-        footer: null
-        implicitWidth: 96 + Kirigami.Units.largeSpacing
-        implicitHeight: 96 + Kirigami.Units.largeSpacing
+        modal: true
 
-        ColumnLayout {
-            Layout.fillWidth: true
-            Layout.fillHeight: true
+        parent: root.Controls.Overlay.overlay
+        anchors.centerIn: parent
 
-            Controls.BusyIndicator {
-                Layout.fillWidth: true
-                Layout.fillHeight: true
-                implicitWidth: 96
-                implicitHeight: 96
-            }
+        contentItem: Controls.BusyIndicator {
+            implicitWidth: 96
+            implicitHeight: 96
         }
     }
 
@@ -118,14 +108,19 @@ FormCard.FormCardPage {
     FormCard.FormCard {
         enabled: !page.busy
 
-        FormButton {
+        FormCard.FormButtonDelegate {
             text: i18n("Pair")
             description: i18n("Pair with this device")
             visible: !page.device.paired
             onClicked: page.makeCall(page.device.pair())
+            trailingLogo.visible: false
         }
 
-        FormButton {
+        FormCard.FormDelegateSeparator {
+            visible: !page.device.paired
+        }
+
+        FormCard.FormButtonDelegate {
             text: if (page.device.connected) {
                 return i18n("Disconnect");
             } else {
@@ -143,35 +138,40 @@ FormCard.FormCardPage {
                     page.makeCall(page.device.connectToDevice());
                 }
             }
+            trailingLogo.visible: false
         }
 
-        FormButton {
+        FormCard.FormDelegateSeparator {
+            visible: page.device.paired
+        }
+
+        FormCard.FormButtonDelegate {
             text: i18n("Forget")
             description: i18n("Forget this device")
             visible: page.device.paired
             onClicked: forgetDialog.open()
+            trailingLogo.visible: false
         }
 
         FormCard.FormDelegateSeparator {}
 
-        FormToggleButton {
+        FormCard.FormButtonDelegate {
             id: manageButton
+
             text: i18n("Manage")
             description: i18n("Additional settings for this device")
-            onClicked: {
-                manageButton.highlighted = !manageButton.highlighted;
+            checkable: true
 
-                if (highlighted) {
-                    manageButton.direction = Qt.DownArrow
-                } else {
-                    manageButton.direction = Qt.RightArrow
-                }
-            }
+            trailingLogo.direction: checked ? Qt.DownArrow : Qt.RightArrow
+        }
+
+        FormCard.FormDelegateSeparator {
+            visible: manageButton.checked
         }
 
         FormCard.FormSwitchDelegate {
             id: trusted
-            visible: manageButton.highlighted
+            visible: manageButton.checked
             enabled: page.device.paired
             checked: page.device.trusted
             text: i18n("Trusted")
@@ -179,9 +179,13 @@ FormCard.FormCardPage {
             onToggled: Bluejay.Bluetooth.setDeviceTrusted(page.device.address, checked)
         }
 
+        FormCard.FormDelegateSeparator {
+            visible: manageButton.checked
+        }
+
         FormCard.FormSwitchDelegate {
             id: blocked
-            visible: manageButton.highlighted
+            visible: manageButton.checked
             checked: page.device.blocked
             text: i18n("Blocked")
             description: i18n("Reject incoming connections from this device")
@@ -199,20 +203,28 @@ FormCard.FormCardPage {
             description: page.device.address
         }
 
+        FormCard.FormDelegateSeparator { opacity: 0.5 }
+
         FormCard.FormTextDelegate {
             text: i18n("Type")
             description: Bluejay.Bluetooth.deviceTypeToString(device.type, device.uuids)
         }
+
+        FormCard.FormDelegateSeparator { opacity: 0.5 }
 
         FormCard.FormTextDelegate {
             text: i18n("Paired")
             description: page.device.paired ? i18n("Yes") : i18n("No")
         }
 
+        FormCard.FormDelegateSeparator { opacity: 0.5 }
+
         FormCard.FormTextDelegate {
             text: i18n("Connected")
             description: page.device.connected ? i18n("Yes") : i18n("No")
         }
+
+        FormCard.FormDelegateSeparator { opacity: 0.5 }
 
         FormCard.FormTextDelegate {
             visible: page.device.battery !== null
