@@ -278,6 +278,9 @@ StatefulApp.StatefulWindow {
 
                 ListView {
                     id: deviceList
+
+                    clip: true
+
                     Layout.fillWidth: true
 
                     DevicesProxyModel {
