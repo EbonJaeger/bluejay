@@ -54,8 +54,6 @@ RoundedItemDelegate {
         return labels.join(" · ");
     }
 
-    implicitWidth: parent.width
-
     contentItem: Delegates.IconTitleSubtitle {
         title: root.name
         subtitle: infoText(root.device)
