@@ -54,7 +54,11 @@ int main(int argc, char *argv[])
                      i18n("Bluejay"),
                      QStringLiteral(BLUEJAY_VERSION_STRING),
                      i18n("Bluetooth device manager"),
+#if KCOREADDONS_VERSION >= QT_VERSION_CHECK(6, 11, 0)
+                     KAboutLicense::MPL_V2,
+#else
                      KAboutLicense::Unknown,
+#endif
                      i18n("© Evan Maddock"));
     about.setHomepage(QStringLiteral("https://github.com/EbonJaeger/bluejay"));
     about.setBugAddress(QByteArray("https://github.com/EbonJaeger/bluejay/issues"));
