@@ -32,6 +32,18 @@ SPDX-FileCopyrightText: 2024 Evan Maddock <maddock.evan@vivaldi.net>
     <url>https://github.com/EbonJaeger</url>
   </developer>
   <releases>
+    <release version="1.0.1" date="2025-01-22">
+      <description>
+        <p>Minor bugfix release.</p>
+        <ul>
+          <li>Clip device list view to prevent overflow</li>
+          <li>Rework DevicePage to use more KirigamiAddons API</li>
+          <li>Remove dead code</li>
+          <li>Don't overwrite delegate width</li>
+          <li>Properly specify license with KCoreAddons 6.11.0 and newer</li>
+        </ul>
+      </description>
+    </release>
     <release version="1.0.0" date="2025-01-21">
       <description>
         <p>This is the first full release of Bluejay!</p>
