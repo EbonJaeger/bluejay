@@ -1,5 +1,7 @@
 # <img src="https://raw.githubusercontent.com/EbonJaeger/bluejay/main/logo.png" width="64" alt="logo"> Bluejay
 
+[![Translate into your language!](https://img.shields.io/badge/help%20translate-Transifex-4AB)](https://www.transifex.com/EbonJaeger/bluejay)
+
 A Bluetooth manager and Bluez front-end. With it, you can pair devices, connect to and remove devices, turn Bluetooth on and off, and more. Bluejay is powered by the Qt6 graphical toolkit and KDE Frameworks.
 
 It was created as a learning project for me to learn how to write a Qt application. Despite that, Bluejay is meant to be functional, and look good.
