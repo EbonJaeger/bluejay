@@ -1,3 +1,7 @@
+# SPDX-FileCopyrightText: Evan Maddock <maddock.evan@vivaldi.net>
+#
+# SPDX-License-Identifier: MPL-2.0
+
 cmake_minimum_required(VERSION 3.20)
 
 project(bluejay)

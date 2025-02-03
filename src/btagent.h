@@ -14,6 +14,10 @@
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at <https://mozilla.org/MPL/2.0/>.
+ *
+ * SPDX-FileCopyrightText: Evan Maddock <maddock.evan@vivaldi.net>
+ *
+ * SPDX-License-Identifier: MPL-2.0
  */
 
 #pragma once
@@ -31,8 +35,8 @@ public:
     explicit BtAgent(QObject *parent = nullptr);
 
     QString pin() const;
-    void setPin(const QString& pin);
-    QString generatePin(const BluezQt::DevicePtr& device);
+    void setPin(const QString &pin);
+    QString generatePin(const BluezQt::DevicePtr &device);
 
     QDBusObjectPath objectPath() const override;
 
@@ -42,8 +46,8 @@ public:
     void displayPasskey(BluezQt::DevicePtr device, const QString &passkey, const QString &entered) override;
     void requestConfirmation(BluezQt::DevicePtr device, const QString &passkey, const BluezQt::Request<void> &request) override;
 
-    Q_SIGNALS:
-        void pinRequested(QString deviceName, const QString &pin);
+Q_SIGNALS:
+    void pinRequested(QString deviceName, const QString &pin);
     void confirmationRequested(QString deviceName, const QString &passkey, const VoidRequest *request);
 
 private:

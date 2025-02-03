@@ -1,3 +1,7 @@
+# SPDX-FileCopyrightText: Evan Maddock <maddock.evan@vivaldi.net>
+#
+# SPDX-License-Identifier: MPL-2.0
+
 add_library(
   bluejay STATIC
   application.cpp

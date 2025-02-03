@@ -1,5 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<!--
+	SPDX-FileCopyrightText: 2008-2009 Bastien Nocera <hadess@hadess.net>
+	SPDX-License-Identifier: GPL-2.0-or-later
+>
+
 <!-- This is a PIN code database for use in the Bluetooth wizard.
 
   Copyright (C) 2008-2009  Bastien Nocera <hadess@hadess.net>
