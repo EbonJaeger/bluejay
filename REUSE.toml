@@ -1,0 +1,46 @@
+version = 1
+SPDX-PackageName = "Bluejay"
+SPDX-PackageSupplier = "Evan Maddock <maddock.evan@vivaldi.net>"
+SPDX-PackageDownloadLocation = "https://github.com/EbonJaeger/bluejay"
+
+[[annotations]]
+path = ["README.md", ".gitignore"]
+precedence = "aggregate"
+SPDX-FileCopyrightText = "Evan Maddock <maddock.evan@vivaldi.net>"
+SPDX-License-Identifier = "CC0-1.0"
+
+[[annotations]]
+path = [".github/ISSUE_TEMPLATE/bug_report.yml", ".github/ISSUE_TEMPLATE/feature_request.yml"]
+precedence = "aggregate"
+SPDX-FileCopyrightText = "Evan Maddock <maddock.evan@vivaldi.net>"
+SPDX-License-Identifier = "CC0-1.0"
+
+[[annotations]]
+path = [".github/workflows/build.yml"]
+precedence = "aggregate"
+SPDX-FileCopyrightText = "Neal Gompa, Evan Maddock <maddock.evan@vivaldi.net>"
+SPDX-License-Identifier = "CC0-1.0"
+
+[[annotations]]
+path = ["io.github.ebonjaeger.bluejay.svg", "logo.png", "screenshot.png"]
+precedence = "aggregate"
+SPDX-FileCopyrightText = "Evan Maddock <maddock.evan@vivaldi.net>"
+SPDX-License-Identifier = "CC-BY-SA-4.0"
+
+[[annotations]]
+path = [".tx/config"]
+precedence = "aggregate"
+SPDX-FileCopyrightText = "None"
+SPDX-License-Identifier = "CC0-1.0"
+
+[[annotations]]
+path = ["po/bluejay.pot", "po/**/*.po"]
+precedence = "aggregate"
+SPDX-FileCopyrightText = "None"
+SPDX-License-Identifier = "MPL-2.0"
+
+[[annotations]]
+path = ["REUSE.toml"]
+precedence = "aggregate"
+SPDX-FileCopyrightText = "None"
+SPDX-License-Identifier = "CC0-1.0"
