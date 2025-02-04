@@ -34,6 +34,12 @@ SPDX-FileCopyrightText = "None"
 SPDX-License-Identifier = "CC0-1.0"
 
 [[annotations]]
+path = [".flatpak-manifest.json"]
+precedence = "aggregate"
+SPDX-FileCopyrightText = "None"
+SPDX-License-Identifier = "CC0-1.0"
+
+[[annotations]]
 path = ["po/bluejay.pot", "po/**/*.po"]
 precedence = "aggregate"
 SPDX-FileCopyrightText = "None"

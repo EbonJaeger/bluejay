@@ -1,0 +1,43 @@
+{
+    "id": "io.github.ebonjaeger.bluejay",
+    "runtime": "org.kde.Platform",
+    "runtime-version": "6.8",
+    "sdk": "org.kde.Sdk",
+    "command": "bluejay",
+    "tags": ["nightly"],
+    "desktop-file-name-suffix": " (Nightly)",
+    "finish-args": [
+        "--allow=bluetooth",
+        "--device=all",
+        "--share=ipc",
+        "--share=network",
+        "--socket=fallback-x11",
+        "--socket=wayland",
+        "--system-talk-name=org.bluez"
+    ],
+    "separate-locales": false,
+
+    "modules": [
+        {
+            "name": "kirigami-addons",
+            "config-opts": [
+                "-DBUILD_TESTING=OFF",
+                "-DCMAKE_BUILD_TYPE=RelWithDebInfo",
+                "-DBUILD_WITH_QT6=ON"
+            ],
+            "buildsystem": "cmake-ninja",
+            "sources": [
+                {
+                    "type": "git",
+                    "url": "https://invent.kde.org/libraries/kirigami-addons.git"
+                }
+            ]
+        },
+        {
+            "name": "bluejay",
+            "buildsystem": "cmake-ninja",
+            "builddir": true,
+            "sources": [ { "type": "dir", "path": ".", "skip": [".git"] } ]
+        }
+    ]
+}
