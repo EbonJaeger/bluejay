@@ -32,6 +32,16 @@ SPDX-FileCopyrightText: 2024 Evan Maddock <maddock.evan@vivaldi.net>
     <url>https://github.com/EbonJaeger</url>
   </developer>
   <releases>
+    <release version="1.0.2" date="2025-02-04">
+      <description>
+        <p>Minor bugfix release.</p>
+        <ul>
+          <li>Fix screenshot URL in appstream metainfo</li>
+          <li>Make project REUSE compliant</li>
+          <li>Add Ukrainian translations</li>
+        </ul>
+      </description>
+    </release>
     <release version="1.0.1" date="2025-01-22">
       <description>
         <p>Minor bugfix release.</p>
