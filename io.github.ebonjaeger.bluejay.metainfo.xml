@@ -13,6 +13,7 @@ SPDX-FileCopyrightText: 2024 Evan Maddock <maddock.evan@vivaldi.net>
   <url type="homepage">https://github.com/EbonJaeger/bluejay</url>
   <url type="bugtracker">https://github.com/EbonJaeger/bluejay/issues</url>
   <url type="vcs-browser">https://github.com/EbonJaeger/bluejay</url>
+  <url type="translate">https://app.transifex.com/ebonjaeger/bluejay</url>
   <metadata_license>CC0-1.0</metadata_license>
   <project_license>MPL-2.0</project_license>
   <content_rating type="oars-1.1"/>
