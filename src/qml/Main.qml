@@ -280,12 +280,10 @@ StatefulApp.StatefulWindow {
                 Layout.fillWidth: true
                 Layout.fillHeight: true
 
-                ListView {
+                contentItem: ListView {
                     id: deviceList
 
                     clip: true
-
-                    Layout.fillWidth: true
 
                     DevicesProxyModel {
                         id: devicesModel
@@ -308,12 +306,12 @@ StatefulApp.StatefulWindow {
 
                         Layout.fillWidth: true
                         text: switch (section) {
-                            case "Connected":
-                                return i18n("Connected");
-                            case "Paired":
-                                return i18n("Paired");
-                            default:
-                                return i18n("Available");
+                        case "Connected":
+                            return i18n("Connected");
+                        case "Paired":
+                            return i18n("Paired");
+                        default:
+                            return i18n("Available");
                         }
                     }
 

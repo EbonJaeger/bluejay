@@ -32,7 +32,7 @@ import org.kde.bluezqt as BluezQt
 
 import io.github.ebonjaeger.bluejay
 
-RoundedItemDelegate {
+Controls.ItemDelegate {
     id: root
 
     required property string address
@@ -43,6 +43,8 @@ RoundedItemDelegate {
 
     highlighted: NavigationController.deviceAddress === address
     activeFocusOnTab: true
+
+    implicitWidth: parent.width
 
     function infoText(device: BluezQt.Device): string {
         const {
@@ -64,8 +66,8 @@ RoundedItemDelegate {
         icon.name: root.iconName
     }
 
-    TapHandler {
-        onTapped: NavigationController.deviceAddress = root.address
+    onClicked: {
+        NavigationController.deviceAddress = root.address;
     }
 
     Controls.ToolTip.text: root.name
