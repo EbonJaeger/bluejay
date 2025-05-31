@@ -56,6 +56,7 @@ target_link_libraries(
          Qt::QuickControls2
          Qt::Widgets
          KF6::BluezQt
+         KF6::ColorScheme
          KF6::CoreAddons
          KF6::DBusAddons
          KF6::I18n

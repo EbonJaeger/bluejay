@@ -22,6 +22,7 @@
 
 #include <BluezQt/InitManagerJob>
 #include <KAboutData>
+#include <KColorSchemeManager>
 #include <KLocalizedContext>
 #include <KLocalizedString>
 #include <QApplication>
@@ -42,12 +43,12 @@ void qml_register_types_io_github_ebonjaeger_bluejay();
 
 int main(int argc, char *argv[])
 {
-    QIcon::setFallbackThemeName(QStringLiteral("breeze"));
+    QIcon::setFallbackThemeName("breeze"_L1);
 
     QApplication app(argc, argv);
 
     if (qEnvironmentVariableIsEmpty("QT_QUICK_CONTROLS_STYLE")) {
-        QQuickStyle::setStyle(QStringLiteral("org.kde.desktop"));
+        QQuickStyle::setStyle(u"org.kde.desktop"_s);
     }
 
     KLocalizedString::setApplicationDomain(QByteArrayLiteral("bluejay"));
@@ -75,6 +76,8 @@ int main(int argc, char *argv[])
     KAboutData::setApplicationData(about);
     QGuiApplication::setWindowIcon(QIcon::fromTheme(QStringLiteral("io.github.ebonjaeger.bluejay")));
     QGuiApplication::setDesktopFileName(QStringLiteral("io.github.ebonjaeger.bluejay"));
+
+    KColorSchemeManager::instance();
 
     qml_register_types_io_github_ebonjaeger_bluejay();
 
