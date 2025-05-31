@@ -18,6 +18,8 @@ set(CMAKE_AUTORCC ON)
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
+set(KDE_COMPILERSETTINGS_LEVEL 6.0)
+
 find_package(ECM ${KF6_MIN_VERSION} REQUIRED NO_MODULE)
 set(CMAKE_MODULE_PATH ${ECM_MODULE_PATH})
 
@@ -57,6 +59,7 @@ set_package_properties(
 find_package(
   KF6 ${KF6_MIN_VERSION}
   COMPONENTS BluezQt
+             ColorScheme
              Config
              CoreAddons
              DBusAddons
