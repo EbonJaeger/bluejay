@@ -21,6 +21,7 @@
  */
 
 import QtQuick
+import QtQuick.Controls
 import QtQuick.Layouts
 
 import org.kde.kirigami as Kirigami
@@ -31,16 +32,16 @@ Kirigami.PromptDialog {
     property string deviceName
     property string passkey
 
+    width: Math.min(parent.width - Kirigami.Units.gridUnit * 4, Kirigami.Units.gridUnit * 26)
+    bottomPadding: Kirigami.Units.gridUnit
     title: i18nc("@title:window", "Pairing Requested")
     subtitle: i18n("Pair request from <b>%1</b>.", root.deviceName)
     dialogType: Kirigami.PromptDialog.Information
     standardButtons: Kirigami.Dialog.Close
 
-    ColumnLayout {
-        Text {
-            text: root.passkey
-            font.pointSize: 24
-            horizontalAlignment: Text.AlignHCenter
-        }
+    Label {
+        Layout.fillWidth: true
+        text: root.passkey
+        font.pointSize: 24
     }
 }

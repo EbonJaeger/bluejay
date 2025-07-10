@@ -21,6 +21,7 @@
  */
 
 import QtQuick
+import QtQuick.Controls
 import QtQuick.Layouts
 
 import org.kde.kirigami as Kirigami
@@ -34,10 +35,12 @@ Kirigami.PromptDialog {
     property string passkey
     property Bluejay.VoidRequest request
 
+    width: Math.min(parent.width - Kirigami.Units.gridUnit * 4, Kirigami.Units.gridUnit * 26)
+    bottomPadding: Kirigami.Units.gridUnit
     title: i18nc("@title:window", "Pairing Requested")
     subtitle: i18n("Pair request from <b>%1</b>. Do you want to pair?", root.deviceName)
     dialogType: Kirigami.PromptDialog.Information
-    standardButtons: Kirigami.Dialog.Yes | Kirigami.Dialog.Cancel
+    standardButtons: Kirigami.Dialog.Ok | Kirigami.Dialog.Cancel
 
     onAccepted: {
         console.debug("Pairing accepted");
@@ -49,11 +52,10 @@ Kirigami.PromptDialog {
         root.request.cancel();
     }
 
-    ColumnLayout {
-        Text {
-            text: root.passkey
-            font.pointSize: 24
-            horizontalAlignment: Text.AlignHCenter
-        }
+    Label {
+        Layout.fillWidth: true
+        text: root.passkey
+        font.pointSize: 24
+        horizontalAlignment: Text.AlignHCenter
     }
 }

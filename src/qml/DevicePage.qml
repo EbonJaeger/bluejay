@@ -52,13 +52,18 @@ FormCard.FormCardPage {
 
     Components.MessageDialog {
         id: forgetDialog
+
+        property BluezQt.Device device
+
+        width: Math.min(parent.width - Kirigami.Units.gridUnit * 4, Kirigami.Units.gridUnit * 26)
+        bottomPadding: Kirigami.Units.gridUnit
         dialogType: Components.MessageDialog.Warning
         title: i18nc("@window:title", "Forget Device")
-        standardButtons: MessageDialog.Yes | MessageDialog.Cancel
+        standardButtons: MessageDialog.Ok | MessageDialog.Cancel
         onAccepted: {
             const {
                 adapter
-            } = page.device;
+            } = device;
             page.makeCall(adapter.removeDevice(device));
             close();
         }
@@ -153,7 +158,10 @@ FormCard.FormCardPage {
             text: i18n("Forget")
             description: i18n("Forget this device")
             visible: page.device.paired
-            onClicked: forgetDialog.open()
+            onClicked: {
+                forgetDialog.device = page.device;
+                forgetDialog.open();
+            }
             trailingLogo.visible: false
         }
 
@@ -207,28 +215,36 @@ FormCard.FormCardPage {
             description: page.device.address
         }
 
-        FormCard.FormDelegateSeparator { opacity: 0.5 }
+        FormCard.FormDelegateSeparator {
+            opacity: 0.5
+        }
 
         FormCard.FormTextDelegate {
             text: i18n("Type")
             description: Bluejay.Bluetooth.deviceTypeToString(device.type, device.uuids)
         }
 
-        FormCard.FormDelegateSeparator { opacity: 0.5 }
+        FormCard.FormDelegateSeparator {
+            opacity: 0.5
+        }
 
         FormCard.FormTextDelegate {
             text: i18n("Paired")
             description: page.device.paired ? i18n("Yes") : i18n("No")
         }
 
-        FormCard.FormDelegateSeparator { opacity: 0.5 }
+        FormCard.FormDelegateSeparator {
+            opacity: 0.5
+        }
 
         FormCard.FormTextDelegate {
             text: i18n("Connected")
             description: page.device.connected ? i18n("Yes") : i18n("No")
         }
 
-        FormCard.FormDelegateSeparator { opacity: 0.5 }
+        FormCard.FormDelegateSeparator {
+            opacity: 0.5
+        }
 
         FormCard.FormTextDelegate {
             visible: page.device.battery !== null
