@@ -1,0 +1,33 @@
+name: bluejay
+base: core24
+version: '1.0.3'
+platforms:
+  amd64:
+    build-on: [amd64]
+    build-for: [amd64]
+summary: Bluetooth device manager
+description: |
+  Bluejay is a Bluetooth manager and Bluez front-end. With it, you can pair devices, connect to and remove devices, turn Bluetooth on and off, and more. This project is powered by the Qt6 graphical toolkit and KDE Frameworks.
+grade: stable
+confinement: strict
+
+apps:
+  bluejay:
+    command: usr/bin/bluejay
+    desktop: usr/share/applications/io.github.ebonjaeger.bluejay.desktop
+    common-id: io.github.ebonjaeger.bluejay
+    extensions: [kde-neon-6]
+    plugs:
+      - home
+      - bluez
+      - removable-media
+
+parts:
+  bluejay:
+    plugin: cmake
+    source: https://github.com/EbonJaeger/bluejay.git
+    source-tag: v$SNAPCRAFT_PROJECT_VERSION
+    override-build: |
+      craftctl default
+      sed -i 's|Exec=bluejay|Exec=${SNAP}/usr/bin/bluejay|' $CRAFT_PART_INSTALL/usr/share/applications/io.github.ebonjaeger.bluejay.desktop
+      sed -i 's|Icon=io.github.ebonjaeger.bluejay|Icon=${SNAP}/usr/share/icons/hicolor/scalable/apps/io.github.ebonjaeger.bluejay.svg|' $CRAFT_PART_INSTALL/usr/share/applications/io.github.ebonjaeger.bluejay.desktop
