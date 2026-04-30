@@ -1,0 +1,275 @@
+# Italian translation.
+# Copyright (C) YEAR "Evan Maddock"
+# This file is distributed under the same license as the PACKAGE package.
+# Albano BATTISTELLA <albanobattistella@gmail.com>, 2025.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: https://github.com/EbonJaeger/bluejay/issues\n"
+"POT-Creation-Date: 2024-12-30 12:52-0500\n"
+"PO-Revision-Date: 2025-02-06 15:49 +0100\n"
+"Last-Translator: Albano Battistella <albanobattistella@gmail.com>\n"
+"Language-Team: Italian <LL@li.org>\n"
+"Language: it\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: main.cpp:54
+#, kde-format
+msgid "Bluejay"
+msgstr "Bluejay"
+
+#: main.cpp:56
+#, kde-format
+msgid "Bluetooth device manager"
+msgstr "Gestore dispositivi Bluetooth"
+
+#: main.cpp:58
+#, kde-format
+msgid "© Evan Maddock"
+msgstr "© Evan Maddock"
+
+#: main.cpp:63
+#, kde-format
+msgid "Maintainer"
+msgstr "Manutentore"
+
+#: qml/ConfirmationDialog.qml:33 qml/PasskeyDialog.qml:30
+#, kde-format
+msgctxt "@title:window"
+msgid "Pairing Requested"
+msgstr "Richiesta di associazione"
+
+#: qml/ConfirmationDialog.qml:34
+#, kde-format
+msgid "Pair request from <b>%1</b>. Do you want to pair?"
+msgstr "Richiesta di associazione da <b>%1</b>. Vuoi associare?"
+
+#: qml/DeviceDelegate.qml:52
+#, kde-format
+msgid "%1% Battery"
+msgstr "%1% Batteria"
+
+#: qml/DevicePage.qml:54
+#, kde-format
+msgctxt "@window:title"
+msgid "Forget Device"
+msgstr "Dimentica dispositivo"
+
+#: qml/DevicePage.qml:68
+#, kde-format
+msgid ""
+"Are you sure you want to forget device <b>%1</b>? If you want to connect to "
+"this device after forgetting it, you will have to pair it again."
+msgstr ""
+"Sei sicuro di voler dimenticare il dispositivo <b>%1</b>? Se vuoi connetterti a "
+"questo dispositivo dopo averlo dimenticato, dovrai associarlo di nuovo."
+
+#: qml/DevicePage.qml:115
+#, kde-format
+msgid "Device Settings"
+msgstr "Impostazioni del dispositivo"
+
+#: qml/DevicePage.qml:122
+#, kde-format
+msgid "Pair"
+msgstr "Associa"
+
+#: qml/DevicePage.qml:123
+#, kde-format
+msgid "Pair with this device"
+msgstr "Associa a questo dispositivo"
+
+#: qml/DevicePage.qml:130
+#, kde-format
+msgid "Disconnect"
+msgstr "Disconnetti"
+
+#: qml/DevicePage.qml:132
+#, kde-format
+msgid "Connect"
+msgstr "Connetti"
+
+#: qml/DevicePage.qml:135
+#, kde-format
+msgid "Disconnect from this device"
+msgstr "Disconnettiti da questo dispositivo"
+
+#: qml/DevicePage.qml:137
+#, kde-format
+msgid "Connect to this device"
+msgstr "Connettiti a questo dispositivo"
+
+#: qml/DevicePage.qml:149
+#, kde-format
+msgid "Forget"
+msgstr "Dimentica"
+
+#: qml/DevicePage.qml:150
+#, kde-format
+msgid "Forget this device"
+msgstr "Dimentica questo dispositivo"
+
+#: qml/DevicePage.qml:159
+#, kde-format
+msgid "Manage"
+msgstr "Gestisci"
+
+#: qml/DevicePage.qml:160
+#, kde-format
+msgid "Additional settings for this device"
+msgstr "Impostazioni aggiuntive per questo dispositivo"
+
+#: qml/DevicePage.qml:177
+#, kde-format
+msgid "Trusted"
+msgstr "Verificato"
+
+#: qml/DevicePage.qml:178
+#, kde-format
+msgid "Allow incoming connections from this device without confirmation"
+msgstr "Consenti connessioni in entrata da questo dispositivo senza conferma"
+
+#: qml/DevicePage.qml:186
+#, kde-format
+msgid "Blocked"
+msgstr "BLoccato"
+
+#: qml/DevicePage.qml:187
+#, kde-format
+msgid "Reject incoming connections from this device"
+msgstr "Rifiuta le connessioni in arrivo da questo dispositivo"
+
+#: qml/DevicePage.qml:193
+#, kde-format
+msgid "Status"
+msgstr "Stato"
+
+#: qml/DevicePage.qml:198
+#, kde-format
+msgid "Address"
+msgstr "Indirizzo"
+
+#: qml/DevicePage.qml:203
+#, kde-format
+msgid "Type"
+msgstr "Tipo"
+
+#: qml/DevicePage.qml:208 qml/Main.qml:307
+#, kde-format
+msgid "Paired"
+msgstr "Associato"
+
+#: qml/DevicePage.qml:209 qml/DevicePage.qml:214
+#, kde-format
+msgid "Yes"
+msgstr "Si"
+
+#: qml/DevicePage.qml:209 qml/DevicePage.qml:214
+#, kde-format
+msgid "No"
+msgstr "No"
+
+#: qml/DevicePage.qml:213 qml/Main.qml:305
+#, kde-format
+msgid "Connected"
+msgstr "Connesso"
+
+#: qml/DevicePage.qml:219
+#, kde-format
+msgid "Battery"
+msgstr "Batteria"
+
+#: qml/DevicePage.qml:220
+#, kde-format
+msgctxt "Shown when there is no battery information for a device"
+msgid "Unknown"
+msgstr "Sconosciuto"
+
+#: qml/DevicePage.qml:220
+#, kde-format
+msgid "%1%"
+msgstr "%1%"
+
+#: qml/Main.qml:221
+#, kde-format
+msgid "Toggle Bluetooth"
+msgstr "Attiva Bluetooth"
+
+#: qml/Main.qml:222
+#, kde-format
+msgid "Turn Bluetooth on or off"
+msgstr "Attiva o disattiva il Bluetooth"
+
+#: qml/Main.qml:229
+#, kde-format
+msgid "Toggle discovery"
+msgstr "Attiva rilevamento"
+
+#: qml/Main.qml:230
+#, kde-format
+msgid "Turn device discovery on or off"
+msgstr "Attiva o disattiva il rilevamento del dispositivo"
+
+#: qml/Main.qml:239
+#, kde-format
+msgid "About"
+msgstr "Informazioni"
+
+#: qml/Main.qml:240
+#, kde-format
+msgid "Show application information"
+msgstr "Mostra informazioni sull'applicazione"
+
+#: qml/Main.qml:257
+#, kde-format
+msgid "Devices"
+msgstr "Dispositivi"
+
+#: qml/Main.qml:267
+#, kde-format
+msgctxt "Tooltip shown when hovering over a spinner"
+msgid "Discovering devices..."
+msgstr "Rilevamento dei dispositivi..."
+
+#: qml/Main.qml:291
+#, kde-format
+msgid "No paired devices"
+msgstr "Nessun dispositivo associato"
+
+#: qml/Main.qml:309
+#, kde-format
+msgid "Available"
+msgstr "Disponibile"
+
+#: qml/PasskeyDialog.qml:31
+#, kde-format
+msgid "Pair request from <b>%1</b>."
+msgstr "Richiesta di associazione da <b>%1</b>."
+
+#: qml/WelcomePage.qml:33
+#, kde-format
+msgid "No Bluetooth adapters found"
+msgstr "Nessun adattatore Bluetooth trovato"
+
+#: qml/WelcomePage.qml:34
+#, kde-format
+msgid "Please connect a Bluetooth adapter"
+msgstr "Si prega di collegare un adattatore Bluetooth"
+
+#: qml/WelcomePage.qml:43
+#, kde-format
+msgid "Bluetooth is disabled"
+msgstr "Il Bluetooth è disabilitato"
+
+#: qml/WelcomePage.qml:49
+#, kde-format
+msgid "Enable"
+msgstr "Abilita"
+
+#: qml/WelcomePage.qml:59
+#, kde-format
+msgid "No device selected. Click a device to get started."
+msgstr "Nessun dispositivo selezionato. Fai clic su un dispositivo per iniziare."
